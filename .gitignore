@@ -1,0 +1,16 @@
+# 项目排除路径
+/api/target/
+/pub/target/
+/svc/target/
+
+### IDEA ###
+.idea
+
+### LOG ###
+log
+
+### NPM ###
+/web/node_modules
+
+### MAC ###
+*.DS_Store
