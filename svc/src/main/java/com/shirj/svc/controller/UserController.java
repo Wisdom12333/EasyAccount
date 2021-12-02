@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
+    private final IUserService iUserService;
+
     @Autowired
-    IUserService userService;
+    public UserController(IUserService iUserService){
+        this.iUserService = iUserService;
+    }
 
     @GetMapping("/queryByUserId")
-    public User queryByUserId(@RequestParam(value = "userId") int userId){
-        return userService.queryByUserId(1);
+    public User queryByUserId(@RequestParam(value = "userId") long userId){
+        return iUserService.queryByUserId(userId);
     }
 }

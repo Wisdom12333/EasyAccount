@@ -1,30 +1,31 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div id="app">
+    <el-container class="el-container">
+      <el-header height="30px" style="background: #938989">Hi</el-header>
+      <el-container>
+        <el-aside width="300px" style="background: #d7c3c3">Aside</el-aside>
+        <el-main style="background: #99f8ff">
+          <router-view />
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
-  <router-view />
 </template>
 
+<script>
+export default {
+  name: "App",
+};
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+/*使布局容器占据整个页面*/
+html,
+body,
+#app,
+.el-container {
+  padding: 0;
+  margin: 0;
+  height: 100%;
 }
 </style>

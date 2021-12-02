@@ -14,7 +14,7 @@ public class UserServiceImpl implements IUserService {
     UserDAO userDAO;
 
     @Override
-    public User queryByUserId(int userId) {
+    public User queryByUserId(long userId) {
         return userDAO.queryByUserId(userId);
     }
 }

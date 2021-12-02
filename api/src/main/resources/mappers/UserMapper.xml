@@ -2,10 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--命名空间应该是对应接口的包名+接口名 -->
 <mapper namespace="com.shirj.api.dao.UserDAO">
-    <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
 
-    <!--获得图书对象通过编号 -->
-    <select id="queryByUserId" resultType="User">
-        select user_id,user_name from t_user where user_id=#{id}
+    <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
+    <select id="queryByUserId" resultType="com.shirj.api.entity.User">
+        SELECT * FROM T_USER WHERE USER_ID=#{id} AND REMOVE_TAG='0';
     </select>
 </mapper>

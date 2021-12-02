@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDAO {
 
-    User queryByUserId(@Param("id") int id);
+    User queryByUserId(@Param("id") long id);
 }
