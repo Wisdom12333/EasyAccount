@@ -24,6 +24,6 @@ public class UserController {
 
     @GetMapping("/queryByUserId")
     public User queryByUserId(@RequestParam(value = "userId") long userId){
-        return iUserService.queryByUserId(userId);
+        return iUserService.getById(userId);
     }
 }

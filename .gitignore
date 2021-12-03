@@ -5,13 +5,13 @@
 
 ### IDEA ###
 .idea
+*.iml
 
 ### LOG ###
 log
 
 ### NPM ###
 /web/node_modules
-!/web/
 
 ### MAC ###
 *.DS_Store

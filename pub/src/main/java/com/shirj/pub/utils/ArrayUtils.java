@@ -1,4 +1,4 @@
-package com.shirj.svc.utils;
+package com.shirj.pub.utils;
 
 
 import java.util.List;

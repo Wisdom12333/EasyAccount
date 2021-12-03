@@ -1,15 +1,14 @@
 package com.shirj.api.entity;
 
+import com.shirj.pub.core.entity.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-
 @Getter
 @Setter
 @Builder
-public class Param implements Serializable {
+public class Param extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

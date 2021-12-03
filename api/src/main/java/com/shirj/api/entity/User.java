@@ -1,18 +1,18 @@
 package com.shirj.api.entity;
 
+import com.shirj.pub.core.entity.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Setter
 @Getter
 @ToString
 @Builder
-public class User implements Serializable {
+public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
