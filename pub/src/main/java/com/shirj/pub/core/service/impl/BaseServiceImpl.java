@@ -13,17 +13,17 @@ public class BaseServiceImpl<M extends BaseDAO<T>,T extends BaseEntity> implemen
 
     @Override
     public boolean save(T entity) {
-        return false;
+        return dao.save(entity);
     }
 
     @Override
     public boolean removeById(long id) {
-        return false;
+        return dao.removeById(id);
     }
 
     @Override
     public boolean updateById(long id) {
-        return false;
+        return dao.updateById(id);
     }
 
     @Override
