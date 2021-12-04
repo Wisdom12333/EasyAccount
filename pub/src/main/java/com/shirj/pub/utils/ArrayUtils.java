@@ -4,14 +4,14 @@ package com.shirj.pub.utils;
 import java.util.List;
 
 /**
- * <p>Utils for the arrays.</p>
+ * Utils for the arrays.
  *
- * @author shirj, wisdom12333@iCloud.com.
+ * @author shirj, wisdom12333@iCloud.com
  */
 public final class ArrayUtils {
 
     /**
-     * <p>Check if a {@code List} is empty or {@code null}.</p>
+     * Check if a {@code List} is empty or {@code null}.
      *
      * @param list {@code List},may be {@code null}.
      * @return true if the {@code List} is empty or {@code null}.
@@ -21,7 +21,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * <p>Check if a {@code List} is not empty and not {@code null}.</p>
+     * Check if a {@code List} is not empty and not {@code null}.
      *
      * @param list {@code List},may be {@code null}.
      * @return true if the {@code List} is not empty and not {@code null}.
@@ -31,7 +31,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * <p>Check if an array is empty or null.</p>
+     * Check if an array is empty or null.
      *
      * @param array an array, may be null.
      * @param <T>   the component type of the array.
@@ -42,7 +42,7 @@ public final class ArrayUtils {
     }
 
     /**
-     * <p>Check if an array is not empty and not null.</p>
+     * Check if an array is not empty and not null.
      *
      * @param array an array, may be null.
      * @param <T>   the component type of the array.

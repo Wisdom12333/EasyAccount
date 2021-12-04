@@ -8,6 +8,11 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+/**
+ * The entity of table T_PARAM.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Setter
 @Getter
 @ToString

@@ -3,13 +3,17 @@ package com.shirj.pub.core.service.impl;
 import com.shirj.pub.core.dao.BaseDAO;
 import com.shirj.pub.core.entity.BaseEntity;
 import com.shirj.pub.core.service.IBaseService;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.annotation.Resource;
-
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
+@Setter
+@Getter
 public class BaseServiceImpl<M extends BaseDAO<T>,T extends BaseEntity> implements IBaseService<T> {
 
-    @Resource
-    protected M dao;
+    private M dao;
 
     @Override
     public boolean save(T entity) {

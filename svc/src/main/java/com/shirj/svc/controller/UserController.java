@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller of {@code User}.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @RestController
 @Slf4j
 @RequestMapping("/user")

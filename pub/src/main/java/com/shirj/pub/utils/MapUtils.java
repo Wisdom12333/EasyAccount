@@ -6,14 +6,14 @@ import java.util.Map;
 
 
 /**
- * <p>Utils for the {@code Map}.</p>
+ * Utils for the {@code Map}.
  *
  * @author shirj, wisdom12333@iCloud.com
  */
 public final class MapUtils {
 
     /**
-     * <p>Check if a {@code Map} is empty or {@code null}.</p>
+     * Check if a {@code Map} is empty or {@code null}.
      *
      * @param map {@code Map},may be {@code null}.
      * @return true if the {@code Map} is empty or {@code null}.
@@ -23,7 +23,7 @@ public final class MapUtils {
     }
 
     /**
-     * <p>Check if a {@code Map} is not empty and not {@code null}.</p>
+     * Check if a {@code Map} is not empty and not {@code null}.
      *
      * @param map {@code Map},may be {@code null}.
      * @return true if the {@code Map} is not empty and not {@code null}.
@@ -33,7 +33,7 @@ public final class MapUtils {
     }
 
     /**
-     * <p>Get value from a {@code Map} by the key.</p>
+     * Get value from a {@code Map} by the key.
      *
      * @param map          {@code Map}, may be {@code null}.
      * @param key          {@code String}, key of map, may not be contained.

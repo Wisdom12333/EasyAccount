@@ -5,6 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * The entity of table T_PARAM.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Getter
 @Setter
 @Builder
