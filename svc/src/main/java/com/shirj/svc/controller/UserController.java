@@ -29,6 +29,7 @@ public class UserController {
 
     @GetMapping("/queryByUserId")
     public User queryByUserId(@RequestParam(value = "userId") long userId){
+        log.warn("有人请求了");
         return iUserService.getById(userId);
     }
 }
