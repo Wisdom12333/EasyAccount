@@ -5,6 +5,9 @@
 
     <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
     <select id="getById" resultType="com.shirj.api.entity.User">
-        SELECT * FROM T_USER WHERE USER_ID=#{id} AND REMOVE_TAG='0';
+        SELECT *
+        FROM T_USER
+        WHERE USER_ID = #{id}
+          AND REMOVE_TAG = '0';
     </select>
 </mapper>

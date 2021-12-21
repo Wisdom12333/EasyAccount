@@ -4,6 +4,8 @@ import com.shirj.api.entity.Param;
 import com.shirj.pub.core.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * DAO of the {@code Param}.
  *
@@ -12,4 +14,10 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ParamDAO extends BaseDAO<Param> {
 
+    /**
+     * get a list of params.
+     * @param typeId the typeId
+     * @return a list of params
+     */
+    List<Param> qryByTypeId(String typeId);
 }

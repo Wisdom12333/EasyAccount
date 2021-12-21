@@ -4,6 +4,7 @@ import com.shirj.pub.core.entity.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * The entity of table T_PARAM.
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Param extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

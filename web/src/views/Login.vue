@@ -1,12 +1,14 @@
 <template>
-  <div>Login</div>
-  <el-select v-model.number="n">
-    <el-option :value="1">1</el-option>
-    <el-option :value="2">2</el-option>
-    <el-option :value="3">3</el-option>
-  </el-select>
-  <el-button type="primary" @click="add">点我加</el-button>
-  <el-button type="primary" @click="reduce">点我减</el-button>
+  <h1>Login</h1>
+  <br />
+  <form>
+    <label>
+      用户名：<input placeholder="请输入用户名" v-model="user.username" />
+    </label>
+    <label> 密码： <input type="password" v-model="user.password" /> </label>
+    <button @click.prevent="login()">登陆</button>
+    <router-link to="/Register">没有账号？点击注册</router-link>
+  </form>
 </template>
 
 <script>
@@ -14,15 +16,15 @@ export default {
   name: "Login",
   data() {
     return {
-      n: 1,
+      user: {
+        username: "",
+        password: "",
+      },
     };
   },
   methods: {
-    add() {
-      this.$store.dispatch("add", this.n);
-    },
-    reduce() {
-      this.$store.dispatch("reduce", this.n);
+    login() {
+      console.log(this.user);
     },
   },
 };
