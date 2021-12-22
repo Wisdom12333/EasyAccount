@@ -1,8 +1,8 @@
-package com.shirj.pub.core.service.impl;
+package com.shirj.api.core.service.impl;
 
-import com.shirj.pub.core.dao.BaseDAO;
-import com.shirj.pub.core.entity.BaseEntity;
-import com.shirj.pub.core.service.IBaseService;
+import com.shirj.api.core.service.IBaseService;
+import com.shirj.api.core.dao.BaseDAO;
+import com.shirj.api.core.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 

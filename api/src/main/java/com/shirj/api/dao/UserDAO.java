@@ -1,7 +1,7 @@
 package com.shirj.api.dao;
 
 import com.shirj.api.entity.User;
-import com.shirj.pub.core.dao.BaseDAO;
+import com.shirj.api.core.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

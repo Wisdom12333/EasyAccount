@@ -2,14 +2,16 @@ import { createStore } from "vuex";
 
 export default createStore({
   state: {
-    sum: 0,
+    token: localStorage.getItem("token") ? localStorage.getItem("token") : "",
   },
   mutations: {
-    ADD(state, value) {
-      state.sum += value;
+    setToken(state, token) {
+      state.token = token;
+      localStorage.setItem("token", token.token);
     },
-    REDUCE(state, value) {
-      state.sum -= value;
+    delToken(state) {
+      state.token = "";
+      localStorage.removeItem("token");
     },
   },
   actions: {

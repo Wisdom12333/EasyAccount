@@ -1,7 +1,7 @@
 package com.shirj.api.service;
 
 import com.shirj.api.entity.User;
-import com.shirj.pub.core.service.IBaseService;
+import com.shirj.api.core.service.IBaseService;
 
 /**
  * The interface for {@code User} service.

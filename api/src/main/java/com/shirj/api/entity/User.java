@@ -1,6 +1,6 @@
 package com.shirj.api.entity;
 
-import com.shirj.pub.core.entity.BaseEntity;
+import com.shirj.api.core.entity.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

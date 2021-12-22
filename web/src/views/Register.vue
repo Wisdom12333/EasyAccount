@@ -2,25 +2,19 @@
   <h1>Register</h1>
   <br />
   <form>
-    <label>
-      用户名<input placeholder="input" v-model="user.username" />
-    </label>
-    <label>
-      密码<input type="password" v-model="user.password" />
-    </label>
-    <label>
-      确认密码<input type="password" v-model="user.checkPwd" />
-    </label>
-    <label>
-      邮箱<input v-model="user.eMail" />
-    </label>
+    <label> 用户名<input placeholder="input" v-model="user.username" /> </label>
+    <label> 密码<input type="password" v-model="user.password" /> </label>
+    <label> 确认密码<input type="password" v-model="user.checkPwd" /> </label>
+    <label> 邮箱<input v-model="user.eMail" /> </label>
     <label>
       <button @click.prevent="submit()">提交</button>
     </label>
+    <label><router-link to="/Login">已有账号？现在登陆</router-link></label>
   </form>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "Register",
   data() {
@@ -29,18 +23,23 @@ export default {
         username: "",
         password: "",
         checkPwd: "",
-        eMail: ""
-      }
+        eMail: "",
+      },
     };
   },
-  methods:{
-    submit(){
+  methods: {
+    submit() {
       console.log(this.user);
-      this.axios.get("localhost:8080/user").then((response) => {
-        console.log(response.data)
-      })
+      axios.get("http://localhost:8181/user/queryByUserId?userId=1").then(
+        (response) => {
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     },
-  }
+  },
 };
 </script>
 

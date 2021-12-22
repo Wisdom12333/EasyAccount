@@ -1,4 +1,4 @@
-package com.shirj.pub.core.entity;
+package com.shirj.api.core.entity;
 
 import lombok.Getter;
 import lombok.Setter;
