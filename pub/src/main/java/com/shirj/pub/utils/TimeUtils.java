@@ -5,7 +5,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class TimeUtils {
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
+public final class TimeUtils {
 
     public static LocalDateTime now(){
         return LocalDateTime.now();

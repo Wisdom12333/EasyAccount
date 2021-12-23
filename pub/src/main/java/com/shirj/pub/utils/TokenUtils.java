@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author shirj, wisdom12333@iCloud.com
  */
 @Slf4j
-public class TokenUtils {
+public final class TokenUtils {
 
     public static final long EXPIRE_TIME = 1000*60*60;
     public static final String TOKEN_SECRET = "EASY_ACCOUNT";

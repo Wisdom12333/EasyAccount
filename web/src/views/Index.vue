@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import {mapMutations} from "vuex"
+import { mapMutations } from "vuex";
 export default {
   name: "Index",
   methods: {
-    logout(){
+    logout() {
       this.delToken();
     },
-    ...mapMutations(['delToken']),
-  }
+    ...mapMutations(["delToken"]),
+  },
 };
 </script>
 

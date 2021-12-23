@@ -30,7 +30,7 @@ export default {
   methods: {
     submit() {
       console.log(this.user);
-      axios.post("/user/register",this.user).then(
+      axios.post("/user/register", this.user).then(
         (response) => {
           console.log(response);
         },

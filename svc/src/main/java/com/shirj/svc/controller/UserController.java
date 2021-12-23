@@ -3,6 +3,7 @@ package com.shirj.svc.controller;
 
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
+import com.shirj.pub.consts.ComConst;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,13 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user){
         Map<String, Object> response = iUserService.Login(user.getUsername(), user.getPassword());
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(5);
         String resultCode = MapUtils.getValue(response, "RESULT_CODE", "2");
         String resultInfo = MapUtils.getValue(response, "RESULT_INFO", "服务调用异常,请稍后重试!");
         result.put("code", resultCode);
         result.put("message", resultInfo);
 
-        if(!"0".equals(resultCode)){
+        if(!ComConst.SUCCESS.equals(resultCode)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }else{
             result.put("USER_ID", MapUtils.getValue(response, "USER_ID"));
@@ -59,6 +60,8 @@ public class UserController {
     public ResponseEntity<String> register(@RequestBody User user){
         if(iUserService.save(user)) {
             return ResponseEntity.status(HttpStatus.OK).body("success");
-        }else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+        }else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+        }
     }
 }

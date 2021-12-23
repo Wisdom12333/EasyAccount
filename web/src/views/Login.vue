@@ -14,7 +14,7 @@
 
 <script>
 import axios from "axios";
-import {mapMutations} from "vuex"
+import { mapMutations } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -27,20 +27,20 @@ export default {
   },
   methods: {
     login() {
-      axios.post("/user/login",this.user).then(
-          (response) => {
-            if(response.data.code==="0"){
-              this.setToken({token: response.data.token });
-              console.log(response.data.token);
-              this.$router.push({name: 'Home'})
-            }
-          },
-          (error) => {
-            console.log(error);
+      axios.post("/user/login", this.user).then(
+        (response) => {
+          if (response.data.code === "0") {
+            this.setToken({ token: response.data.token });
+            console.log(response.data.token);
+            this.$router.push({ name: "Home" });
           }
+        },
+        (error) => {
+          console.log(error);
+        }
       );
     },
-    ...mapMutations(['setToken']),
+    ...mapMutations(["setToken"]),
   },
 };
 </script>
