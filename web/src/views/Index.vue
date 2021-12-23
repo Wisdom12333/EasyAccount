@@ -1,6 +1,10 @@
 <template>
   <el-container class="el-container">
-    <el-header height="30px" style="background: #938989">Hi</el-header>
+    <el-header height="30px" style="background: #938989">
+      <div>
+        <router-link to="/Login" @click="logout()">退出登录</router-link>
+      </div>
+    </el-header>
     <el-container>
       <el-aside width="300px" style="background: #d7c3c3">
         <router-link to="/Index/Budget">Budget</router-link>
@@ -19,8 +23,15 @@
 </template>
 
 <script>
+import {mapMutations} from "vuex"
 export default {
   name: "Index",
+  methods: {
+    logout(){
+      this.delToken();
+    },
+    ...mapMutations(['delToken']),
+  }
 };
 </script>
 

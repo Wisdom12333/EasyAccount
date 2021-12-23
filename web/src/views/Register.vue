@@ -30,7 +30,7 @@ export default {
   methods: {
     submit() {
       console.log(this.user);
-      axios.get("http://localhost:8181/user/queryByUserId?userId=1").then(
+      axios.post("/user/register",this.user).then(
         (response) => {
           console.log(response);
         },

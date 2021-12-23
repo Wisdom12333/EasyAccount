@@ -3,6 +3,7 @@ package com.shirj.api.dao;
 import com.shirj.api.entity.User;
 import com.shirj.api.core.dao.BaseDAO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * DAO of the {@code User}.
@@ -11,4 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface UserDAO extends BaseDAO<User> {
+
+    User getOneByLogin(@Param("username") String username, @Param("password") String password);
 }

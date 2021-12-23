@@ -23,7 +23,7 @@ public class User extends BaseEntity {
 
     private long userId;
 
-    private String userName;
+    private String username;
 
     private String password;
 

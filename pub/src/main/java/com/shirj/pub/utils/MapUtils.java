@@ -51,5 +51,23 @@ public final class MapUtils {
         return value;
     }
 
+    public static String getValue(Map<?, ?> map, String key) {
+        if (isEmpty(map)) {
+            return "";
+        }
+        String value = String.valueOf(map.get(key));
+        if (StringUtils.isBlank(value)) {
+            return "";
+        }
+        return value;
+    }
+
+    public static void resultInfo(Map<String, Object> result, String resultCode, String resultInfo) {
+
+        result.put("RESULT_CODE", resultCode);
+        result.put("RESULT_INFO", resultInfo);
+
+    }
+
 }
 

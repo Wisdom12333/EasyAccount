@@ -10,4 +10,12 @@
         WHERE USER_ID = #{id}
           AND REMOVE_TAG = '0';
     </select>
+
+    <select id="getOneByLogin" resultType="com.shirj.api.entity.User">
+        SELECT *
+        FROM T_USER
+        WHERE USER_NAME = #{username}
+          AND `PASSWORD` = #{password}
+          AND REMOVE_TAG = '0';
+    </select>
 </mapper>
