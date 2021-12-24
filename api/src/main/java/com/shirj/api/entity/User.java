@@ -1,10 +1,8 @@
 package com.shirj.api.entity;
 
 import com.shirj.api.core.entity.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Builder
+@Alias("User")
 public class User extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

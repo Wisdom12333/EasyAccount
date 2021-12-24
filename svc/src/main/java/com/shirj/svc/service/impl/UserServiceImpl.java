@@ -9,6 +9,7 @@ import com.shirj.pub.utils.TimeUtils;
 import com.shirj.pub.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -53,7 +54,15 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     }
 
     @Override
-    public boolean save(User user) {
+    public boolean checkUsername(String username) {
+
+        User user = getDao().checkUsername(username);
+        return user == null;
+
+    }
+
+    @Override
+    public boolean save(User user) throws DuplicateKeyException {
         user.setCreateTime(TimeUtils.now());
         user.setUpdateTime(TimeUtils.now());
         return super.save(user);

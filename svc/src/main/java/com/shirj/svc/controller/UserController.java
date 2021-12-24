@@ -7,6 +7,7 @@ import com.shirj.pub.consts.ComConst;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,10 +59,27 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody User user){
-        if(iUserService.save(user)) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        }else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+        try {
+            boolean flag = iUserService.save(user);
+            if(flag){
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            }else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+            }
+
+        }catch (DuplicateKeyException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名已存在!");
         }
+    }
+
+    @GetMapping("/checkUsername")
+    public ResponseEntity<Void> checkUsername(@RequestParam String username){
+
+        if(iUserService.checkUsername(username)){
+            return ResponseEntity.ok(null);
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
     }
 }

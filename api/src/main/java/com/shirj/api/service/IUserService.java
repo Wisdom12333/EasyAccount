@@ -13,4 +13,6 @@ import java.util.Map;
 public interface IUserService extends IBaseService<User> {
 
     Map<String, Object> Login(String username, String password);
+
+    boolean checkUsername(String username);
 }
