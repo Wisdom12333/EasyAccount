@@ -32,6 +32,9 @@ export default {
     },
     ...mapMutations(["delToken"]),
   },
+  beforeUnmount() {
+    this.delToken();
+  }
 };
 </script>
 

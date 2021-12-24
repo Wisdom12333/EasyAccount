@@ -4,7 +4,7 @@ package com.shirj.pub.consts;
  *
  * @author shirj, wisdom12333@iCloud.com
  */
-public class ComConst {
+public class CommConst {
 
     /**
      * 成功
@@ -19,4 +19,13 @@ public class ComConst {
      */
     public static final String SVC_EXCEPTION = "2";
 
+
+    /**
+     * 有效
+     */
+    public static final String VALID = "0";
+    /**
+     * 失效
+     */
+    public static final String INVALID = "1";
 }

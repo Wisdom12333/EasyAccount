@@ -24,7 +24,7 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     if (response.headers) {
-      console.log(response.headers);
+      // console.log(response.headers);
     }
     return response;
   },

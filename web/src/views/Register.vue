@@ -21,9 +21,9 @@ export default {
     return {
       user: {
         username: "",
-        password: "",
-        checkPwd: "",
-        eMail: "",
+        password: null,
+        checkPwd: null,
+        eMail: null,
       },
     };
   },
@@ -31,15 +31,31 @@ export default {
     submit() {
       console.log(this.user);
       axios.post("/user/register", this.user).then(
-        (response) => {
-          console.log(response);
+        () => {
+          console.log("注册成功");
+          this.$router.push({ name: "Login" });
         },
         (error) => {
-          console.log(error);
+          console.log(error.response.data);
         }
       );
     },
+    checkUsername(username) {
+      axios.get("/user/checkUsername?username="+username).then(
+          ()=>{
+            console.log("可用")
+          },
+          ()=>{
+            console.log("用户名已被使用");
+          }
+      )
+    }
   },
+  watch:{
+    "user.username"(val){
+      this.checkUsername(val);
+    }
+  }
 };
 </script>
 

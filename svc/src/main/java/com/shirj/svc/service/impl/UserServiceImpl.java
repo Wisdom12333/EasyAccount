@@ -4,6 +4,7 @@ import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.UserDAO;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
+import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.utils.MapUtils;
 import com.shirj.pub.utils.TimeUtils;
 import com.shirj.pub.utils.TokenUtils;
@@ -34,21 +35,26 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
 
         Map<String, Object> result = new HashMap<>();
 
-        User user = getDao().getOneByLogin(username, password);
-        if (null == user) {
-            MapUtils.resultInfo(result, "1", "用户名或密码错误!");
+        User user = getDao().getByUsername(username);
+        if (null == user || !password.equals(user.getPassword())) {
+            MapUtils.resultInfo(result, CommConst.ERROR_DATA, "用户名或密码错误!");
+            return result;
+        }
+
+        if (CommConst.INVALID.equals(user.getRemoveTag())) {
+            MapUtils.resultInfo(result, CommConst.ERROR_DATA, "用户已失效!");
             return result;
         }
 
         String token = TokenUtils.createToken(user);
         if (StringUtils.isBlank(token)) {
-            MapUtils.resultInfo(result, "2", "服务调用异常!");
+            MapUtils.resultInfo(result, CommConst.SVC_EXCEPTION, "服务调用异常!");
             return result;
         }
 
         result.put("TOKEN", token);
         result.put("USER_ID", user.getUserId());
-        MapUtils.resultInfo(result, "0", "登录成功!");
+        MapUtils.resultInfo(result, CommConst.SUCCESS, "登录成功!");
 
         return result;
     }
@@ -56,8 +62,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     @Override
     public boolean checkUsername(String username) {
 
-        User user = getDao().checkUsername(username);
-        return user == null;
+        return getDao().getByUsername(username) == null;
 
     }
 

@@ -3,7 +3,7 @@ package com.shirj.svc.controller;
 
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
-import com.shirj.pub.consts.ComConst;
+import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class UserController {
         result.put("code", resultCode);
         result.put("message", resultInfo);
 
-        if(!ComConst.SUCCESS.equals(resultCode)){
+        if(!CommConst.SUCCESS.equals(resultCode)){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
         }else{
             result.put("USER_ID", MapUtils.getValue(response, "USER_ID"));
@@ -69,6 +69,8 @@ public class UserController {
 
         }catch (DuplicateKeyException e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名已存在!");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
         }
     }
 

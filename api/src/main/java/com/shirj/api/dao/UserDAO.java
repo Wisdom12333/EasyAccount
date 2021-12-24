@@ -13,7 +13,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDAO extends BaseDAO<User> {
 
-    User getOneByLogin(@Param("username") String username, @Param("password") String password);
-
-    User checkUsername(@Param("username") String username);
+    User getByUsername(@Param("username") String username);
 }

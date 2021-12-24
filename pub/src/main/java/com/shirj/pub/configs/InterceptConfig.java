@@ -27,7 +27,7 @@ public class InterceptConfig implements WebMvcConfigurer {
         List<String> excludePath = new ArrayList<>();
         excludePath.add("/user/login");
         excludePath.add("/user/register");
-        excludePath.add("/user/logout");
+        excludePath.add("/user/checkUsername");
         excludePath.add("/static/**");
         excludePath.add("/assets/**");
 

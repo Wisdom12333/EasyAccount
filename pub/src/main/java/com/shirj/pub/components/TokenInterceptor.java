@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.shirj.pub.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -40,6 +41,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             json.put("message","认证失败,非法的token");
             json.put("code","500");
             response.getWriter().append(json.toJSONString());
+            response.setStatus(400);
         }catch (Exception e){
             log.error(e.getMessage());
             return false;

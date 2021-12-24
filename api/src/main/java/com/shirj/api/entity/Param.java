@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.ibatis.type.Alias;
 
 /**
  * The entity of table T_PARAM.
@@ -15,6 +16,7 @@ import lombok.ToString;
 @Setter
 @Builder
 @ToString
+@Alias("Param")
 public class Param extends BaseEntity {
 
     private static final long serialVersionUID = 1L;

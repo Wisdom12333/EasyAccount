@@ -11,15 +11,7 @@
           AND REMOVE_TAG = '0';
     </select>
 
-    <select id="getOneByLogin" resultType="User">
-        SELECT *
-        FROM T_USER
-        WHERE USER_NAME = #{username}
-          AND `PASSWORD` = #{password}
-          AND REMOVE_TAG = '0';
-    </select>
-
-    <select id="checkUsername" resultType="User">
+    <select id="getByUsername" resultType="User">
         SELECT *
         FROM T_USER
         WHERE USER_NAME = #{username};
