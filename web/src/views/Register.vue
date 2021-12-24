@@ -2,9 +2,9 @@
   <h1>Register</h1>
   <br />
   <form>
-    <label> 用户名<input placeholder="input" v-model="user.username" /> </label>
-    <label> 密码<input type="password" v-model="user.password" /> </label>
-    <label> 确认密码<input type="password" v-model="user.checkPwd" /> </label>
+    <label> 用户名<input v-model="user.username" placeholder="input" /> </label>
+    <label> 密码<input v-model="user.password" type="password" /> </label>
+    <label> 确认密码<input v-model="user.checkPwd" type="password" /> </label>
     <label> 邮箱<input v-model="user.eMail" /> </label>
     <label>
       <button @click.prevent="submit()">提交</button>

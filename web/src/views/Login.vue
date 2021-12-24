@@ -3,9 +3,9 @@
   <br />
   <form>
     <label>
-      用户名：<input placeholder="请输入用户名" v-model="user.username" />
+      用户名：<input v-model="user.username" placeholder="请输入用户名" />
     </label>
-    <label> 密码： <input type="password" v-model="user.password" /> </label>
+    <label> 密码： <input v-model="user.password" type="password" /> </label>
     <label> 记住密码<input type="checkbox" /></label>
     <button @click.prevent="login()">登陆</button>
     <router-link to="/Register">没有账号？点击注册</router-link>

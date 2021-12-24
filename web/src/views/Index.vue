@@ -16,7 +16,7 @@
         <router-link to="/Index/Statistics">Statistics</router-link>
       </el-aside>
       <el-main style="background: #99f8ff">
-        <router-view></router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
