@@ -40,9 +40,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user){
-        Map<String, Object> response = iUserService.Login(user.getUsername(), user.getPassword());
+        Map<String, Object> response = iUserService.login(user.getUsername(), user.getPassword());
         Map<String, Object> result = new HashMap<>(5);
-        String resultCode = MapUtils.getValue(response, "RESULT_CODE", "2");
+        String resultCode = MapUtils.getValue(response, "RESULT_CODE", CommConst.SVC_EXCEPTION);
         String resultInfo = MapUtils.getValue(response, "RESULT_INFO", "服务调用异常,请稍后重试!");
         result.put("code", resultCode);
         result.put("message", resultInfo);

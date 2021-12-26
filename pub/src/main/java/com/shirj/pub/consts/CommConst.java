@@ -1,6 +1,7 @@
 package com.shirj.pub.consts;
 
 /**
+ * Common const.
  *
  * @author shirj, wisdom12333@iCloud.com
  */

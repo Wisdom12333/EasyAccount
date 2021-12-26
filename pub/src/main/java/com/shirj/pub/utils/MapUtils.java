@@ -51,6 +51,13 @@ public final class MapUtils {
         return value;
     }
 
+    /**
+     * Get value from a {@code Map} by the key.
+     *
+     * @param map          {@code Map}, may be {@code null}.
+     * @param key          {@code String}, key of map, may not be contained.
+     * @return The value of map or an empty string.
+     */
     public static String getValue(Map<?, ?> map, String key) {
         if (isEmpty(map)) {
             return "";
@@ -62,11 +69,17 @@ public final class MapUtils {
         return value;
     }
 
+    /**
+     * Generate the resultInfo.
+     *
+     * @param result the result map
+     * @param resultCode the result code
+     * @param resultInfo the result info
+     */
     public static void resultInfo(Map<String, Object> result, String resultCode, String resultInfo) {
 
         result.put("RESULT_CODE", resultCode);
         result.put("RESULT_INFO", resultInfo);
-
     }
 
 }

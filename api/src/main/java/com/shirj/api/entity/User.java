@@ -7,7 +7,7 @@ import org.apache.ibatis.type.Alias;
 import java.time.LocalDateTime;
 
 /**
- * The entity of table T_PARAM.
+ * The entity of table T_USER.
  *
  * @author shirj, wisdom12333@iCloud.com
  */
@@ -35,5 +35,15 @@ public class User extends BaseEntity {
     private LocalDateTime endTime;
 
     private String removeTag;
+
+    private String rsrvStr1;
+
+    private String rsrvStr2;
+
+    private String rsrvStr3;
+
+    private String rsrvStr4;
+
+    private String rsrvStr5;
 
 }

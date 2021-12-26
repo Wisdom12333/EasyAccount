@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.shirj.pub.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -12,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * An interceptor for token.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Component
@@ -22,7 +23,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         response.setCharacterEncoding("utf-8");
-
+        //获取并校验token，判断是否需要生成新的token。
         String token = request.getHeader("token");
         if(StringUtils.isNotBlank(token)){
             if(TokenUtils.verify(token)){
@@ -39,7 +40,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             JSONObject json = new JSONObject();
             json.put("success","false");
             json.put("message","认证失败,非法的token");
-            json.put("code","500");
+            json.put("code","400");
             response.getWriter().append(json.toJSONString());
             response.setStatus(400);
         }catch (Exception e){
@@ -47,8 +48,6 @@ public class TokenInterceptor implements HandlerInterceptor {
             return false;
         }
 
-
         return false;
-
     }
 }

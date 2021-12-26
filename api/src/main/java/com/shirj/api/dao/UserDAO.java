@@ -13,5 +13,11 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UserDAO extends BaseDAO<User> {
 
+    /**
+     * Get one by username.
+     *
+     * @param username the username
+     * @return {@code User} which username equal username
+     */
     User getByUsername(@Param("username") String username);
 }

@@ -31,9 +31,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     }
 
     @Override
-    public Map<String, Object> Login(String username, String password) {
+    public Map<String, Object> login(String username, String password) {
 
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(5);
 
         User user = getDao().getByUsername(username);
         if (null == user || !password.equals(user.getPassword())) {

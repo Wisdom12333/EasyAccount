@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
+ * Utils for Token.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Slf4j
@@ -18,6 +20,12 @@ public final class TokenUtils {
     public static final String TOKEN_SECRET = "EASY_ACCOUNT";
     public static final String SUBJECT = "easyAccount";
 
+    /**
+     * Create a token by user info.
+     *
+     * @param user the user
+     * @return a token
+     */
     public static String createToken(User user) {
 
 
@@ -38,6 +46,12 @@ public final class TokenUtils {
 
     }
 
+    /**
+     * Verify the token.
+     *
+     * @param token the token
+     * @return true if the token is valid
+     */
     public static boolean verify(String token) {
 
         try{
@@ -48,6 +62,12 @@ public final class TokenUtils {
         }
     }
 
+    /**
+     * Check whether the token can be refreshed.
+     *
+     * @param token the token
+     * @return true if the token can be refreshed
+     */
     public static Boolean checkRefresh(String token) {
 
         try {
@@ -63,6 +83,12 @@ public final class TokenUtils {
         }
     }
 
+    /**
+     * Return a new token.
+     *
+     * @param token old token
+     * @return new token
+     */
     public static String refreshToken(String token) {
 
         try {
