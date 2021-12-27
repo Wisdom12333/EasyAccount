@@ -32,6 +32,8 @@ public class CorsConfig {
         config.addAllowedMethod(HttpMethod.DELETE);
         //允许的头信息
         config.addAllowedHeader("*");
+        //添加自定义的响应头
+        config.addExposedHeader("newToken");
 
         //添加映射路径
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();

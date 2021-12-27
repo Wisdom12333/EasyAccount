@@ -28,7 +28,9 @@ public class TokenInterceptor implements HandlerInterceptor {
         if(StringUtils.isNotBlank(token)){
             if(TokenUtils.verify(token)){
                 if(TokenUtils.checkRefresh(token)) {
-                    response.setHeader("NEW_TOKEN", TokenUtils.refreshToken(token));
+                    //添加允许访问的自定义头信息
+                    response.setHeader("Access-Control-Expose-Headers", "newToken");
+                    response.setHeader("newToken",TokenUtils.refreshToken(token));
                 }
                 return true;
             }
@@ -37,12 +39,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try{
-            JSONObject json = new JSONObject();
-            json.put("success","false");
-            json.put("message","认证失败,非法的token");
-            json.put("code","400");
-            response.getWriter().append(json.toJSONString());
-            response.setStatus(400);
+            response.sendError(401,"非法的token");
         }catch (Exception e){
             log.error(e.getMessage());
             return false;

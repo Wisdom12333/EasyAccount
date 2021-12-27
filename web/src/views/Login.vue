@@ -28,14 +28,13 @@ export default {
   methods: {
     login() {
       axios.post("/user/login", this.user).then(
-        (response) => {
+        response => {
           if (response.data.code === "0") {
             this.setToken({ token: response.data.token });
-            console.log(response.data.token);
             this.$router.push({ name: "Home" });
           }
         },
-        (error) => {
+        error => {
           console.log(error);
         }
       );

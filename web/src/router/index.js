@@ -12,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "App",
-    redirect: "/index",
+    redirect: "/index/home",
     component: App,
   },
   {
