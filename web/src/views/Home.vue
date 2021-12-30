@@ -1,27 +1,21 @@
 <template>
   <div>Home</div>
   <el-button @click="click">click</el-button>
-  <el-button @click="del">delToken</el-button>
+  <el-button @click="store.commit('delToken')">delToken</el-button>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
-import {mapMutations} from "vuex";
+import {useStore} from "vuex";
 
-export default {
-  name: "Home",
-  methods:{
-    click(){
-      axios.get("/user/queryByUserId?userId=1").then(()=>{},(error)=>{
-        // console.log(error);
-      });
-    },
-    del(){
-      this.delToken();
-    },
-    ...mapMutations(["delToken"]),
-  }
-};
+const store = useStore();
+
+function click() {
+  axios.get("/user/queryByUserId?userId=1").then(null, (error) => {
+    console.log(error);
+  });
+}
+
 </script>
 
 <style scoped></style>

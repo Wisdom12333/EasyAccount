@@ -8,34 +8,32 @@
     <el-container>
       <el-aside width="300px" style="background: #d7c3c3">
         <router-link to="/Index/Budget">Budget</router-link>
-        <br />
+        <br/>
         <router-link to="/Index/Home">Home</router-link>
-        <br />
+        <br/>
         <router-link to="/Index/Mine">Mine</router-link>
-        <br />
+        <br/>
         <router-link to="/Index/Statistics">Statistics</router-link>
       </el-aside>
       <el-main style="background: #99f8ff">
-        <router-view />
+        <router-view/>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
-<script>
-import { mapMutations } from "vuex";
-export default {
-  name: "Index",
-  methods: {
-    logout() {
-      this.delToken();
-    },
-    ...mapMutations(["delToken"]),
-  },
-  beforeUnmount() {
-    this.delToken();
-  }
-};
+<script setup>
+import {useStore} from "vuex";
+import {onBeforeUnmount} from "vue";
+
+const store = useStore();
+
+function logout() {
+  store.commit("delToken");
+}
+
+onBeforeUnmount(() => logout());
+
 </script>
 
 <style scoped></style>
