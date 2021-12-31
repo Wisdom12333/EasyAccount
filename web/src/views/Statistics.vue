@@ -2,10 +2,6 @@
   <div>Statistics</div>
 </template>
 
-<script>
-export default {
-  name: "Statistics",
-};
-</script>
+<script setup></script>
 
 <style scoped></style>

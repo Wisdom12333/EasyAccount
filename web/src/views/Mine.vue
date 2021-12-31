@@ -2,10 +2,6 @@
   <div>Mine</div>
 </template>
 
-<script>
-export default {
-  name: "Mine",
-};
-</script>
+<script setup></script>
 
 <style scoped></style>

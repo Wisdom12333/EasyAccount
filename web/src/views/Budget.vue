@@ -2,10 +2,6 @@
   <div>Budget</div>
 </template>
 
-<script>
-export default {
-  name: "Budget",
-};
-</script>
+<script setup></script>
 
 <style scoped></style>

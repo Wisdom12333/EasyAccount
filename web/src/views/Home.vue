@@ -6,7 +6,7 @@
 
 <script setup>
 import axios from "axios";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
 
 const store = useStore();
 
@@ -15,7 +15,6 @@ function click() {
     console.log(error);
   });
 }
-
 </script>
 
 <style scoped></style>

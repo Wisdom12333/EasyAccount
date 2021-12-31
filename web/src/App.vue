@@ -2,15 +2,7 @@
   <router-view />
 </template>
 
-<script>
-
-export default {
-  name: "App",
-  methods:{
-
-  },
-};
-</script>
+<script setup></script>
 
 <style>
 /*使布局容器占据整个页面*/
