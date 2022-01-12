@@ -1,6 +1,7 @@
 package com.shirj.svc.controller;
 
 
+import com.shirj.api.core.controller.BaseController;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.CommConst;
@@ -21,9 +22,9 @@ import java.util.Map;
  * @author shirj, wisdom12333@iCloud.com
  */
 @RestController
-@Slf4j
 @RequestMapping("/user")
-public class UserController {
+@Slf4j
+public class UserController extends BaseController {
 
     private final IUserService iUserService;
 
@@ -39,7 +40,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User user){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         Map<String, Object> response = iUserService.login(user.getUsername(), user.getPassword());
         Map<String, Object> result = new HashMap<>(5);
         String resultCode = MapUtils.getValue(response, "RESULT_CODE", CommConst.SVC_EXCEPTION);
@@ -47,40 +48,40 @@ public class UserController {
         result.put("code", resultCode);
         result.put("message", resultInfo);
 
-        if(!CommConst.SUCCESS.equals(resultCode)){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-        }else{
+        if (!CommConst.SUCCESS.equals(resultCode)) {
+            return returnResult(result, HttpStatus.BAD_REQUEST);
+        } else {
             result.put("USER_ID", MapUtils.getValue(response, "USER_ID"));
             result.put("token", MapUtils.getValue(response, "TOKEN"));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+            return returnResult(result);
         }
 
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user){
+    public ResponseEntity<String> register(@RequestBody User user) {
         try {
             boolean flag = iUserService.save(user);
-            if(flag){
-                return ResponseEntity.status(HttpStatus.OK).body("success");
-            }else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+            if (flag) {
+                return returnResult("success");
+            } else {
+                return returnException("服务调用异常!");
             }
 
-        }catch (DuplicateKeyException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("用户名已存在!");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务调用异常!");
+        } catch (DuplicateKeyException e) {
+            return returnResult("用户名已存在!", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return returnException("服务调用异常!");
         }
     }
 
     @GetMapping("/checkUsername")
-    public ResponseEntity<Void> checkUsername(@RequestParam String username){
+    public ResponseEntity<Void> checkUsername(@RequestParam String username) {
 
-        if(iUserService.checkUsername(username)){
-            return ResponseEntity.ok(null);
-        }else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (iUserService.checkUsername(username)) {
+            return returnResult(null);
+        } else {
+            return returnResult(null, HttpStatus.BAD_REQUEST);
         }
 
     }

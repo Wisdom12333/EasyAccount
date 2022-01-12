@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间应该是对应接口的包名+接口名 -->
+<mapper namespace="com.shirj.api.dao.TradeDAO">
+
+    <!--id应该是接口中的方法，结果类型如没有配置别名则应该使用全名称 -->
+    <select id="getById" resultType="Trade">
+        SELECT *
+        FROM T_TRADE
+        WHERE TRADE_ID = #{id};
+    </select>
+
+    <insert id="save"
+            keyProperty="tradeId"
+            useGeneratedKeys="true"
+            parameterType="Trade">
+        INSERT INTO T_TRADE(USER_ID, ACCOUNT_ID, TRADE_TYPE, ACCEPT_MONTH, TRADE_NAME, TRADE_ICON, TRADE_AMOUNT, REMARK, TRADE_TIME, IS_RE_TRADE)
+        VALUES (#{userId}, #{accountId}, #{tradeType}, #{acceptMonth}, #{tradeName}, #{tradeIcon}, #{tradeAmount}, #{remark}, #{tradeTime}, #{isReTrade});
+    </insert>
+</mapper>
