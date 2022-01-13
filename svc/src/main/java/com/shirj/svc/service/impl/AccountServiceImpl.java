@@ -15,4 +15,10 @@ public class AccountServiceImpl extends BaseServiceImpl<AccountDAO, Account> imp
     public void setDao(AccountDAO accountDAO) {
         super.setDao(accountDAO);
     }
+
+    @Override
+    public boolean save(Account entity) {
+        entity.setCreateTime(now());
+        return super.save(entity);
+    }
 }

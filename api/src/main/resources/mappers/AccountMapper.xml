@@ -15,7 +15,21 @@
             keyProperty="accountId"
             useGeneratedKeys="true"
             parameterType="Account">
-        INSERT INTO T_ACCOUNT(ACCOUNT_NAME, USER_ID, TAG, BALANCE, REMARK, IS_TOTAL, CREATE_TIME, REMOVE_TAG)
-        VALUES (#{accountName}, #{userId}, #{tag}, #{balance}, #{remark}, #{isTotal}, #{createTime}, #{removeTag});
+        INSERT INTO T_ACCOUNT
+        <trim prefix="(USER_ID, TAG," suffix=" CREATE_TIME)">
+            <if test="accountName != null">ACCOUNT_NAME,</if>
+            <if test="balance != null">BALANCE,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="isTotal != null">IS_TOTAL,</if>
+            <if test="rsrvTime1 != null">RSRV_TIME1,</if>
+        </trim>
+        VALUES
+        <trim prefix="(#{userId}, #{tag}," suffix=" #{createTime});">
+            <if test="accountName != null">#{accountName},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="isTotal != null">#{isTotal},</if>
+            <if test="rsrvTime1 != null">#{rsrvTime1},</if>
+        </trim>
     </insert>
 </mapper>

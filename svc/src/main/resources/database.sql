@@ -30,19 +30,22 @@ create table t_account
         primary key,
     ACCOUNT_NAME varchar(40)                        null comment '账户名称',
     USER_ID      bigint                             not null comment '用户标识',
-    TAG          varchar(1)                         not null comment '账户类型',
+    TAG          varchar(2)                         not null comment '账户类型',
     BALANCE      bigint   default 0                 null comment '账户余额,默认以分为单位',
     REMARK       varchar(255)                       null comment '备注',
     IS_TOTAL     char     default '1'               not null comment '是否计入总资产,0-否,1-是',
     CREATE_TIME  datetime default CURRENT_TIMESTAMP null comment '生成时间',
     UPDATE_TIME  datetime                           null comment '更新时间',
     END_TIME     datetime                           null comment '结束时间',
-    REMOVE_TAG   char                               not null comment '是否生效，0-有效，1-无效',
+    REMOVE_TAG   char     default '0'               not null comment '是否生效，0-有效，1-无效',
     RSRV_STR1    varchar(100)                       null comment '预留字段1',
     RSRV_STR2    varchar(100)                       null comment '预留字段2',
     RSRV_STR3    varchar(200)                       null comment '预留字段3',
     RSRV_STR4    varchar(200)                       null comment '预留字段4',
     RSRV_STR5    varchar(200)                       null comment '预留字段5',
+    RSRV_TIME1   datetime                           null comment '预留时间1',
+    RSRV_TIME2   datetime                           null comment '预留时间2',
+    RSRV_TIME3   datetime                           null comment '预留时间3',
     constraint USER_ID_ACCOUNT
         foreign key (USER_ID) references t_user (USER_ID)
 )
@@ -69,3 +72,25 @@ create table t_trade
         foreign key (USER_ID) references t_user (USER_ID)
 )
     comment '用户账单表';
+
+-- T_PARAM
+create table t_param
+(
+    TYPE_ID     varchar(20)  not null comment '类型标识',
+    DATA_ID     int          not null comment '数据标识',
+    SUB_PARAM1  varchar(50)  null comment '附属字段1',
+    SUB_PARAM2  varchar(50)  null comment '附属字段2',
+    SUB_PARAM3  varchar(50)  null comment '附属字段3',
+    SUB_PARAM4  varchar(50)  null comment '附属字段4',
+    SUB_PARAM5  varchar(100) null comment '附属字段5',
+    SUB_PARAM6  varchar(100) null comment '附属字段6',
+    SUB_PARAM7  varchar(100) null comment '附属字段7',
+    SUB_PARAM8  varchar(100) null comment '附属字段8',
+    SUB_PARAM9  varchar(200) null comment '附属字段9',
+    SUB_PARAM10 varchar(200) null comment '附属字段10',
+    primary key (TYPE_ID, DATA_ID)
+)
+    comment '静态参数表';
+
+create index T_PARAM_TYPE_ID_index
+    on t_param (TYPE_ID);

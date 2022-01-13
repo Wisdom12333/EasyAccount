@@ -6,6 +6,8 @@ import com.shirj.api.core.service.IBaseService;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * @author shirj, wisdom12333@iCloud.com
  */
@@ -33,5 +35,9 @@ public class BaseServiceImpl<M extends BaseDAO<T>,T extends BaseEntity> implemen
     @Override
     public T getById(long id) {
         return dao.getById(id);
+    }
+
+    protected static LocalDateTime now() {
+        return LocalDateTime.now();
     }
 }

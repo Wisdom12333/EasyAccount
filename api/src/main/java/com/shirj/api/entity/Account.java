@@ -46,4 +46,10 @@ public class Account extends BaseEntity {
 
     private String rsrvStr5;
 
+    private LocalDateTime rsrvTime1;
+
+    private LocalDateTime rsrvTime2;
+
+    private LocalDateTime rsrvTime3;
+
 }

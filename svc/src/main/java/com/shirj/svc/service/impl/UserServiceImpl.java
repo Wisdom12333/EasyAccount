@@ -6,7 +6,6 @@ import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.utils.MapUtils;
-import com.shirj.pub.utils.TimeUtils;
 import com.shirj.pub.utils.TokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +67,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
 
     @Override
     public boolean save(User user) throws DuplicateKeyException {
-        user.setCreateTime(TimeUtils.now());
-        user.setUpdateTime(TimeUtils.now());
+        user.setCreateTime(now());
+        user.setUpdateTime(now());
         return super.save(user);
     }
 }
