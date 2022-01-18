@@ -2,6 +2,7 @@ package com.shirj.api.dao;
 
 import com.shirj.api.core.dao.BaseDAO;
 import com.shirj.api.entity.User;
+import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,5 +20,5 @@ public interface UserDAO extends BaseDAO<User> {
      * @param username the username
      * @return {@code User} which username equal username
      */
-    User getByUsername(@Param("username") String username);
+    User getByUsername(@Param("username") @NonNull final String username);
 }

@@ -18,7 +18,7 @@ public final class MapUtils {
      * @param map {@code Map},may be {@code null}.
      * @return true if the {@code Map} is empty or {@code null}.
      */
-    public static boolean isEmpty(Map<?, ?> map) {
+    public static boolean isEmpty(final Map<?, ?> map) {
         return null == map || map.isEmpty();
     }
 
@@ -28,7 +28,7 @@ public final class MapUtils {
      * @param map {@code Map},may be {@code null}.
      * @return true if the {@code Map} is not empty and not {@code null}.
      */
-    public static boolean isNotEmpty(Map<?, ?> map) {
+    public static boolean isNotEmpty(final Map<?, ?> map) {
         return !isEmpty(map);
     }
 
@@ -40,7 +40,7 @@ public final class MapUtils {
      * @param defaultValue {@code String}, when map is not contains the key or the value is blank.
      * @return The value of map or the defaultValue.
      */
-    public static String getValue(Map<?, ?> map, String key, String defaultValue) {
+    public static String getValue(final Map<?, ?> map, final String key, final String defaultValue) {
         if (isEmpty(map)) {
             return defaultValue;
         }
@@ -54,11 +54,11 @@ public final class MapUtils {
     /**
      * Get value from a {@code Map} by the key.
      *
-     * @param map          {@code Map}, may be {@code null}.
-     * @param key          {@code String}, key of map, may not be contained.
+     * @param map {@code Map}, may be {@code null}.
+     * @param key {@code String}, key of map, may not be contained.
      * @return The value of map or an empty string.
      */
-    public static String getValue(Map<?, ?> map, String key) {
+    public static String getValue(final Map<?, ?> map, final String key) {
         if (isEmpty(map)) {
             return "";
         }
@@ -76,7 +76,7 @@ public final class MapUtils {
      * @param resultCode the result code
      * @param resultInfo the result info
      */
-    public static void resultInfo(Map<String, Object> result, String resultCode, String resultInfo) {
+    public static void resultInfo(Map<String, Object> result, final String resultCode, final String resultInfo) {
 
         result.put("RESULT_CODE", resultCode);
         result.put("RESULT_INFO", resultInfo);

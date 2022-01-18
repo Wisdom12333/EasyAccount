@@ -17,7 +17,7 @@ public interface BaseDAO<T extends BaseEntity> {
      * @param entity the entity
      * @return true if successfully save
      */
-    boolean save(T entity);
+    boolean save(final T entity);
 
     /**
      * Remove a record by id.
@@ -25,7 +25,7 @@ public interface BaseDAO<T extends BaseEntity> {
      * @param id the id of record
      * @return true if successfully remove
      */
-    boolean removeById(@Param("id") long id);
+    boolean removeById(@Param("id") final long id);
 
     /**
      * Update a record by id.
@@ -33,7 +33,7 @@ public interface BaseDAO<T extends BaseEntity> {
      * @param id the id of record
      * @return true if successfully update
      */
-    boolean updateById(@Param("id") long id);
+    boolean updateById(@Param("id") final long id);
 
     /**
      * Get a record by id.
@@ -41,6 +41,6 @@ public interface BaseDAO<T extends BaseEntity> {
      * @param id the id of record
      * @return an entity T
      */
-    T getById(@Param("id") long id);
+    T getById(@Param("id") final long id);
 
 }

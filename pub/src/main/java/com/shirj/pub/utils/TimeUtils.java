@@ -62,7 +62,7 @@ public final class TimeUtils {
      * @param date the {@code Date}
      * @return a {@code LocalDateTime}
      */
-    public static LocalDateTime date2LocalDateTime(Date date){
+    public static LocalDateTime date2LocalDateTime(final Date date) {
         Instant instant = date.toInstant();
         ZoneId zoneId = ZoneId.systemDefault();
         return LocalDateTime.ofInstant(instant, zoneId);

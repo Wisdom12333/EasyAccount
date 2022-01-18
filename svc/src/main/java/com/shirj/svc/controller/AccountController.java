@@ -28,12 +28,12 @@ public class AccountController extends BaseController {
         try {
             boolean flag = iAccountService.save(account);
             if (flag) {
-                return returnResult("success");
+                return returnOK("success");
             } else {
-                return returnException("服务调用异常!");
+                return returnException();
             }
         } catch (Exception e) {
-            return returnException("服务调用异常!");
+            return returnException();
         }
     }
 }

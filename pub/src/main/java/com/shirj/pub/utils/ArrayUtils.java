@@ -16,7 +16,7 @@ public final class ArrayUtils {
      * @param list {@code List},may be {@code null}.
      * @return true if the {@code List} is empty or {@code null}.
      */
-    public static boolean isEmpty(List<?> list) {
+    public static boolean isEmpty(final List<?> list) {
         return null == list || (0 == list.size());
     }
 
@@ -26,7 +26,7 @@ public final class ArrayUtils {
      * @param list {@code List},may be {@code null}.
      * @return true if the {@code List} is not empty and not {@code null}.
      */
-    public static boolean isNotEmpty(List<?> list) {
+    public static boolean isNotEmpty(final List<?> list) {
         return !isEmpty(list);
     }
 

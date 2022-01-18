@@ -4,6 +4,7 @@ import com.shirj.api.core.dao.BaseDAO;
 import com.shirj.api.core.entity.BaseEntity;
 import com.shirj.api.core.service.IBaseService;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -23,17 +24,17 @@ public class BaseServiceImpl<M extends BaseDAO<T>,T extends BaseEntity> implemen
     }
 
     @Override
-    public boolean removeById(long id) {
+    public boolean removeById(@NonNull final long id) {
         return dao.removeById(id);
     }
 
     @Override
-    public boolean updateById(long id) {
+    public boolean updateById(@NonNull final long id) {
         return dao.updateById(id);
     }
 
     @Override
-    public T getById(long id) {
+    public T getById(@NonNull final long id) {
         return dao.getById(id);
     }
 

@@ -24,7 +24,7 @@ public interface IBaseService<T extends BaseEntity> {
      * @param id the id of record
      * @return true if successfully remove
      */
-    boolean removeById(long id);
+    boolean removeById(final long id);
 
     /**
      * Update a record by id.
@@ -32,7 +32,7 @@ public interface IBaseService<T extends BaseEntity> {
      * @param id the id of record
      * @return true if successfully update
      */
-    boolean updateById(long id);
+    boolean updateById(final long id);
 
     /**
      * Query {@code T} by id.
@@ -40,6 +40,6 @@ public interface IBaseService<T extends BaseEntity> {
      * @param id the id of T.
      * @return {@code T}.
      */
-    T getById(long id);
+    T getById(final long id);
 
 }

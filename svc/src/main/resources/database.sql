@@ -1,5 +1,5 @@
 -- T_USER
-create table if not exists T_USER
+create table if not exists t_user
 (
     USER_ID     bigint auto_increment comment '用户标识'
         primary key,
@@ -24,7 +24,7 @@ create index T_USER_ID_NAME_index
     on T_USER (USER_ID, USER_NAME);
 
 -- T_ACCOUNT
-create table t_account
+create table if not exists t_account
 (
     ACCOUNT_ID   bigint auto_increment comment '账户标识'
         primary key,
@@ -52,7 +52,7 @@ create table t_account
     comment '用户账户表';
 
 -- T_TRADE
-create table t_trade
+create table if not exists t_trade
 (
     TRADE_ID     bigint auto_increment comment '账单标识'
         primary key,
@@ -74,7 +74,7 @@ create table t_trade
     comment '用户账单表';
 
 -- T_PARAM
-create table t_param
+create table if not exists t_param
 (
     TYPE_ID     varchar(20)  not null comment '类型标识',
     DATA_ID     int          not null comment '数据标识',

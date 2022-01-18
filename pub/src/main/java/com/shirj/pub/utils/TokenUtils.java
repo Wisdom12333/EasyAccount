@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -29,17 +30,17 @@ public final class TokenUtils {
      * @param user the user
      * @return a token
      */
-    public static String createToken(User user) {
+    public static String createToken(@NonNull User user) {
 
 
-            JwtBuilder jwtBuilder = Jwts.builder();
-            return jwtBuilder
-                    //header
-                    .setHeaderParam("typ", "JWT")
-                    .setHeaderParam("alg", "HS256")
-                    //payload
-                    .claim("username", user.getUsername())
-                    .claim("userId", user.getUserId())
+        JwtBuilder jwtBuilder = Jwts.builder();
+        return jwtBuilder
+                //header
+                .setHeaderParam("typ", "JWT")
+                .setHeaderParam("alg", "HS256")
+                //payload
+                .claim("username", user.getUsername())
+                .claim("userId", user.getUserId())
                     .setSubject(SUBJECT)
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRE_TIME))
                     .setId(UUID.randomUUID().toString())

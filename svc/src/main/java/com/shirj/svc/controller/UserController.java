@@ -9,7 +9,6 @@ import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,11 +48,11 @@ public class UserController extends BaseController {
         result.put("message", resultInfo);
 
         if (!CommConst.SUCCESS.equals(resultCode)) {
-            return returnResult(result, HttpStatus.BAD_REQUEST);
+            return returnResult(result, BAD_REQ);
         } else {
             result.put("USER_ID", MapUtils.getValue(response, "USER_ID"));
             result.put("token", MapUtils.getValue(response, "TOKEN"));
-            return returnResult(result);
+            return returnOK(result);
         }
 
     }
@@ -63,15 +62,15 @@ public class UserController extends BaseController {
         try {
             boolean flag = iUserService.save(user);
             if (flag) {
-                return returnResult("success");
+                return returnOK("success");
             } else {
-                return returnException("服务调用异常!");
+                return returnException();
             }
 
         } catch (DuplicateKeyException e) {
-            return returnResult("用户名已存在!", HttpStatus.BAD_REQUEST);
+            return returnResult("用户名已存在!", BAD_REQ);
         } catch (Exception e) {
-            return returnException("服务调用异常!");
+            return returnException();
         }
     }
 
@@ -79,9 +78,9 @@ public class UserController extends BaseController {
     public ResponseEntity<Void> checkUsername(@RequestParam String username) {
 
         if (iUserService.checkUsername(username)) {
-            return returnResult(null);
+            return returnOK(null);
         } else {
-            return returnResult(null, HttpStatus.BAD_REQUEST);
+            return returnResult(null, BAD_REQ);
         }
 
     }

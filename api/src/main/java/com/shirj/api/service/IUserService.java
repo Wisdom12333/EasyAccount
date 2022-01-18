@@ -20,7 +20,7 @@ public interface IUserService extends IBaseService<User> {
      * @param password the password
      * @return the status
      */
-    Map<String, Object> login(String username, String password);
+    Map<String, Object> login(final String username, final String password);
 
     /**
      * Check if a user exists.
@@ -28,5 +28,5 @@ public interface IUserService extends IBaseService<User> {
      * @param username the username
      * @return true if exist a user whose name equal the username
      */
-    boolean checkUsername(String username);
+    boolean checkUsername(final String username);
 }

@@ -30,7 +30,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     }
 
     @Override
-    public Map<String, Object> login(String username, String password) {
+    public Map<String, Object> login(final String username, final String password) {
 
         Map<String, Object> result = new HashMap<>(5);
 
@@ -59,7 +59,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     }
 
     @Override
-    public boolean checkUsername(String username) {
+    public boolean checkUsername(final String username) {
 
         return getDao().getByUsername(username) == null;
 
