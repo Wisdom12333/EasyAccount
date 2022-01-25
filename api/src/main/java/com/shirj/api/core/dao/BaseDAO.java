@@ -1,5 +1,6 @@
 package com.shirj.api.core.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.shirj.api.core.entity.BaseEntity;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
  * @param <T> the type parameter which extends {@code BaseEntity}
  * @author shirj, wisdom12333@iCloud.com
  */
-public interface BaseDAO<T extends BaseEntity> {
+public interface BaseDAO<T extends BaseEntity> extends BaseMapper<T> {
 
     /**
      * Save an entity to its table.

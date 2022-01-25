@@ -9,6 +9,7 @@
 
 ### LOG ###
 log
+/svc/log-test
 
 ### NPM ###
 /web/node_modules

@@ -1,5 +1,6 @@
 package com.shirj.api.core.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shirj.api.core.dao.BaseDAO;
 import com.shirj.api.core.entity.BaseEntity;
 import com.shirj.api.core.service.IBaseService;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Setter
 @Getter
-public class BaseServiceImpl<M extends BaseDAO<T>,T extends BaseEntity> implements IBaseService<T> {
+public class BaseServiceImpl<M extends BaseDAO<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements IBaseService<T> {
 
     private M dao;
 

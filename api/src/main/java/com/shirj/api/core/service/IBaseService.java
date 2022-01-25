@@ -1,5 +1,6 @@
 package com.shirj.api.core.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.shirj.api.core.entity.BaseEntity;
 
 /**
@@ -8,7 +9,7 @@ import com.shirj.api.core.entity.BaseEntity;
  * @param <T> the type parameter which extends {@code BaseEntity}
  * @author shirj, wisdom12333@iCloud.com
  */
-public interface IBaseService<T extends BaseEntity> {
+public interface IBaseService<T extends BaseEntity> extends IService<T> {
 
     /**
      * Save an entity.
