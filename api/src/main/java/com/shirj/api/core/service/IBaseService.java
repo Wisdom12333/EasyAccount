@@ -30,10 +30,10 @@ public interface IBaseService<T extends BaseEntity> extends IService<T> {
     /**
      * Update a record by id.
      *
-     * @param id the id of record
+     * @param entity the new entity which must have id
      * @return true if successfully update
      */
-    boolean updateById(final long id);
+    boolean updateById(final T entity);
 
     /**
      * Query {@code T} by id.

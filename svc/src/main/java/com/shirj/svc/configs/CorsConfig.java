@@ -1,4 +1,4 @@
-package com.shirj.pub.configs;
+package com.shirj.svc.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

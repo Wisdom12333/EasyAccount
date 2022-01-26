@@ -1,9 +1,8 @@
 package com.shirj.api.service;
 
 import com.shirj.api.core.service.IBaseService;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.User;
-
-import java.util.Map;
 
 /**
  * The interface for {@code User} service.
@@ -20,7 +19,7 @@ public interface IUserService extends IBaseService<User> {
      * @param password the password
      * @return the status
      */
-    Map<String, Object> login(final String username, final String password);
+    ResultDTO login(final String username, final String password);
 
     /**
      * Check if a user exists.

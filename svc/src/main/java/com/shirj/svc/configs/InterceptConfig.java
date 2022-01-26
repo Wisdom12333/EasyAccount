@@ -1,6 +1,6 @@
-package com.shirj.pub.configs;
+package com.shirj.svc.configs;
 
-import com.shirj.pub.components.TokenInterceptor;
+import com.shirj.svc.components.TokenInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -69,18 +69,5 @@ public final class MapUtils {
         return value;
     }
 
-    /**
-     * Generate the resultInfo.
-     *
-     * @param result the result map
-     * @param resultCode the result code
-     * @param resultInfo the result info
-     */
-    public static void resultInfo(Map<String, Object> result, final String resultCode, final String resultInfo) {
-
-        result.put("RESULT_CODE", resultCode);
-        result.put("RESULT_INFO", resultInfo);
-    }
-
 }
 

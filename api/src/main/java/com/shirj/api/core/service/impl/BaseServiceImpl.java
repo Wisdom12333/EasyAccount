@@ -17,26 +17,24 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseServiceImpl<M extends BaseDAO<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements IBaseService<T> {
 
-    private M dao;
-
     @Override
     public boolean save(T entity) {
-        return dao.save(entity);
+        return super.save(entity);
     }
 
     @Override
     public boolean removeById(@NonNull final long id) {
-        return dao.removeById(id);
+        return super.removeById(id);
     }
 
     @Override
-    public boolean updateById(@NonNull final long id) {
-        return dao.updateById(id);
+    public boolean updateById(@NonNull final T entity) {
+        return super.updateById(entity);
     }
 
     @Override
     public T getById(@NonNull final long id) {
-        return dao.getById(id);
+        return super.getById(id);
     }
 
     protected static LocalDateTime now() {

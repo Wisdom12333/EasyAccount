@@ -1,6 +1,5 @@
-package com.shirj.pub.components;
+package com.shirj.svc.components;
 
-import com.shirj.pub.utils.TokenUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;

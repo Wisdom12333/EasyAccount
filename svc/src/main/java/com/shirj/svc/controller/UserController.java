@@ -2,9 +2,10 @@ package com.shirj.svc.controller;
 
 
 import com.shirj.api.core.controller.BaseController;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
-import com.shirj.pub.consts.CommConst;
+import com.shirj.pub.consts.ResultCode;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +41,17 @@ public class UserController extends BaseController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
-        Map<String, Object> response = iUserService.login(user.getUsername(), user.getPassword());
-        Map<String, Object> result = new HashMap<>(5);
-        String resultCode = MapUtils.getValue(response, "RESULT_CODE", CommConst.SVC_EXCEPTION);
-        String resultInfo = MapUtils.getValue(response, "RESULT_INFO", "服务调用异常,请稍后重试!");
-        result.put("code", resultCode);
-        result.put("message", resultInfo);
+        ResultDTO resultDTO = iUserService.login(user.getUsername(), user.getPassword());
+        ResultCode resultCode = resultDTO.getResultCode();
+        Map<String, Object> result = new HashMap<>(4);
+        result.put("code", resultCode.getValue());
+        result.put("message", resultCode.getResultInfo());
 
-        if (!CommConst.SUCCESS.equals(resultCode)) {
+        if (!ResultCode.SUCCESS.equals(resultCode)) {
             return returnResult(result, BAD_REQ);
         } else {
-            result.put("USER_ID", MapUtils.getValue(response, "USER_ID"));
-            result.put("token", MapUtils.getValue(response, "TOKEN"));
+            result.put("USER_ID", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
+            result.put("token", MapUtils.getValue(resultDTO.getResult(), "TOKEN"));
             return returnOK(result);
         }
 
