@@ -59,8 +59,9 @@ public final class TokenUtils {
      */
     public static boolean verify(String token) {
 
+        String realToken = token.split(" ")[1];
         try{
-            Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(TOKEN_SECRET).parseClaimsJws(realToken);
             return true;
         }catch (Exception e){
             return false;

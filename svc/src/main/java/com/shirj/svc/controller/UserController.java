@@ -3,13 +3,17 @@ package com.shirj.svc.controller;
 
 import com.shirj.api.core.controller.BaseController;
 import com.shirj.api.dto.ResultDTO;
+import com.shirj.api.dto.UserInfoDTO;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.ResultCode;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,12 +37,6 @@ public class UserController extends BaseController {
         this.iUserService = iUserService;
     }
 
-    @GetMapping("/queryByUserId")
-    public User queryByUserId(@RequestParam(value = "userId") long userId) {
-        log.warn("有人请求了");
-        return iUserService.getById(userId);
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
         ResultDTO resultDTO = iUserService.login(user.getUsername(), user.getPassword());
@@ -51,8 +49,9 @@ public class UserController extends BaseController {
             return returnResult(result, BAD_REQ);
         } else {
             result.put("USER_ID", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
-            result.put("token", MapUtils.getValue(resultDTO.getResult(), "TOKEN"));
-            return returnOK(result);
+            String token = MapUtils.getValue(resultDTO.getResult(), "TOKEN");
+            result.put("token", token);
+            return ResponseEntity.status(OK).header(HttpHeaders.AUTHORIZATION, token).body(result);
         }
 
     }
@@ -83,5 +82,16 @@ public class UserController extends BaseController {
             return returnResult(null, BAD_REQ);
         }
 
+    }
+
+    @GetMapping("/userInfo")
+    public ResponseEntity<ResultDTO> getUserInfo(@RequestParam String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return returnResult(new ResultDTO(ResultCode.ERROR_DATA, "用户标识为空"), HttpStatus.NOT_ACCEPTABLE);
+        }
+        UserInfoDTO userInfo = iUserService.getUserInfo(Long.parseLong(userId));
+        ResultDTO resultDTO = new ResultDTO(ResultCode.SUCCESS, null);
+        resultDTO.getResult().put("userInfo", userInfo);
+        return returnOK(resultDTO);
     }
 }

@@ -1,4 +1,4 @@
-package com.shirj.pub.utils;
+package com.shirj.svc.components;
 
 import lombok.NonNull;
 import org.springframework.beans.BeansException;

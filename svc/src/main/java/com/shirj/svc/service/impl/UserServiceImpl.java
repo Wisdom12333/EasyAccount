@@ -1,8 +1,12 @@
 package com.shirj.svc.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.shirj.api.core.service.impl.BaseServiceImpl;
+import com.shirj.api.dao.AccountDAO;
 import com.shirj.api.dao.UserDAO;
 import com.shirj.api.dto.ResultDTO;
+import com.shirj.api.dto.UserInfoDTO;
+import com.shirj.api.entity.Account;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.CommConst;
@@ -12,6 +16,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
  * The implement of {@code IUserService}.
  *
@@ -20,12 +27,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements IUserService {
 
+    @Resource
+    private AccountDAO accountDAO;
+
     @Override
     public ResultDTO login(final String username, final String password) {
 
         ResultDTO resultDTO;
 
-        User user = baseMapper.getByUsername(username);
+        User user = getBaseMapper().getByUsername(username);
         if (null == user || !password.equals(user.getPassword())) {
             resultDTO = new ResultDTO(ResultCode.ERROR_DATA, "用户名或密码错误!");
             return resultDTO;
@@ -52,7 +62,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     @Override
     public boolean checkUsername(final String username) {
 
-        return baseMapper.getByUsername(username) == null;
+        return getBaseMapper().getByUsername(username) == null;
 
     }
 
@@ -61,5 +71,19 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         user.setCreateTime(now());
         user.setUpdateTime(now());
         return super.save(user);
+    }
+
+    @Override
+    public UserInfoDTO getUserInfo(long userId) {
+        User user = getBaseMapper().getById(userId);
+        UserInfoDTO userInfoDTO = copy(user, UserInfoDTO.class);
+
+        List<Account> accounts = accountDAO.selectList(
+                new QueryWrapper<Account>().lambda()
+                        .eq(Account::getUserId, userId)
+                        .eq(Account::getRemoveTag, "0"));
+
+        userInfoDTO.setAccounts(accounts);
+        return userInfoDTO;
     }
 }

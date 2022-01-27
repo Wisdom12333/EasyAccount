@@ -4,17 +4,17 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shirj.api.core.dao.BaseDAO;
 import com.shirj.api.core.entity.BaseEntity;
 import com.shirj.api.core.service.IBaseService;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
  */
-@Setter
-@Getter
+@Slf4j
 public class BaseServiceImpl<M extends BaseDAO<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements IBaseService<T> {
 
     @Override
@@ -39,5 +39,21 @@ public class BaseServiceImpl<M extends BaseDAO<T>, T extends BaseEntity> extends
 
     protected static LocalDateTime now() {
         return LocalDateTime.now();
+    }
+
+    protected static void copy(Object source, Object target) {
+        if (null == source) {
+            return;
+        }
+        BeanUtils.copyProperties(source, target);
+    }
+
+
+    @SneakyThrows
+    protected static <S, T> T copy(S source, Class<T> targetClass) {
+        T target;
+        target = targetClass.newInstance();
+        copy(source, target);
+        return target;
     }
 }

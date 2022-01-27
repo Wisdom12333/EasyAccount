@@ -18,7 +18,7 @@ public interface UserDAO extends BaseDAO<User> {
      * Get one by username.
      *
      * @param username the username
-     * @return {@code User} which username equal username
+     * @return {@code User} which username equal username and removeTag equal '0'
      */
     User getByUsername(@Param("username") @NonNull final String username);
 }

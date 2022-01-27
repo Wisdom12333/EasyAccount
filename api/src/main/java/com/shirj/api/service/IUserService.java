@@ -2,6 +2,7 @@ package com.shirj.api.service;
 
 import com.shirj.api.core.service.IBaseService;
 import com.shirj.api.dto.ResultDTO;
+import com.shirj.api.dto.UserInfoDTO;
 import com.shirj.api.entity.User;
 
 /**
@@ -28,4 +29,6 @@ public interface IUserService extends IBaseService<User> {
      * @return true if exist a user whose name equal the username
      */
     boolean checkUsername(final String username);
+
+    UserInfoDTO getUserInfo(final long userId);
 }

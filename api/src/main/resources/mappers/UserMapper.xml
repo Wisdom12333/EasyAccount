@@ -13,15 +13,9 @@
 
     <select id="getByUsername" resultType="User">
         SELECT *
-        FROM T_USER
-        WHERE USER_NAME = #{username};
+        FROM T_USER T
+        WHERE T.USER_NAME = #{username}
+          AND T.REMOVE_TAG = '0';
     </select>
 
-    <insert id="save"
-            keyProperty="userId"
-            useGeneratedKeys="true"
-            parameterType="User">
-        INSERT INTO T_USER(USER_NAME, PASSWORD, E_MAIL, CREATE_TIME, UPDATE_TIME)
-        VALUES (#{username}, #{password}, #{eMail}, #{createTime}, #{updateTime});
-    </insert>
 </mapper>

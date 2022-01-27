@@ -16,12 +16,12 @@ create table if not exists t_user
     RSRV_STR4   varchar(200)                       null comment '预留字段4',
     RSRV_STR5   varchar(200)                       null comment '预留字段5',
     constraint USER_NAME
-        unique (USER_NAME)
+        unique (USER_ID, USER_NAME)
 )
     comment '用户表';
 
-create index T_USER_ID_NAME_index
-    on T_USER (USER_ID, USER_NAME);
+create index T_USER_NAME_index
+    on T_USER (USER_NAME);
 
 -- T_ACCOUNT
 create table if not exists t_account

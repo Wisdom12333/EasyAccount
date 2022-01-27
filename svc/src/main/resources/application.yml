@@ -11,11 +11,15 @@ mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.shirj.api.entity
   config-location: classpath:mybatis-config.xml
-
+mybatis-plus:
+  mapper-locations: classpath:mappers/*.xml
+  type-aliases-package: com.shirj.api.entity
+#  config-location: classpath:mybatis-config.xml
 
 ##log##
 logging:
   config: classpath:logback.xml
   level:
-    com.shirj.w1.dao: debug
-    com.shirj.w1.controller: debug
+    com.shirj.api.dao: debug
+    com.shirj.api.service: debug
+    com.shirj.svc.service: debug

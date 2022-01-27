@@ -2,6 +2,7 @@ package com.shirj.svc.components;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -22,13 +23,12 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         response.setCharacterEncoding("utf-8");
         //获取并校验token，判断是否需要生成新的token。
-        String token = request.getHeader("token");
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if(StringUtils.isNotBlank(token)){
             if(TokenUtils.verify(token)){
                 if(TokenUtils.checkRefresh(token)) {
                     //添加允许访问的自定义头信息
-                    response.setHeader("Access-Control-Expose-Headers", "newToken");
-                    response.setHeader("newToken",TokenUtils.refreshToken(token));
+                    response.setHeader(HttpHeaders.AUTHORIZATION, TokenUtils.refreshToken(token));
                 }
                 return true;
             }
