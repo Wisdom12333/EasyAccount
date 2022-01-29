@@ -9,14 +9,15 @@
     <label> 记住密码<input type="checkbox" /></label>
     <button @click.prevent="login()">登陆</button>
     <router-link to="/Register">没有账号？点击注册</router-link>
+    <h1>{{ store.state }}</h1>
   </form>
 </template>
 
 <script setup>
 import axios from "axios";
-import {useStore} from "vuex";
-import {reactive} from "vue";
-import {useRouter} from "vue-router";
+import { useStore } from "vuex";
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
 
 const store = useStore();
 const router = useRouter();
@@ -30,8 +31,9 @@ function login() {
   axios.post("/user/login", user).then(
     (response) => {
       if (response.data.code === "0") {
-        store.commit("setToken", {token: response.data.token});//todo 修改token
-        router.push({name: "Home"});
+        console.log(response);
+        store.commit("setUserId", response.data.userId);
+        router.push({ name: "Home" });
       }
     },
     (error) => {

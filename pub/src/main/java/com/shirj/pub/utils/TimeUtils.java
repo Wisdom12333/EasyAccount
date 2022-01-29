@@ -39,8 +39,10 @@ public final class TimeUtils {
     public static final String TIME_STANDARD = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_STANDARD = "yyyy-MM-dd";
 
+    public static final Integer TIME_LENGTH = 10;
+
     public static LocalDateTime string2Time(String time, String format) {
-        if (time.length() == 10 && StringUtils.equals(format, TimeUtils.TIME_STANDARD)) {
+        if (time.length() == TIME_LENGTH && StringUtils.equals(format, TimeUtils.TIME_STANDARD)) {
             time += " " + TimeUtils.FIRST_SECOND;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);

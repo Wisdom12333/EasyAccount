@@ -30,5 +30,11 @@ public interface IUserService extends IBaseService<User> {
      */
     boolean checkUsername(final String username);
 
+    /**
+     * Get basic user info by the userId.
+     *
+     * @param userId the userId
+     * @return basic user info
+     */
     UserInfoDTO getUserInfo(final long userId);
 }

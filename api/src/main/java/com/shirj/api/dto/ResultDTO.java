@@ -6,16 +6,21 @@ import lombok.Data;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Data
 public class ResultDTO {
 
-    Map<String, Object> result;
+    private Map<String, Object> result;
 
-    ResultCode resultCode;
+    private ResultCode resultCode;
+
+    private String resultInfo;
 
     public ResultDTO(ResultCode resultCode, String resultInfo) {
-        resultCode.setResultInfo(resultInfo);
         this.resultCode = resultCode;
+        this.resultInfo = resultInfo;
         this.result = new HashMap<>();
     }
 }

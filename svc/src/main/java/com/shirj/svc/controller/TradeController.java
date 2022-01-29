@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @RestController
 @RequestMapping("trade")
 @Slf4j
 public class TradeController extends BaseController {
 
-    private ITradeService iTradeService;
+    private final ITradeService iTradeService;
 
     @Autowired
     public TradeController(ITradeService iTradeService) {
@@ -23,6 +26,6 @@ public class TradeController extends BaseController {
 
     @PostMapping("book")
     public ResponseEntity<String> bookTrade() {
-        return returnOK("test");
+        return returnOk("test");
     }
 }

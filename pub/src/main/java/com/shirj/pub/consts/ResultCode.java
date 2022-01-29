@@ -2,6 +2,9 @@ package com.shirj.pub.consts;
 
 import lombok.Getter;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Getter
 public enum ResultCode {
     //成功
@@ -13,14 +16,8 @@ public enum ResultCode {
 
     private final String value;
 
-    private String resultInfo;
-
     ResultCode(String value) {
         this.value = value;
-    }
-
-    public final void setResultInfo(String resultInfo) {
-        this.resultInfo = resultInfo;
     }
 
     public final boolean equals(ResultCode resultCode) {

@@ -3,10 +3,12 @@ package com.shirj.svc.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.AccountDAO;
+import com.shirj.api.dao.TradeDAO;
 import com.shirj.api.dao.UserDAO;
 import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.dto.UserInfoDTO;
 import com.shirj.api.entity.Account;
+import com.shirj.api.entity.Trade;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.CommConst;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The implement of {@code IUserService}.
@@ -30,6 +33,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     @Resource
     private AccountDAO accountDAO;
 
+    @Resource
+    private TradeDAO tradeDAO;
+
     @Override
     public ResultDTO login(final String username, final String password) {
 
@@ -38,11 +44,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         User user = getBaseMapper().getByUsername(username);
         if (null == user || !password.equals(user.getPassword())) {
             resultDTO = new ResultDTO(ResultCode.ERROR_DATA, "用户名或密码错误!");
-            return resultDTO;
-        }
-
-        if (CommConst.INVALID.equals(user.getRemoveTag())) {
-            resultDTO = new ResultDTO(ResultCode.ERROR_DATA, "用户已失效!");
             return resultDTO;
         }
 
@@ -61,9 +62,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
 
     @Override
     public boolean checkUsername(final String username) {
-
         return getBaseMapper().getByUsername(username) == null;
-
     }
 
     @Override
@@ -82,8 +81,27 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
                 new QueryWrapper<Account>().lambda()
                         .eq(Account::getUserId, userId)
                         .eq(Account::getRemoveTag, "0"));
+        List<Trade> trades = tradeDAO.selectList(
+                new QueryWrapper<Trade>().lambda()
+                        .eq(Trade::getUserId, userId)
+                        .orderByDesc(Trade::getTradeTime)
+                        .last("LIMIT 20"));
+        //获取统计数据，当月支出与收入
+        List<Map<String, Object>> stat = tradeDAO.getStat(userId);
+        for (Map<String, Object> stringObjectMap : stat) {
+            String tradeType = String.valueOf(stringObjectMap.get("TRADE_TYPE"));
+            //实际数据库中以分为单位存储
+            Double amount = (Double) stringObjectMap.get("AMOUNT");
+            //转换为元传给界面
+            if(CommConst.TRADE_TYPE.EXPEND.equals(tradeType)){
+                userInfoDTO.setExpend(amount/100);
+            }else if(CommConst.TRADE_TYPE.INCOME.equals(tradeType)){
+                userInfoDTO.setIncome(amount/100);
+            }
+        }
 
         userInfoDTO.setAccounts(accounts);
+        userInfoDTO.setRecentTrade(trades);
         return userInfoDTO;
     }
 }

@@ -13,6 +13,9 @@ import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Setter
 @Getter
 @ToString

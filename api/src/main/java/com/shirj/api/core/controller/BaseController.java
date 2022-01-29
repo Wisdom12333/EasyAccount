@@ -4,6 +4,9 @@ import lombok.NonNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 public class BaseController {
 
     protected final static HttpStatus SVC_EXCEPT = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -26,7 +29,7 @@ public class BaseController {
         return ResponseEntity.status(status).body(result);
     }
 
-    protected final <T> ResponseEntity<T> returnOK(final T result) {
+    protected final <T> ResponseEntity<T> returnOk(final T result) {
         return ResponseEntity.ok(result);
     }
 }

@@ -12,14 +12,6 @@ import com.shirj.api.core.entity.BaseEntity;
 public interface IBaseService<T extends BaseEntity> extends IService<T> {
 
     /**
-     * Save an entity.
-     *
-     * @param entity the entity
-     * @return true if successfully save
-     */
-    boolean save(T entity);
-
-    /**
      * Remove a record by id.
      *
      * @param id the id of record
@@ -27,13 +19,6 @@ public interface IBaseService<T extends BaseEntity> extends IService<T> {
      */
     boolean removeById(final long id);
 
-    /**
-     * Update a record by id.
-     *
-     * @param entity the new entity which must have id
-     * @return true if successfully update
-     */
-    boolean updateById(final T entity);
 
     /**
      * Query {@code T} by id.

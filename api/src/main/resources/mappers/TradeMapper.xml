@@ -10,11 +10,11 @@
         WHERE TRADE_ID = #{id};
     </select>
 
-    <insert id="save"
-            keyProperty="tradeId"
-            useGeneratedKeys="true"
-            parameterType="Trade">
-        INSERT INTO T_TRADE(USER_ID, ACCOUNT_ID, TRADE_TYPE, ACCEPT_MONTH, TRADE_NAME, TRADE_ICON, TRADE_AMOUNT, REMARK, TRADE_TIME, IS_RE_TRADE)
-        VALUES (#{userId}, #{accountId}, #{tradeType}, #{acceptMonth}, #{tradeName}, #{tradeIcon}, #{tradeAmount}, #{remark}, #{tradeTime}, #{isReTrade});
-    </insert>
+    <select id="getStat" resultType="java.util.HashMap">
+        SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE FROM T_TRADE T
+        WHERE T.USER_ID = #{id}
+          AND T.ACCEPT_MONTH = MONTH(SYSDATE())
+          AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
+        GROUP BY TRADE_TYPE;
+    </select>
 </mapper>

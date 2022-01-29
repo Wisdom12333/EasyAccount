@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Param;
 public interface UserDAO extends BaseDAO<User> {
 
     /**
-     * Get one by username.
+     * Get effective one by username.
      *
      * @param username the username
      * @return {@code User} which username equal username and removeTag equal '0'

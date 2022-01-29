@@ -6,6 +6,7 @@ import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.dto.UserInfoDTO;
 import com.shirj.api.entity.User;
 import com.shirj.api.service.IUserService;
+import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.consts.ResultCode;
 import com.shirj.pub.utils.MapUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -43,15 +44,18 @@ public class UserController extends BaseController {
         ResultCode resultCode = resultDTO.getResultCode();
         Map<String, Object> result = new HashMap<>(4);
         result.put("code", resultCode.getValue());
-        result.put("message", resultCode.getResultInfo());
+        result.put("message", resultDTO.getResultInfo());
 
         if (!ResultCode.SUCCESS.equals(resultCode)) {
             return returnResult(result, BAD_REQ);
         } else {
-            result.put("USER_ID", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
+            result.put("userId", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
             String token = MapUtils.getValue(resultDTO.getResult(), "TOKEN");
             result.put("token", token);
-            return ResponseEntity.status(OK).header(HttpHeaders.AUTHORIZATION, token).body(result);
+            return ResponseEntity.status(OK)
+                    .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,HttpHeaders.AUTHORIZATION)
+                    .header(HttpHeaders.AUTHORIZATION, token)
+                    .body(result);
         }
 
     }
@@ -61,7 +65,7 @@ public class UserController extends BaseController {
         try {
             boolean flag = iUserService.save(user);
             if (flag) {
-                return returnOK("success");
+                return returnOk("success");
             } else {
                 return returnException();
             }
@@ -77,7 +81,7 @@ public class UserController extends BaseController {
     public ResponseEntity<Void> checkUsername(@RequestParam String username) {
 
         if (iUserService.checkUsername(username)) {
-            return returnOK(null);
+            return returnOk(null);
         } else {
             return returnResult(null, BAD_REQ);
         }
@@ -86,12 +90,12 @@ public class UserController extends BaseController {
 
     @GetMapping("/userInfo")
     public ResponseEntity<ResultDTO> getUserInfo(@RequestParam String userId) {
-        if (StringUtils.isBlank(userId)) {
+        if (StringUtils.isBlank(userId)|| CommConst.NULL.equals(userId)) {
             return returnResult(new ResultDTO(ResultCode.ERROR_DATA, "用户标识为空"), HttpStatus.NOT_ACCEPTABLE);
         }
         UserInfoDTO userInfo = iUserService.getUserInfo(Long.parseLong(userId));
         ResultDTO resultDTO = new ResultDTO(ResultCode.SUCCESS, null);
         resultDTO.getResult().put("userInfo", userInfo);
-        return returnOK(resultDTO);
+        return returnOk(resultDTO);
     }
 }

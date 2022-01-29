@@ -73,6 +73,9 @@ create table if not exists t_trade
 )
     comment '用户账单表';
 
+create index T_TRADE_MONTH_index
+    on T_TRADE (ACCEPT_MONTH);
+
 -- T_PARAM
 create table if not exists t_param
 (

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @RestController
 @RequestMapping("/account")
 @Slf4j
@@ -28,7 +31,7 @@ public class AccountController extends BaseController {
         try {
             boolean flag = iAccountService.save(account);
             if (flag) {
-                return returnOK("success");
+                return returnOk("success");
             } else {
                 return returnException();
             }

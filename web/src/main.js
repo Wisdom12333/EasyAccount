@@ -1,10 +1,11 @@
-import {createApp} from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ElementPlus from "./plugins/element";
 import store from "./store";
 import axios from "axios";
-import {ElMessageBox} from "element-plus";
+import { useStore } from "vuex";
+import useElMessage from "@/hooks/useElMessage";
 
 //配置基础URL
 axios.defaults.baseURL = "http://localhost:8181";
@@ -13,9 +14,9 @@ const tokenType = "Bearer ";
 axios.interceptors.request.use(
   (config) => {
     if (localStorage.getItem("token")) {
-        config.headers.Authorization = tokenType + localStorage.getItem("token");
+      config.headers.Authorization = tokenType + localStorage.getItem("token");
     } else if (store.state.token) {
-        config.headers.Authorization = tokenType + store.state.token;
+      config.headers.Authorization = tokenType + store.state.token;
     }
     return config;
   },
@@ -27,21 +28,19 @@ axios.interceptors.request.use(
 // 添加响应拦截器
 axios.interceptors.response.use(
   (response) => {
-      if (response.headers.Authorization) {
-          //后台返回了刷新的token,替换原有token
-          store.state.token = response.headers.Authorization;
-          localStorage.setItem("token", response.headers.Authorization);
-      }
+    if (response.headers.authorization) {
+      //后台返回了刷新的token,替换原有token
+      store.state.token = response.headers.authorization;
+      localStorage.setItem("token", response.headers.authorization);
+    }
     return response;
   },
   (error) => {
+    let store = useStore();
     if (error.response.status === 401) {
-      ElMessageBox.alert("登录失效,请重新登录", "登录超时", {
-        confirmButtonText: "确定",
-        callback: () => {
-          router.push({ name: "Login" }).then();
-        },
-      }).then();
+      useElMessage("登录失效,请重新登录", "登录超时", () => {
+        store.dispatch("logout").then();
+      });
     }
     return Promise.reject(error);
   }

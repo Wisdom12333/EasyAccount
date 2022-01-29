@@ -27,7 +27,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         if(StringUtils.isNotBlank(token)){
             if(TokenUtils.verify(token)){
                 if(TokenUtils.checkRefresh(token)) {
-                    //添加允许访问的自定义头信息
+                    //添加允许访问的自定义头信息,使前端能接收到
+                    response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION);
                     response.setHeader(HttpHeaders.AUTHORIZATION, TokenUtils.refreshToken(token));
                 }
                 return true;

@@ -3,6 +3,9 @@ package com.shirj.pub.consts;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Getter
 public class AccountConst {
 

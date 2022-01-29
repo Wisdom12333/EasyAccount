@@ -29,7 +29,7 @@ import { onBeforeUnmount } from "vue";
 const store = useStore();
 
 function logout() {
-  store.commit("delToken");
+  store.dispatch("logout");
 }
 
 onBeforeUnmount(() => logout());
