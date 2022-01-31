@@ -27,6 +27,7 @@ public class Account extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "ACCOUNT_ID", type = IdType.AUTO)
+
     private Long accountId;
     @TableField("ACCOUNT_NAME")
     private String accountName;

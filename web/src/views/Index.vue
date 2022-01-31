@@ -7,13 +7,13 @@
     </el-header>
     <el-container>
       <el-aside width="300px" style="background: #d7c3c3">
-        <router-link to="/Index/Budget">Budget</router-link>
+        <router-link to="/Index/Home" replace>首页</router-link>
         <br />
-        <router-link to="/Index/Home">Home</router-link>
+        <router-link to="/Index/Statistics" replace>统计</router-link>
         <br />
-        <router-link to="/Index/Mine">Mine</router-link>
+        <router-link to="/Index/Budget" replace>预算</router-link>
         <br />
-        <router-link to="/Index/Statistics">Statistics</router-link>
+        <router-link to="/Index/Mine" replace>我的</router-link>
       </el-aside>
       <el-main style="background: #99f8ff">
         <router-view />
@@ -24,15 +24,16 @@
 
 <script setup>
 import { useStore } from "vuex";
-import { onBeforeUnmount } from "vue";
+import { onUnmounted } from "vue";
 
 const store = useStore();
 
 function logout() {
+  console.log("logout");
   store.dispatch("logout");
 }
 
-onBeforeUnmount(() => logout());
+onUnmounted(() => logout());
 </script>
 
 <style scoped></style>

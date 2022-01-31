@@ -28,6 +28,7 @@ public class AccountController extends BaseController {
 
     @PostMapping("/addAccount")
     public ResponseEntity<String> addAccount(@RequestBody Account account) {
+        log.error(account.toString());
         try {
             boolean flag = iAccountService.save(account);
             if (flag) {

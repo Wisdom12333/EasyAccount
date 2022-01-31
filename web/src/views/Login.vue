@@ -31,13 +31,12 @@ function login() {
   axios.post("/user/login", user).then(
     (response) => {
       if (response.data.code === "0") {
-        console.log(response);
         store.commit("setUserId", response.data.userId);
         router.push({ name: "Home" });
       }
     },
     (error) => {
-      console.log(error);
+      console.log(error); //todo 弹出框提示
     }
   );
 }

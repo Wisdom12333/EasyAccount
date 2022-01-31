@@ -4,7 +4,6 @@ import router from "./router";
 import ElementPlus from "./plugins/element";
 import store from "./store";
 import axios from "axios";
-import { useStore } from "vuex";
 import useElMessage from "@/hooks/useElMessage";
 
 //配置基础URL
@@ -36,7 +35,6 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
-    let store = useStore();
     if (error.response.status === 401) {
       useElMessage("登录失效,请重新登录", "登录超时", () => {
         store.dispatch("logout").then();

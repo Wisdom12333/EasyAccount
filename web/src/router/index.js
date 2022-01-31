@@ -7,6 +7,7 @@ import Index from "@/views/Index";
 import Home from "@/views/Home";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
+import Assets from "@/views/Assets";
 
 const routes = [
   {
@@ -29,6 +30,13 @@ const routes = [
         path: "home",
         name: "Home",
         component: Home,
+        children: [
+          {
+            path: "assets",
+            name: "Assets",
+            component: Assets,
+          },
+        ],
       },
       {
         path: "mine",
