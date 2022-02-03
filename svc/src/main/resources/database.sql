@@ -31,6 +31,7 @@ create table if not exists t_account
     ACCOUNT_NAME varchar(40)                        null comment '账户名称',
     USER_ID      bigint                             not null comment '用户标识',
     TAG          varchar(2)                         not null comment '账户类型',
+    TAG_NAME     varchar(10)                        null comment '类型名称',
     BALANCE      bigint   default 0                 null comment '账户余额,默认以分为单位',
     REMARK       varchar(255)                       null comment '备注',
     IS_TOTAL     char     default '1'               not null comment '是否计入总资产,0-否,1-是',

@@ -32,7 +32,7 @@ public class AccountController extends BaseController {
         try {
             boolean flag = iAccountService.save(account);
             if (flag) {
-                return returnOk("success");
+                return returnOk(OK_MESSAGE);
             } else {
                 return returnException();
             }

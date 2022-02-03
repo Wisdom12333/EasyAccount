@@ -14,6 +14,7 @@ public class BaseController {
     protected final static HttpStatus OK = HttpStatus.OK;
 
     protected final static String EX_MESSAGE = "服务调用异常";
+    protected final static String OK_MESSAGE = "成功";
 
     protected final static ResponseEntity<String> EXCEPTION = ResponseEntity.status(SVC_EXCEPT).body(EX_MESSAGE);
 

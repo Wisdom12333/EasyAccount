@@ -18,11 +18,6 @@ import java.time.LocalDateTime;
 public class BaseServiceImpl<M extends BaseDAO<T>, T extends BaseEntity> extends ServiceImpl<M, T> implements IBaseService<T> {
 
     @Override
-    public boolean save(T entity) {
-        return super.save(entity);
-    }
-
-    @Override
     public boolean removeById(@NonNull final long id) {
         return super.removeById(id);
     }

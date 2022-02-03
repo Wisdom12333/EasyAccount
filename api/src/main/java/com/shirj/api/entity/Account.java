@@ -35,6 +35,8 @@ public class Account extends BaseEntity {
     private long userId;
     @TableField("TAG")
     private String tag;
+    @TableField("TAG_NAME")
+    private String tagName;
     @TableField("BALANCE")
     private long balance;
     @TableField("REMARK")

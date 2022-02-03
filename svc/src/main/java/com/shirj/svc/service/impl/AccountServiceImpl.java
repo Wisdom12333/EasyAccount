@@ -12,9 +12,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountServiceImpl extends BaseServiceImpl<AccountDAO, Account> implements IAccountService {
 
-    @Override
-    public boolean save(Account entity) {
-        entity.setCreateTime(now());
-        return super.save(entity);
-    }
 }
