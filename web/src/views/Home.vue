@@ -38,7 +38,7 @@
               placeholder="请输入备注信息（可不填）"
           />
         </el-form-item>
-        <div v-if="acType===1">
+        <template v-if="acType===1">
           <el-form-item label="信用额度">
             <el-input v-model="account.rsrvStr1" placeholder="0.00"/>
           </el-form-item>
@@ -48,17 +48,17 @@
           <el-form-item label="账户余额" style="display: none">
             <el-input v-model="account.balance" placeholder="0.00"/>
           </el-form-item>
-        </div>
-        <div v-else-if="acType===4">
+        </template>
+        <template v-else-if="acType===4">
           <el-form-item label="借款金额">
             <el-input v-model="account.balance" placeholder="0.00"/>
           </el-form-item>
-        </div>
-        <div v-else>
+        </template>
+        <template v-else>
           <el-form-item label="账户余额">
             <el-input v-model="account.balance" placeholder="0.00"/>
           </el-form-item>
-        </div>
+        </template>
         <el-form-item label="不计入可支配资产">
           <el-switch v-model="account.isTotal"/>
         </el-form-item>
@@ -69,9 +69,40 @@
 
     </el-form>
   </div>
-  <h1>{{ data }}</h1>
-  <h1>{{ userInfo }}</h1>
+  <h1>{{ }}</h1>
+  <h1>{{ }}</h1>
   <el-button @click="click()">clicmk</el-button>
+  <el-button @click="isTrade = true">记一笔</el-button>
+
+  <el-drawer v-model="isTrade" direction="rtl" destroy-on-close="true">
+    <template #default>
+      <div>
+        <el-tabs
+            v-model="tabName"
+            type="card"
+            stretch="true"
+        >
+          <el-tab-pane label="Expend">
+            支出
+            <el-form :model="trade" label-width="100px">
+              <el-form-item label="金额">
+                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="trade.remark" placeholder="请输入备注信息"/>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="Income">收入</el-tab-pane>
+          <el-tab-pane label="Transfer">转账</el-tab-pane>
+        </el-tabs>
+      </div>
+      <div style="flex: auto">
+        <el-button @click="cancelTrade">取消</el-button>
+        <el-button type="primary" @click="confirmTrade">确定</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup>
@@ -85,6 +116,8 @@ import {ElNotification} from "element-plus";
 
 const store = useStore();
 const isAssets = ref(false);//是否显示资产详情
+const isTrade = ref(false);//是否显示记账
+const tabName = ref("first");
 const account = reactive({
   accountName: null,
   type: [],
@@ -98,6 +131,11 @@ const account = reactive({
   rsrvStr1: 0.0,
   rsrvStr2: 0.0,
 });//新建账户对象
+const trade = reactive({
+  tradeType: "",
+  tradeAmount: "",
+  remark: "",
+});
 let data = reactive({
   userInfo: {
     userId: store.state.userId,
@@ -153,10 +191,18 @@ const addAccount = async () => {
           message: "账户添加成功！",
         });
       },
-    (error) => {
-      console.log(error.response);
-    }
+      (error) => {
+        console.log(error.response);
+      }
   );
+};
+//关闭记账
+const cancelTrade = () => {
+  isTrade.value = false;
+};
+//记账
+const confirmTrade = () => {
+  isTrade.value = false;
 };
 onMounted(getUserInfo);
 
