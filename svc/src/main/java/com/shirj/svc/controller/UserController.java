@@ -14,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +46,7 @@ public class UserController extends BaseController {
         result.put("message", resultDTO.getResultInfo());
 
         if (!ResultCode.SUCCESS.equals(resultCode)) {
-            return returnResult(result, BAD_REQ);
+            return returnException(result);
         } else {
             result.put("userId", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
             String token = MapUtils.getValue(resultDTO.getResult(), "TOKEN");
@@ -71,7 +70,7 @@ public class UserController extends BaseController {
             }
 
         } catch (DuplicateKeyException e) {
-            return returnResult("用户名已存在!", BAD_REQ);
+            return returnException("用户名已存在!");
         } catch (Exception e) {
             return returnException();
         }
@@ -83,7 +82,7 @@ public class UserController extends BaseController {
         if (iUserService.checkUsername(username)) {
             return returnOk(null);
         } else {
-            return returnResult(null, BAD_REQ);
+            return returnException(null);
         }
 
     }
@@ -91,7 +90,7 @@ public class UserController extends BaseController {
     @GetMapping("/userInfo")
     public ResponseEntity<ResultDTO> getUserInfo(@RequestParam String userId) {
         if (StringUtils.isBlank(userId)|| CommConst.NULL.equals(userId)) {
-            return returnResult(new ResultDTO(ResultCode.ERROR_DATA, "用户标识为空"), HttpStatus.NOT_ACCEPTABLE);
+            return returnException(new ResultDTO(ResultCode.ERROR_DATA, "用户标识为空"));
         }
         UserInfoDTO userInfo = iUserService.getUserInfo(Long.parseLong(userId));
         ResultDTO resultDTO = new ResultDTO(ResultCode.SUCCESS, null);
