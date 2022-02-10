@@ -67,6 +67,11 @@ create table if not exists t_trade
     REMARK       varchar(255)                       null comment '备注',
     TRADE_TIME   datetime default CURRENT_TIMESTAMP null comment '入账时间',
     IS_RE_TRADE  char     default '0'               null comment '是否重复账单,0-否,1-是',
+    RSRV_STR1    varchar(100)                       null comment '预留字段1',
+    RSRV_STR2    varchar(100)                       null comment '预留字段2',
+    RSRV_STR3    varchar(200)                       null comment '预留字段3',
+    RSRV_STR4    varchar(200)                       null comment '预留字段4',
+    RSRV_STR5    varchar(200)                       null comment '预留字段5',
     constraint ACCOUNT_ID_TRADE
         foreign key (ACCOUNT_ID) references t_account (ACCOUNT_ID),
     constraint USER_ID_TRADE

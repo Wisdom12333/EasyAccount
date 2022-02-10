@@ -85,6 +85,24 @@
           <el-tab-pane label="Expend">
             支出
             <el-form :model="trade" label-width="100px">
+              <el-form-item label="账户">
+                <el-select v-model="trade.accountId" placeholder="请选择支出账户">
+                  <el-option
+                      v-for="item in userInfo.accounts"
+                      :key="item.accountId"
+                      :label="item.accountName!=null?item.accountName:item.tagName"
+                      :value="item.accountId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="消费类型">
+                <el-cascader
+                    :options="userInfo.menu.length===0?expendMenu:userInfo.menu"
+                    :show-all-levels="false"
+                    v-model="trade.tradeName"
+                />
+              </el-form-item>
               <el-form-item label="金额">
                 <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
               </el-form-item>
@@ -93,8 +111,68 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="Income">收入</el-tab-pane>
-          <el-tab-pane label="Transfer">转账</el-tab-pane>
+          <el-tab-pane label="Income">
+            收入
+            <el-form :model="trade" label-width="100px">
+              <el-form-item label="账户">
+                <el-select v-model="trade.accountId" placeholder="请选择收入账户">
+                  <el-option
+                      v-for="item in userInfo.accounts"
+                      :key="item.accountId"
+                      :label="item.accountName!=null?item.accountName:item.tagName"
+                      :value="item.accountId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="收入类型">
+                <el-cascader
+                    :options="userInfo.menu.length===0?incomeMenu:userInfo.menu"
+                    :show-all-levels="false"
+                    v-model="trade.tradeName"
+                />
+              </el-form-item>
+              <el-form-item label="金额">
+                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+              </el-form-item>
+              <el-form-item label="备注">
+                <el-input v-model="trade.remark" placeholder="请输入备注信息"/>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+          <el-tab-pane label="Transfer">
+            转账
+            <el-form label-width="100px">
+              <el-form-item label="转出账户">
+                <el-select v-model="trade.accountId" placeholder="请选择转出账户">
+                  <el-option
+                      v-for="item in userInfo.accounts"
+                      :key="item.accountId"
+                      :label="item.accountName!=null?item.accountName:item.tagName"
+                      :value="item.accountId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="转入账户">
+                <el-select v-model="trade.rsrvStr1" placeholder="请选择转入账户">
+                  <el-option
+                      v-for="item in userInfo.accounts"
+                      :key="item.accountId"
+                      :label="item.accountName!=null?item.accountName:item.tagName"
+                      :value="item.accountId"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="金额">
+                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+              </el-form-item>
+              <el-form-item label="手续费">
+                <el-input v-model="trade.rsrvStr2"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
         </el-tabs>
       </div>
       <div style="flex: auto">
@@ -112,6 +190,7 @@ import {computed, onMounted, reactive, ref} from "vue";
 import useElMessage from "@/hooks/useElMessage";
 import Assets from "@/views/Assets";
 import {accounts, acMap} from "@/static/accounts";
+import {expendMenu, incomeMenu} from "@/static/trade";
 import {ElNotification} from "element-plus";
 
 const store = useStore();
@@ -132,9 +211,14 @@ const account = reactive({
   rsrvStr2: 0.0,
 });//新建账户对象
 const trade = reactive({
+  accountId: "",
+  tradeName: "",
   tradeType: "",
   tradeAmount: "",
   remark: "",
+  isReTrade: "0",
+  rsrvStr1: null,
+  rsrvStr2: null,
 });
 let data = reactive({
   userInfo: {
@@ -144,6 +228,7 @@ let data = reactive({
     recentTrade: [],
     expend: undefined,
     income: undefined,
+    menu: [],
   },//用户基本信息
 });
 
@@ -162,7 +247,7 @@ const getUserInfo = async () => {
         data.userInfo = response.data.result.userInfo;
       },
       (error) => {
-        if (error.response.status === 406) {
+        if (error.response.status === 400) {
           useElMessage("服务异常，请重新登陆！", "服务异常", () => {
             store.dispatch("logout");
           });

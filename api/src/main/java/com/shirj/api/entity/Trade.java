@@ -47,4 +47,14 @@ public class Trade extends BaseEntity {
     private LocalDateTime tradeTime;
     @TableField("IS_RE_TRADE")
     private String isReTrade;
+    @TableField("RSRV_STR1")
+    private String rsrvStr1;
+    @TableField("RSRV_STR2")
+    private String rsrvStr2;
+    @TableField("RSRV_STR3")
+    private String rsrvStr3;
+    @TableField("RSRV_STR4")
+    private String rsrvStr4;
+    @TableField("RSRV_STR5")
+    private String rsrvStr5;
 }
