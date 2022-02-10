@@ -14,13 +14,13 @@ public class ResultDTO {
 
     private Map<String, Object> result;
 
-    private ResultCode resultCode;
+    private ResultCode code;
 
-    private String resultInfo;
+    private String message;
 
-    public ResultDTO(ResultCode resultCode, String resultInfo) {
-        this.resultCode = resultCode;
-        this.resultInfo = resultInfo;
+    public ResultDTO(ResultCode code, String message) {
+        this.code = code;
+        this.message = message;
         this.result = new HashMap<>();
     }
 }

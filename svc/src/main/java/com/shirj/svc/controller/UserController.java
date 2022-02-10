@@ -17,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,23 +37,21 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+    public ResponseEntity<ResultDTO> login(@RequestBody User user) {
         ResultDTO resultDTO = iUserService.login(user.getUsername(), user.getPassword());
-        ResultCode resultCode = resultDTO.getResultCode();
-        Map<String, Object> result = new HashMap<>(4);
-        result.put("code", resultCode.getValue());
-        result.put("message", resultDTO.getResultInfo());
+        ResultCode resultCode = resultDTO.getCode();
+        final Map<String, Object> result = resultDTO.getResult();
 
         if (!ResultCode.SUCCESS.equals(resultCode)) {
-            return returnException(result);
+            return returnException(resultDTO);
         } else {
             result.put("userId", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
             String token = MapUtils.getValue(resultDTO.getResult(), "TOKEN");
             result.put("token", token);
             return ResponseEntity.status(OK)
-                    .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS,HttpHeaders.AUTHORIZATION)
+                    .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION)
                     .header(HttpHeaders.AUTHORIZATION, token)
-                    .body(result);
+                    .body(resultDTO);
         }
 
     }
