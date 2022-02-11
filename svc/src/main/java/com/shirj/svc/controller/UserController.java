@@ -17,8 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 /**
  * Controller of {@code User}.
  *
@@ -39,15 +37,12 @@ public class UserController extends BaseController {
     @PostMapping("/login")
     public ResponseEntity<ResultDTO> login(@RequestBody User user) {
         ResultDTO resultDTO = iUserService.login(user.getUsername(), user.getPassword());
-        ResultCode resultCode = resultDTO.getCode();
-        final Map<String, Object> result = resultDTO.getResult();
+        ResultCode resultCode = resultDTO.getResultCode();
 
         if (!ResultCode.SUCCESS.equals(resultCode)) {
             return returnException(resultDTO);
         } else {
-            result.put("userId", MapUtils.getValue(resultDTO.getResult(), "USER_ID"));
-            String token = MapUtils.getValue(resultDTO.getResult(), "TOKEN");
-            result.put("token", token);
+            String token = MapUtils.getValue(resultDTO.getResult(), "token");
             return ResponseEntity.status(OK)
                     .header(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION)
                     .header(HttpHeaders.AUTHORIZATION, token)

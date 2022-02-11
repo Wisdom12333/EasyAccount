@@ -54,8 +54,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         }
 
         resultDTO = new ResultDTO(ResultCode.SUCCESS, "登录成功!");
-        resultDTO.getResult().put("TOKEN", token);
-        resultDTO.getResult().put("USER_ID", user.getUserId());
+        resultDTO.getResult().put("token", token);
+        resultDTO.getResult().put("userId", user.getUserId());
 
         return resultDTO;
     }

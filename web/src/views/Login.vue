@@ -15,9 +15,9 @@
 
 <script setup>
 import axios from "axios";
-import { useStore } from "vuex";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import {useStore} from "vuex";
+import {reactive} from "vue";
+import {useRouter} from "vue-router";
 
 const store = useStore();
 const router = useRouter();
@@ -31,8 +31,8 @@ function login() {
   axios.post("/user/login", user).then(
     (response) => {
       if (response.data.code === "0") {
-        store.commit("setUserId", response.data.userId);
-        router.push({ name: "Home" });
+        store.commit("setUserId", response.data.result.userId);
+        router.push({name: "Home"});
       }
     },
     (error) => {
