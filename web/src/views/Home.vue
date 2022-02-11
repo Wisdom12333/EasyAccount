@@ -3,7 +3,7 @@
   <hr/>
   <p>
     本月支出：¥{{ userInfo.expend ? userInfo.expend : "0.00" }}，
-    本月收入：¥{{ userInfo.income ? userInfo.income : "0.00" }},
+    本月收入：¥{{ userInfo.income ? userInfo.income : "0.00" }}，
     本月结余：¥{{ (userInfo.income ? userInfo.income : 0.00) - (userInfo.expend ? userInfo.expend : 0.00) }}
   </p>
   <h1>我的资产
@@ -40,25 +40,21 @@
         </el-form-item>
         <template v-if="acType===1">
           <el-form-item label="信用额度">
-            <el-input v-model="account.rsrvStr1" placeholder="0.00"/>
+            <el-input v-model="account._rsrvStr1" placeholder="0.00"/>
           </el-form-item>
           <el-form-item label="当前欠款">
-            <el-input v-model="account.rsrvStr2" placeholder="0.00"/>
+            <el-input v-model="account._rsrvStr2" placeholder="0.00"/>
           </el-form-item>
           <el-form-item label="账户余额" style="display: none">
-            <el-input v-model="account.balance" placeholder="0.00"/>
+            <el-input v-model="account._balance" placeholder="0.00"/>
           </el-form-item>
         </template>
-        <template v-else-if="acType===4">
-          <el-form-item label="借款金额">
-            <el-input v-model="account.balance" placeholder="0.00"/>
-          </el-form-item>
-        </template>
-        <template v-else>
-          <el-form-item label="账户余额">
-            <el-input v-model="account.balance" placeholder="0.00"/>
-          </el-form-item>
-        </template>
+        <el-form-item v-else-if="acType===4" label="借款金额">
+          <el-input v-model="account._balance" placeholder="0.00"/>
+        </el-form-item>
+        <el-form-item v-else label="账户余额">
+          <el-input v-model="account._balance" placeholder="0.00"/>
+        </el-form-item>
         <el-form-item label="不计入可支配资产">
           <el-switch v-model="account.isTotal"/>
         </el-form-item>
@@ -74,16 +70,15 @@
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
 
-  <el-drawer v-model="isTrade" direction="rtl" destroy-on-close="true">
+  <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
     <template #default>
       <div>
         <el-tabs
             v-model="tabName"
             type="card"
-            stretch="true"
+            :stretch="true"
         >
-          <el-tab-pane label="Expend">
-            支出
+          <el-tab-pane label="支出" name="1">
             <el-form :model="trade" label-width="100px">
               <el-form-item label="账户">
                 <el-select v-model="trade.accountId" placeholder="请选择支出账户">
@@ -98,21 +93,21 @@
               </el-form-item>
               <el-form-item label="消费类型">
                 <el-cascader
-                    :options="userInfo.menu.length===0?expendMenu:userInfo.menu"
+                    :options="expendMenu"
                     :show-all-levels="false"
-                    v-model="trade.tradeName"
+                    v-model="trade.tradeTag"
+                    placeholder="请选择消费类型"
                 />
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+                <el-input v-model="trade._tradeAmount" placeholder="0.00"/>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息"/>
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="Income">
-            收入
+          <el-tab-pane label="收入" name="2">
             <el-form :model="trade" label-width="100px">
               <el-form-item label="账户">
                 <el-select v-model="trade.accountId" placeholder="请选择收入账户">
@@ -127,21 +122,21 @@
               </el-form-item>
               <el-form-item label="收入类型">
                 <el-cascader
-                    :options="userInfo.menu.length===0?incomeMenu:userInfo.menu"
+                    :options="incomeMenu"
                     :show-all-levels="false"
-                    v-model="trade.tradeName"
+                    v-model="trade.tradeTag"
+                    placeholder="请选择收入类型"
                 />
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+                <el-input v-model="trade._tradeAmount" placeholder="0.00"/>
               </el-form-item>
               <el-form-item label="备注">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息"/>
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="Transfer">
-            转账
+          <el-tab-pane label="转账" name="3">
             <el-form label-width="100px">
               <el-form-item label="转出账户">
                 <el-select v-model="trade.accountId" placeholder="请选择转出账户">
@@ -166,10 +161,10 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade.tradeAmount" placeholder="0.00"/>
+                <el-input v-model="trade._tradeAmount" placeholder="0.00"/>
               </el-form-item>
               <el-form-item label="手续费">
-                <el-input v-model="trade.rsrvStr2"></el-input>
+                <el-input v-model="trade._rsrvStr2" placeholder="0.00"></el-input>
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -196,39 +191,46 @@ import {ElNotification} from "element-plus";
 const store = useStore();
 const isAssets = ref(false);//是否显示资产详情
 const isTrade = ref(false);//是否显示记账
-const tabName = ref("first");
+const tabName = ref("1");
 const account = reactive({
-  accountName: null,
+  accountName: "",
   type: [],
-  tag: "",
-  balance: 0.0,
+  tag: String.constructor,
+  _balance: null,
+  balance: Number.constructor,
   remark: null,
   isTotal: "1",
   removeTag: 0,
-  userId: "",
-  tagName: "",
-  rsrvStr1: 0.0,
-  rsrvStr2: 0.0,
+  userId: store.state.userId,
+  tagName: String.constructor,
+  _rsrvStr1: null,
+  rsrvStr1: Number.constructor,
+  _rsrvStr2: null,
+  rsrvStr2: Number.constructor,
 });//新建账户对象
 const trade = reactive({
-  accountId: "",
-  tradeName: "",
-  tradeType: "",
-  tradeAmount: "",
-  remark: "",
+  userId: store.state.userId,
+  accountId: null,
+  tradeTag: [],
+  tradeName: String.constructor,
+  tradeType: String.constructor,
+  _tradeAmount: null,
+  tradeAmount: Number.constructor,
+  remark: null,
   isReTrade: "0",
-  rsrvStr1: null,
-  rsrvStr2: null,
+  rsrvStr1: null,//转账时转入账户标识
+  _rsrvStr2: null,
+  rsrvStr2: Number.constructor,//转账时手续费
 });
 let data = reactive({
   userInfo: {
     userId: store.state.userId,
-    username: "",
-    accounts: [],
-    recentTrade: [],
-    expend: undefined,
-    income: undefined,
-    menu: [],
+    username: String.constructor,
+    accounts: Array.constructor,
+    recentTrade: Array.constructor,
+    expend: Number.constructor,
+    income: Number.constructor,
+    menu: Array.constructor,
   },//用户基本信息
 });
 
@@ -260,14 +262,14 @@ const addAccount = async () => {
   account.tag = account.type[1];
   account.userId = store.state.userId;
   if (acType.value === 1) {
-    account.rsrvStr1 = parseFloat(account.rsrvStr1.toString()) * 100;
-    account.rsrvStr2 = parseFloat(account.rsrvStr2.toString()) * 100;
+    account.rsrvStr1 = account._rsrvStr1 * 100;
+    account.rsrvStr2 = account._rsrvStr2 * 100;
   }
   account.balance = acType.value === 1 ?
       account.rsrvStr1 - account.rsrvStr2 :
-      parseFloat(account.balance.toString()) * 100;
+      account.balance * 100;
   account.isTotal = account.isTotal ? "0" : "1";
-  account.tagName = acMap.get(account.tag);
+  account.tagName = acMap.get(account.tag).toString;
   console.log(account);
   axios.post("/account/addAccount", account).then(
       () => {
@@ -287,12 +289,28 @@ const cancelTrade = () => {
 };
 //记账
 const confirmTrade = () => {
-  isTrade.value = false;
+  trade.tradeType = tabName.value;
+  trade.tradeName = trade.tradeTag.slice(-1).pop();
+  trade.tradeAmount = trade._tradeAmount * 100;
+  trade.rsrvStr2 = trade._rsrvStr2 * 100;
+  console.log(trade);
+  axios.post("/trade/book", trade).then(
+      () => {
+        ElNotification({
+          title: "成功",
+          message: "账户添加成功！",
+        });
+      },
+      (error) => {
+        console.log(error.response);
+      }
+  );
+  // isTrade.value = false;
 };
 onMounted(getUserInfo);
 
 const click = () => {
-  console.log(userInfo.expend);
+  console.log(!!userInfo.expend);
 };
 </script>
 

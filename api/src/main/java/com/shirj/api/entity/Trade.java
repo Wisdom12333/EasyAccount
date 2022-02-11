@@ -24,23 +24,23 @@ import java.time.LocalDateTime;
 @TableName("T_TRADE")
 public class Trade extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
     @TableId(value = "TRADE_ID", type = IdType.AUTO)
     private Long tradeId;
     @TableField("USER_ID")
-    private long userId;
+    private Long userId;
     @TableField("ACCOUNT_ID")
-    private long accountId;
+    private Long accountId;
     @TableField("TRADE_TYPE")
     private String tradeType;
     @TableField("ACCEPT_MONTH")
-    private int acceptMonth;
+    private Integer acceptMonth;
     @TableField("TRADE_NAME")
     private String tradeName;
     @TableField("TRADE_ICON")
-    private int tradeIcon;
+    private Integer tradeIcon;
     @TableField("TRADE_AMOUNT")
-    private int tradeAmount;
+    private Integer tradeAmount;
     @TableField("REMARK")
     private String remark;
     @TableField("TRADE_TIME")

@@ -12,4 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implements ITradeService {
 
+
+    @Override
+    public boolean save(Trade entity) {
+        System.out.println(entity);
+        return true;
+//        return super.save(entity);
+    }
 }

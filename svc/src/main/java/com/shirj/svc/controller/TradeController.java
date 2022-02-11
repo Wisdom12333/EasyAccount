@@ -1,6 +1,7 @@
 package com.shirj.svc.controller;
 
 import com.shirj.api.core.controller.BaseController;
+import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,16 @@ public class TradeController extends BaseController {
     }
 
     @PostMapping("book")
-    public ResponseEntity<String> bookTrade() {
-        return returnOk("test");
+    public ResponseEntity<String> bookTrade(Trade trade) {
+        try {
+            boolean flag = iTradeService.save(trade);
+            if (flag) {
+                return returnOk(OK_MESSAGE);
+            } else {
+                return returnException();
+            }
+        } catch (Exception e) {
+            return returnException();
+        }
     }
 }

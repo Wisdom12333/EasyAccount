@@ -114,4 +114,29 @@ export const expendMenu = [
 /**
  * The default income menu.
  */
-export const incomeMenu = [];
+export const incomeMenu = [
+    {
+        label: "薪资",
+        value: "薪资",
+    },
+    {
+        label: "生活费",
+        value: "生活费",
+    },
+    {
+        label: "红包",
+        value: "红包",
+    },
+    {
+        label: "外快",
+        value: "外快",
+    },
+    {
+        label: "奖金",
+        value: "奖金",
+    },
+    {
+        label: "投资",
+        value: "投资",
+    },
+];
