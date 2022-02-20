@@ -29,14 +29,6 @@ public interface BaseDAO<T extends BaseEntity> extends BaseMapper<T> {
     boolean removeById(@Param("id") final long id);
 
     /**
-     * Update a record by id.
-     *
-     * @param id the id of record
-     * @return true if successfully update
-     */
-    boolean updateById(@Param("id") final long id);
-
-    /**
      * Get a record by id.
      *
      * @param id the id of record

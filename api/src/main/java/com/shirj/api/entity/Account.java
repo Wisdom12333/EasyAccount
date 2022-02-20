@@ -32,13 +32,13 @@ public class Account extends BaseEntity {
     @TableField("ACCOUNT_NAME")
     private String accountName;
     @TableField("USER_ID")
-    private long userId;
+    private Long userId;
     @TableField("TAG")
     private String tag;
     @TableField("TAG_NAME")
     private String tagName;
     @TableField("BALANCE")
-    private long balance;
+    private Long balance;
     @TableField("REMARK")
     private String remark;
     @TableField("IS_TOTAL")
