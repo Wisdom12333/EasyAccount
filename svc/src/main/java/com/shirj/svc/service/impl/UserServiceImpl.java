@@ -1,6 +1,8 @@
 package com.shirj.svc.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.AccountDAO;
 import com.shirj.api.dao.TradeDAO;
@@ -14,6 +16,7 @@ import com.shirj.api.service.IUserService;
 import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.consts.ResultCode;
 import com.shirj.svc.components.TokenUtils;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -93,15 +96,25 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
             //实际数据库中以分为单位存储
             double amount = Double.parseDouble(String.valueOf(stringObjectMap.get("AMOUNT")));
             //转换为元传给界面
-            if(CommConst.TRADE_TYPE.EXPEND.equals(tradeType)){
-                userInfoDTO.setExpend(amount/100);
-            }else if(CommConst.TRADE_TYPE.INCOME.equals(tradeType)){
-                userInfoDTO.setIncome(amount/100);
+            if (CommConst.TRADE_TYPE.EXPEND.equals(tradeType)) {
+                userInfoDTO.setExpend(amount / 100);
+            } else if (CommConst.TRADE_TYPE.INCOME.equals(tradeType)) {
+                userInfoDTO.setIncome(amount / 100);
             }
         }
 
         userInfoDTO.setAccounts(accounts);
         userInfoDTO.setRecentTrade(trades);
         return userInfoDTO;
+    }
+
+    @Override
+    public boolean update(@NonNull User entity) {
+        //根据Id更新非空字段
+        LambdaUpdateWrapper<User> wrapper = new UpdateWrapper<User>().lambda().eq(User::getUserId, entity.getUserId())
+                .set(StringUtils.isNotBlank(entity.getPassword()), User::getPassword, entity.getPassword())
+                .set(StringUtils.isNotBlank(entity.getEMail()), User::getEMail, entity.getEMail())
+                .set(User::getUpdateTime, now());
+        return super.update(wrapper);
     }
 }

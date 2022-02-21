@@ -17,6 +17,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
+import java.time.LocalDateTime;
+
 /**
  * Controller of {@code User}.
  *
@@ -81,12 +84,21 @@ public class UserController extends BaseController {
 
     @GetMapping("/userInfo")
     public ResponseEntity<ResultDTO> getUserInfo(@RequestParam String userId) {
-        if (StringUtils.isBlank(userId)|| CommConst.NULL.equals(userId)) {
+        if (StringUtils.isBlank(userId) || CommConst.NULL.equals(userId)) {
             return returnException(new ResultDTO(ResultCode.ERROR_DATA, "用户标识为空"));
         }
         UserInfoDTO userInfo = iUserService.getUserInfo(Long.parseLong(userId));
         ResultDTO resultDTO = new ResultDTO(ResultCode.SUCCESS, null);
         resultDTO.getResult().put("userInfo", userInfo);
         return returnOk(resultDTO);
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> update(@RequestBody User user) {
+        try {
+            return iUserService.update(user) ? returnOk(null) : returnException();
+        } catch (Exception e) {
+            return returnException();
+        }
     }
 }

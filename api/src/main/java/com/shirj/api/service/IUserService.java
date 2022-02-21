@@ -37,4 +37,12 @@ public interface IUserService extends IBaseService<User> {
      * @return basic user info
      */
     UserInfoDTO getUserInfo(final long userId);
+
+    /**
+     * Update a user by id.
+     *
+     * @param user new user
+     * @return true if success
+     */
+    boolean update(User user);
 }
