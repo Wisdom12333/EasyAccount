@@ -8,6 +8,12 @@ import com.shirj.api.entity.Trade;
  */
 public interface ITradeService extends IBaseService<Trade> {
 
+    /**
+     * Book and update Account info.
+     *
+     * @param entity a new trade
+     * @return true if book success.
+     */
     @Override
     boolean save(Trade entity);
 }

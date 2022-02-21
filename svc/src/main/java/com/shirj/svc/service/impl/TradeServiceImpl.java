@@ -6,9 +6,9 @@ import com.shirj.api.dao.TradeDAO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
+import com.shirj.pub.consts.CommConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -30,6 +30,7 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         String tradeType = entity.getTradeType();
         Integer tradeAmount = entity.getTradeAmount();
         Account account = accountDAO.selectById(entity.getAccountId());
+        Account transAccount = null;
         Long balance = account.getBalance();
         switch (Integer.parseInt(tradeType)) {
             //支出
@@ -44,8 +45,15 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             }
             //转账
             case 3: {
-                //todo
-                System.out.println("null");
+                Long rsrvStr1 = Long.parseLong(entity.getRsrvStr1());
+                transAccount = accountDAO.selectById(rsrvStr1);
+                //手续费
+                Long transFee = Long.parseLong(entity.getRsrvStr2());
+                //转账
+                transAccount.setBalance(transAccount.getBalance() + tradeAmount);
+                balance -= (tradeAmount + transFee);
+                account.setBalance(balance);
+                transAccount.setUpdateTime(now());
                 break;
             }
             default: {
@@ -56,10 +64,13 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         entity.setTradeTime(now());
         entity.setAcceptMonth(now().getMonthValue());
         try {
+            if (CommConst.TRADE_TYPE.TRANSFER.getValue().equals(tradeType)) {
+                accountDAO.updateById(transAccount);
+            }
             accountDAO.updateById(account);
             super.save(entity);
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return false;
         }
