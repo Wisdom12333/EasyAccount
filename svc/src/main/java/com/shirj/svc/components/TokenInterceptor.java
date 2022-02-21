@@ -9,6 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 /**
  * An interceptor for token.
  *
@@ -38,7 +40,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
         try{
-            response.sendError(401,"非法的token");
+            response.sendError(SC_UNAUTHORIZED, "非法的token");
         }catch (Exception e){
             log.error(e.getMessage());
             return false;
