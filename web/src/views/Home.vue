@@ -173,7 +173,7 @@
                   placeholder="请选择转入账户"
                 >
                   <el-option
-                    v-for="item in userInfo.accounts"
+                    v-for="item in transAccounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -260,13 +260,22 @@ let data = reactive({
   }, //用户基本信息
 });
 
+//用户信息
 const userInfo = computed(() => {
   return data.userInfo;
 });
+//账户类型
 const acType = computed(() => {
   if (account.type[0]) return parseInt(account.type[0].toString());
   else return undefined;
 });
+//转入账户
+const transAccounts = computed(() => {
+  return userInfo.value.accounts.filter((account) => {
+    return account.accountId !== trade.accountId;
+  });
+});
+
 //获取用户信息
 const getUserInfo = async () => {
   console.log("getUserInfo");
