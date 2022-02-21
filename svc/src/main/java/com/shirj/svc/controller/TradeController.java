@@ -36,6 +36,7 @@ public class TradeController extends BaseController {
                 return returnException();
             }
         } catch (Exception e) {
+            log.error(e.getMessage());
             return returnException();
         }
     }

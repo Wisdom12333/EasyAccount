@@ -8,4 +8,6 @@ import com.shirj.api.entity.Trade;
  */
 public interface ITradeService extends IBaseService<Trade> {
 
+    @Override
+    boolean save(Trade entity);
 }

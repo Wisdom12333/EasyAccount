@@ -8,10 +8,11 @@ import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
-import java.time.LocalDateTime;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
@@ -24,6 +25,7 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
     private AccountDAO accountDAO;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean save(Trade entity) {
         String tradeType = entity.getTradeType();
         Integer tradeAmount = entity.getTradeAmount();
@@ -53,14 +55,12 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         account.setUpdateTime(now());
         entity.setTradeTime(now());
         entity.setAcceptMonth(now().getMonthValue());
-        System.out.println(entity);
         try {
             accountDAO.updateById(account);
             super.save(entity);
             return true;
         }catch (Exception e){
-            log.warn(e.getMessage());
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//todo 全部回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return false;
         }
     }
