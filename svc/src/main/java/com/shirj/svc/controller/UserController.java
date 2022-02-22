@@ -17,9 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
-import java.time.LocalDateTime;
-
 /**
  * Controller of {@code User}.
  *
@@ -100,5 +97,10 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             return returnException();
         }
+    }
+
+    @GetMapping("/soldOut")
+    public ResponseEntity<String> soldOut(@RequestParam Long userId) {
+        return iUserService.soldOut(userId) ? returnOk(null) : returnException();
     }
 }

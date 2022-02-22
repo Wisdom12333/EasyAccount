@@ -45,4 +45,12 @@ public interface IUserService extends IBaseService<User> {
      * @return true if success
      */
     boolean update(User user);
+
+    /**
+     * Sold out a user.
+     *
+     * @param userId user's id
+     * @return true if success
+     */
+    boolean soldOut(Long userId);
 }

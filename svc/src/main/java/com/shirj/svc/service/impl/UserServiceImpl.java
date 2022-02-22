@@ -111,10 +111,22 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     @Override
     public boolean update(@NonNull User entity) {
         //根据Id更新非空字段
-        LambdaUpdateWrapper<User> wrapper = new UpdateWrapper<User>().lambda().eq(User::getUserId, entity.getUserId())
+        LambdaUpdateWrapper<User> wrapper = new UpdateWrapper<User>().lambda()
+                .eq(User::getUserId, entity.getUserId())
+                .eq(User::getRemoveTag, "0")
                 .set(StringUtils.isNotBlank(entity.getPassword()), User::getPassword, entity.getPassword())
                 .set(StringUtils.isNotBlank(entity.getEMail()), User::getEMail, entity.getEMail())
                 .set(User::getUpdateTime, now());
         return super.update(wrapper);
+    }
+
+    @Override
+    public boolean soldOut(Long userId) {
+        //修改用户REMOVE_TAG为1
+        User user = getBaseMapper().getById(userId);
+        user.setRemoveTag("1");
+        user.setCreateTime(now());
+        user.setEndTime(now());
+        return super.updateById(user);
     }
 }

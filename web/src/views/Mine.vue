@@ -26,7 +26,9 @@
       <div>
         <el-space direction="vertical" :size="10">
           <el-link><span class="link">反馈意见</span></el-link>
-          <el-link type="danger"><span class="link">注销账号</span></el-link>
+          <el-link type="danger" @click="soldOut"
+            ><span class="link">注销账号</span></el-link
+          >
         </el-space>
       </div>
     </el-card>
@@ -39,6 +41,7 @@ import axios from "axios";
 import { useStore } from "vuex";
 
 const store = useStore();
+//新的用户信息
 const user = {
   userId: store.state.userId,
   password: "",
@@ -57,6 +60,7 @@ const upInfo = [
     errorMessage: "密码不合法！",
   },
 ];
+//更新用户
 const Update = (type) => {
   ElMessageBox.prompt(upInfo[type].message, "提示", {
     confirmButtonText: "确认",
@@ -80,6 +84,27 @@ const Update = (type) => {
         type: "success",
         message: `Your email is:${value}`,
       });
+    })
+    .catch(null);
+};
+//注销用户
+const soldOut = () => {
+  ElMessageBox.confirm("这个操作将注销账号，仍要继续吗？", "警告！", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      axios.get("/user/soldOut?userId=" + store.state.userId).then(
+        () => {
+          ElMessage({
+            type: "success",
+            message: "注销成功",
+          });
+          store.dispatch("logout");
+        },
+        () => {}
+      );
     })
     .catch(null);
 };
