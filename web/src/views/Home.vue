@@ -26,9 +26,9 @@
     <el-form :model="account" label-width="140px">
       <el-form-item label="账户类型">
         <el-cascader
-          :options="accounts"
-          :show-all-levels="false"
-          v-model="account.type"
+            :options="accounts"
+            v-model="account.type"
+            :show-all-levels="false"
         />
       </el-form-item>
       <div v-show="account.type[1]">
@@ -101,10 +101,10 @@
               </el-form-item>
               <el-form-item label="消费类型">
                 <el-cascader
-                  :options="expendMenu"
-                  :show-all-levels="false"
-                  v-model="trade.tradeTag"
-                  placeholder="请选择消费类型"
+                    :options="expendMenu"
+                    v-model="trade.tradeTag"
+                    :show-all-levels="false"
+                    placeholder="请选择消费类型"
                 />
               </el-form-item>
               <el-form-item label="金额">
@@ -135,10 +135,10 @@
               </el-form-item>
               <el-form-item label="收入类型">
                 <el-cascader
-                  :options="incomeMenu"
-                  :show-all-levels="false"
-                  v-model="trade.tradeTag"
-                  placeholder="请选择收入类型"
+                    :options="incomeMenu"
+                    v-model="trade.tradeTag"
+                    :show-all-levels="false"
+                    placeholder="请选择收入类型"
                 />
               </el-form-item>
               <el-form-item label="金额">
@@ -206,13 +206,13 @@
 
 <script setup>
 import axios from "axios";
-import { useStore } from "vuex";
-import { computed, onMounted, reactive, ref } from "vue";
+import {useStore} from "vuex";
+import {computed, onMounted, reactive, ref} from "vue";
 import useElMessage from "@/hooks/useElMessage";
 import Assets from "@/views/Assets";
-import { accounts, acMap } from "@/static/accounts";
-import { expendMenu, incomeMenu } from "@/static/trade";
-import { ElNotification } from "element-plus";
+import {accounts, acMap} from "@/static/accounts";
+import {expendMenu, incomeMenu} from "@/static/trade";
+import {ElNotification} from "element-plus";
 
 const store = useStore();
 const isAssets = ref(false); //是否显示资产详情

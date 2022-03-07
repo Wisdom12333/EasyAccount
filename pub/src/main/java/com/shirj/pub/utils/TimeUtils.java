@@ -41,12 +41,12 @@ public final class TimeUtils {
 
     public static final Integer TIME_LENGTH = 10;
 
-    public static LocalDateTime string2Time(String time, String format) {
-        if (time.length() == TIME_LENGTH && StringUtils.equals(format, TimeUtils.TIME_STANDARD)) {
-            time += " " + TimeUtils.FIRST_SECOND;
+    public static LocalDateTime string2Time(String timeStr, String format) {
+        if (timeStr.length() == TIME_LENGTH && StringUtils.equals(format, TimeUtils.TIME_STANDARD)) {
+            timeStr += " " + TimeUtils.FIRST_SECOND;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return LocalDateTime.parse(time, formatter);
+        return LocalDateTime.parse(timeStr, formatter);
     }
 
     /**
