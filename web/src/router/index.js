@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {createRouter, createWebHistory} from "vue-router";
 import App from "@/App";
 import Budget from "@/views/Budget";
 import Mine from "@/views/Mine";
@@ -68,7 +68,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/Login" || to.path === "/Register") {
+  if (to.path === "/Login" || to.path === "/Register" || to.path === "/register") {
     next();
   } else {
     let token = localStorage.getItem("token");

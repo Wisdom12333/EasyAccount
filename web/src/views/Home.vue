@@ -293,7 +293,7 @@ const getUserInfo = async () => {
   );
 };
 //新建账户
-const addAccount = async () => {
+async function addAccount() {
   account.tag = account.type[1];
   account.userId = store.state.userId;
   if (acType.value === 1) {
@@ -318,13 +318,11 @@ const addAccount = async () => {
       console.log(error.response);
     }
   );
-};
+}
 //关闭记账
-const cancelTrade = () => {
-  isTrade.value = false;
-};
+const cancelTrade = () => isTrade.value = false;
 //记账
-const confirmTrade = () => {
+function confirmTrade(){
   trade.tradeType = tabName.value;
   trade.tradeName = trade.tradeTag.slice(-1).pop();
   trade.tradeAmount = trade._tradeAmount * 100;
@@ -344,7 +342,7 @@ const confirmTrade = () => {
     }
   );
   // isTrade.value = false;
-};
+}
 onMounted(getUserInfo);
 
 const click = () => {

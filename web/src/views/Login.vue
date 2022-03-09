@@ -1,23 +1,31 @@
 <template>
   <h1>Login</h1>
   <br />
-  <form>
-    <label>
-      用户名：<input v-model="user.username" placeholder="请输入用户名" />
-    </label>
-    <label> 密码： <input v-model="user.password" type="password" /> </label>
-    <label> 记住密码<input type="checkbox" /></label>
-    <button @click.prevent="login()">登陆</button>
-    <router-link to="/Register">没有账号？点击注册</router-link>
+  <el-form  :model="user" label-width="100px" style="width: 50%">
+    <el-form-item label="用户名">
+      <el-input v-model="user.username" placeholder="请输入用户名" />
+    </el-form-item>
+    <el-form-item label="密码">
+      <el-input v-model="user.password" type="password" />
+    </el-form-item>
+    <el-form-item label="记住密码">
+      <input type="checkbox" />
+    </el-form-item>
+    <el-form-item>
+      <el-space :size="10" spacer="|">
+        <el-button type="primary" @click.prevent="login()">登陆</el-button>
+        <el-check-tag checked  @click="router.push({ name: 'Register' })">没有账号？点击注册</el-check-tag>
+      </el-space>
+    </el-form-item>
     <h1>{{ store.state }}</h1>
-  </form>
+  </el-form>
 </template>
 
 <script setup>
 import axios from "axios";
-import { useStore } from "vuex";
-import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import {useStore} from "vuex";
+import {reactive} from "vue";
+import {useRouter} from "vue-router";
 
 const store = useStore();
 const router = useRouter();
