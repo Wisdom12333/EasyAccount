@@ -10,10 +10,10 @@
       </template>
       <div>
         <el-space direction="vertical" :size="10">
-          <el-link @click="Update(0)"
+          <el-link @click.prevent="Update(0)"
             ><span class="link">修改邮箱</span></el-link
           >
-          <el-link @click="Update(1)"
+          <el-link @click.prevent="Update(1)"
             ><span class="link">修改密码</span></el-link
           >
         </el-space>
@@ -26,7 +26,7 @@
       <div>
         <el-space direction="vertical" :size="10">
           <el-link><span class="link">反馈意见</span></el-link>
-          <el-link type="danger" @click="soldOut"
+          <el-link type="danger" @click.prevent="soldOut"
             ><span class="link">注销账号</span></el-link
           >
         </el-space>
@@ -36,9 +36,9 @@
 </template>
 
 <script setup>
-import { ElMessage, ElMessageBox } from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import axios from "axios";
-import { useStore } from "vuex";
+import {useStore} from "vuex";
 
 const store = useStore();
 //新的用户信息
@@ -71,8 +71,10 @@ const Update = (type) => {
     .then(({ value }) => {
       if (type === 0) {
         user.eMail = value;
+        user.password = "";
       } else if (type === 1) {
         user.password = value;
+        user.eMail = "";
       }
       axios.post("/user/update", user).then(
         () => {},
@@ -82,10 +84,10 @@ const Update = (type) => {
       );
       ElMessage({
         type: "success",
-        message: `Your email is:${value}`,
+        message: "修改成功!",
       });
     })
-    .catch(null);
+    .catch(()=>{});
 };
 //注销用户
 const soldOut = () => {
@@ -106,7 +108,7 @@ const soldOut = () => {
         () => {}
       );
     })
-    .catch(null);
+    .catch(()=>{});
 };
 </script>
 
