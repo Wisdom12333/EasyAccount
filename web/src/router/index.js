@@ -62,13 +62,16 @@ const routes = [
   },
 ];
 
+//允许直接访问的路径
+const allowRoutes = ["/Login", "/login", "/Register", "/register"];
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === "/Login" || to.path === "/Register" || to.path === "/register") {
+  if (allowRoutes.includes(to.path)) {
     next();
   } else {
     let token = localStorage.getItem("token");
