@@ -48,20 +48,20 @@
         </el-form-item>
         <template v-if="acType === 1">
           <el-form-item label="信用额度">
-            <el-input v-model="account._rsrvStr1" placeholder="0.00" />
+            <el-input-number v-model="account._rsrvStr1" :precision="2" placeholder="0.00" />
           </el-form-item>
           <el-form-item label="当前欠款">
-            <el-input v-model="account._rsrvStr2" placeholder="0.00" />
+            <el-input-number v-model="account._rsrvStr2" :precision="2" placeholder="0.00" />
           </el-form-item>
           <el-form-item label="账户余额" style="display: none">
-            <el-input v-model="account._balance" placeholder="0.00" />
+            <el-input-number v-model="account._balance" :precision="2" placeholder="0.00" />
           </el-form-item>
         </template>
         <el-form-item v-else-if="acType === 4" label="借款金额">
-          <el-input v-model="account._balance" placeholder="0.00" />
+          <el-input-number v-model="account._balance" :precision="2" placeholder="0.00" />
         </el-form-item>
         <el-form-item v-else label="账户余额">
-          <el-input v-model="account._balance" placeholder="0.00" />
+          <el-input-number v-model="account._balance" :precision="2" placeholder="0.00" />
         </el-form-item>
         <el-form-item label="不计入可支配资产">
           <el-switch v-model="account.isTotal" />
@@ -108,7 +108,7 @@
                 />
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade._tradeAmount" placeholder="0.00" />
+                <el-input-number v-model="trade._tradeAmount" :precision="2" placeholder="0.00" />
               </el-form-item>
               <el-form-item label="备注">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息" />
@@ -142,13 +142,14 @@
                 />
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade._tradeAmount" placeholder="0.00" />
+                <el-input-number v-model="trade._tradeAmount" :precision="2" placeholder="0.00" />
               </el-form-item>
               <el-form-item label="备注">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
+<!--          todo 可以优化为组件-->
           <el-tab-pane label="转账" name="3">
             <el-form label-width="100px">
               <el-form-item label="转出账户">
@@ -184,13 +185,14 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="金额">
-                <el-input v-model="trade._tradeAmount" placeholder="0.00" />
+                <el-input-number v-model="trade._tradeAmount" :precision="2" placeholder="0.00" />
               </el-form-item>
               <el-form-item label="手续费">
-                <el-input
+                <el-input-number
                   v-model="trade._rsrvStr2"
+                  :precision="2"
                   placeholder="0.00"
-                ></el-input>
+                ></el-input-number>
               </el-form-item>
             </el-form>
           </el-tab-pane>

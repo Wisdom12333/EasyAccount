@@ -27,17 +27,19 @@
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-import { onUnmounted } from "vue";
+import {useStore} from "vuex";
+import {onUnmounted} from "vue";
+import {useRouter} from "vue-router";
 
 const store = useStore();
+const router = useRouter();
 
 function logout() {
   console.log("logout");
-  store.dispatch("logout");
+  router.push({ name: "Login" }).then();
 }
 
-onUnmounted(() => logout());
+onUnmounted(() => store.dispatch("logout"));
 </script>
 
 <style scoped>
