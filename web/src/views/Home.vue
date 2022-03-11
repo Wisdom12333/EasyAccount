@@ -76,6 +76,7 @@
   <h1>{{}}</h1>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
+  <br/><br/><br/>
 
   <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
     <template #default>
