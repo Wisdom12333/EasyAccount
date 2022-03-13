@@ -219,22 +219,22 @@ import {ElNotification} from "element-plus";
 
 const store = useStore();
 const isAssets = ref(false); //是否显示资产详情
-const isTrade = ref(false); //是否显示记账
+let isTrade = ref(false); //是否显示记账
 const tabName = ref("1");
 const account = reactive({
   accountName: "",
   type: [],
   tag: String.constructor,
-  _balance: null,
+  _balance: 0,
   balance: Number.constructor,
   remark: null,
   isTotal: "1",
   removeTag: 0,
   userId: store.state.userId,
   tagName: String.constructor,
-  _rsrvStr1: null,
+  _rsrvStr1: 0,
   rsrvStr1: Number.constructor,
-  _rsrvStr2: null,
+  _rsrvStr2: 0,
   rsrvStr2: Number.constructor,
 }); //新建账户对象
 const trade = reactive({

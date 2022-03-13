@@ -9,7 +9,7 @@
       <el-input v-model="user.password" type="password" />
     </el-form-item>
     <el-form-item label="记住密码">
-      <input type="checkbox" />
+      <input v-model="rememberPwd" type="checkbox" />
     </el-form-item>
     <el-form-item>
       <el-space :size="10" spacer="|">
@@ -24,7 +24,7 @@
 <script setup>
 import axios from "axios";
 import {useStore} from "vuex";
-import {reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const store = useStore();
@@ -32,14 +32,21 @@ const router = useRouter();
 
 const user = reactive({
   username: "shirj",
-  password: "123",
+  password: null,
 });
+const rememberPwd = ref(false);
 
 function login() {
   axios.post("/user/login", user).then(
     (response) => {
       if (response.data.code === "0") {
         store.commit("setUserId", response.data.result.userId);
+        console.log(rememberPwd.value);
+        if(rememberPwd.value){
+          localStorage.setItem("pwd", user.password);
+        } else {
+          localStorage.removeItem("pwd");
+        }
         router.push({ name: "Home" });
       }
     },
@@ -48,6 +55,14 @@ function login() {
     }
   );
 }
+
+onMounted(()=>{
+  //之前存储了密码
+  if(localStorage.getItem("pwd")){
+    rememberPwd.value = true;
+    user.password = localStorage.getItem("pwd");
+  } else rememberPwd.value = false;
+})
 </script>
 
 <style scoped></style>

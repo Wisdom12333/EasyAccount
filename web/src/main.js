@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import {createApp} from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ElementPlus from "./plugins/element";
@@ -12,8 +12,8 @@ const tokenType = "Bearer ";
 // 添加请求拦截器
 axios.interceptors.request.use(
   (config) => {
-    if (localStorage.getItem("token")) {
-      config.headers.Authorization = tokenType + localStorage.getItem("token");
+    if (sessionStorage.getItem("token")) {
+      config.headers.Authorization = tokenType + sessionStorage.getItem("token");
     } else if (store.state.token) {
       config.headers.Authorization = tokenType + store.state.token;
     }
@@ -30,7 +30,7 @@ axios.interceptors.response.use(
     if (response.headers.authorization) {
       //后台返回了刷新的token,替换原有token
       store.state.token = response.headers.authorization;
-      localStorage.setItem("token", response.headers.authorization);
+      sessionStorage.setItem("token", response.headers.authorization);
     }
     return response;
   },
