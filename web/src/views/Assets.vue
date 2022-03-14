@@ -15,7 +15,10 @@
     </template>
   </el-card>
 
-  <el-dialog v-model="showAddAccount" title="新建账户">
+  <el-dialog v-model="showAddAccount" destroy-on-close>
+    <template #title>
+      <h1>新建账户</h1>
+    </template>
     <el-form :model="account" label-width="100px">
       <el-form-item label="账户类型">
         <el-cascader
@@ -60,9 +63,9 @@
       </div>
     </el-form>
     <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="showAddAccount = false">取消</el-button>
-        <el-button type="primary" @click="addAccount">提交</el-button>
+      <span>
+        <el-button @click="showAddAccount = false" style="font-weight: bold">取消</el-button>
+        <el-button type="primary" @click="addAccount" style="font-weight: bold">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -135,6 +138,7 @@ async function addAccount() {
       }
   );
   showAddAccount.value = false;
+
 }
 </script>
 

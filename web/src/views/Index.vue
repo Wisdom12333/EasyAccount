@@ -1,9 +1,10 @@
 <template>
   <el-container class="el-container" style="overflow:hidden;">
-    <el-header height="30px" style="background: #938989">
-      <div>
-        <router-link to="/Login" @click="logout()">退出登录</router-link>
-      </div>
+    <el-header height="50px" style="background: #fefefe;border-bottom:solid #dcdfe6 2px;">
+      <el-row :gutter="10" style="height: 100%">
+        <el-col :span="16"><el-image style="width: 120px;height: 100%" :src="imgUrl" fit="contain"></el-image></el-col>
+        <el-col :span="8"><el-button type="text" @click="logout()" style="float:right;height: 100%">退出登录</el-button></el-col>
+      </el-row>
     </el-header>
 
     <el-container>
@@ -35,11 +36,13 @@
 
 <script setup>
 import {useStore} from "vuex";
-import {onUnmounted} from "vue";
+import {onUnmounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const store = useStore();
 const router = useRouter();
+
+const imgUrl = ref(require("@/assets/logo.png"));
 
 function logout() {
   console.log("logout");
