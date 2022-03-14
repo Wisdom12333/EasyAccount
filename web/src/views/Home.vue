@@ -13,65 +13,8 @@
     我的资产
     <el-switch v-model="isAssets" />
   </h1>
-  <Assets v-if="isAssets"></Assets>
-  <div v-if="userInfo.accounts.length !== 0">
-    <div v-for="item in userInfo.accounts" :key="item.accountId">
-      <p>{{ item.tagName }},{{ item.balance / 100 }}</p>
-    </div>
-  </div>
-  <div v-else>
-    <h1>还没有任何账户！</h1>
-    <router-link to="">点击新增账户</router-link>
-    <br /><br /><br />
-    <el-form :model="account" label-width="140px">
-      <el-form-item label="账户类型">
-        <el-cascader
-            :options="accounts"
-            v-model="account.type"
-            :show-all-levels="false"
-        />
-      </el-form-item>
-      <div v-show="account.type[1]">
-        <el-form-item :label="acType === 4 ? '借款方名称' : '账户名称'">
-          <el-input
-            v-model="account.accountName"
-            :placeholder="
-              '请输入' + (acType === 4 ? '借款方' : '账户') + '名称（可不填）'
-            "
-          />
-        </el-form-item>
-        <el-form-item label="备注信息">
-          <el-input
-            v-model="account.remark"
-            placeholder="请输入备注信息（可不填）"
-          />
-        </el-form-item>
-        <template v-if="acType === 1">
-          <el-form-item label="信用额度">
-            <el-input-number v-model="account._rsrvStr1" :precision="2" :min="0" :controls="false" placeholder="0.00" />
-          </el-form-item>
-          <el-form-item label="当前欠款">
-            <el-input-number v-model="account._rsrvStr2" :precision="2" :min="0" :controls="false" placeholder="0.00" />
-          </el-form-item>
-          <el-form-item label="账户余额" style="display: none">
-            <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
-          </el-form-item>
-        </template>
-        <el-form-item v-else-if="acType === 4" label="借款金额">
-          <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
-        </el-form-item>
-        <el-form-item v-else label="账户余额">
-          <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
-        </el-form-item>
-        <el-form-item label="不计入可支配资产">
-          <el-switch v-model="account.isTotal" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="addAccount">提交</el-button>
-        </el-form-item>
-      </div>
-    </el-form>
-  </div>
+  <Assets v-if="isAssets" :user="userInfo"></Assets>
+  <el-divider></el-divider>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
   <br/><br/><br/>
@@ -194,7 +137,7 @@
         </el-tabs>
       </div>
       <div style="flex: auto">
-        <el-button @click="cancelTrade">取消</el-button>
+        <el-button @click="isTrade = false">取消</el-button>
         <el-button type="primary" @click="confirmTrade">确定</el-button>
       </div>
     </template>
@@ -207,30 +150,13 @@ import {useStore} from "vuex";
 import {computed, onMounted, reactive, ref} from "vue";
 import useElMessage from "@/hooks/useElMessage";
 import Assets from "@/views/Assets";
-import {accounts, acMap} from "@/static/accounts";
 import {expendMenu, incomeMenu} from "@/static/trade";
 import {ElNotification} from "element-plus";
 
 const store = useStore();
-const isAssets = ref(false); //是否显示资产详情
+const isAssets = ref(true); //是否显示资产详情
 let isTrade = ref(false); //是否显示记账
 const tabName = ref("1");
-const account = reactive({
-  accountName: "",
-  type: [],
-  tag: String.constructor,
-  _balance: 0,
-  balance: Number.constructor,
-  remark: null,
-  isTotal: "1",
-  removeTag: 0,
-  userId: store.state.userId,
-  tagName: String.constructor,
-  _rsrvStr1: 0,
-  rsrvStr1: Number.constructor,
-  _rsrvStr2: 0,
-  rsrvStr2: Number.constructor,
-}); //新建账户对象
 const trade = reactive({
   userId: store.state.userId,
   accountId: null,
@@ -261,11 +187,6 @@ let data = reactive({
 const userInfo = computed(() => {
   return data.userInfo;
 });
-//账户类型
-const acType = computed(() => {
-  if (account.type[0]) return parseInt(account.type[0].toString());
-  else return undefined;
-});
 //转入账户
 const transAccounts = computed(() => {
   return userInfo.value.accounts.filter((account) => {
@@ -289,36 +210,6 @@ const getUserInfo = async () => {
     }
   );
 };
-//新建账户
-async function addAccount() {
-  account.tag = account.type[1];
-  account.userId = store.state.userId;
-  if (acType.value === 1) {
-    account.rsrvStr1 = account._rsrvStr1 * 100;
-    account.rsrvStr2 = account._rsrvStr2 * 100;
-  }
-  account.balance =
-    acType.value === 1
-      ? account.rsrvStr1 - account.rsrvStr2
-      : account.balance * 100;
-  account.isTotal = account.isTotal ? "0" : "1";
-  account.tagName = acMap.get(account.tag).toString;
-  console.log(account);
-  axios.post("/account/addAccount", account).then(
-    () => {
-      ElNotification({
-        title: "成功",
-        message: "账户添加成功！",
-        type: "success",
-      });
-    },
-    (error) => {
-      console.log(error.response);
-    }
-  );
-}
-//关闭记账
-const cancelTrade = () => isTrade.value = false;
 //记账
 function confirmTrade(){
   trade.tradeType = tabName.value;

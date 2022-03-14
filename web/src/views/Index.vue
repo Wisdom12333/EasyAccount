@@ -23,7 +23,7 @@
         <el-menu-item index="4" route="/Index/Mine">我的</el-menu-item>
       </el-menu>
 
-      <el-main style="background: #99f8ff; padding-right: 0;padding-top: 0">
+      <el-main style="background: white; padding-right: 0;padding-top: 0">
         <el-scrollbar>
           <router-view />
         </el-scrollbar>

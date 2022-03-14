@@ -1,9 +1,6 @@
 <template>
-  <div>Mine</div>
   <el-space :fill="true" style="width: 100%">
-    <el-card>
-      <div>something.</div>
-    </el-card>
+    <div style="height: 50px"></div>
     <el-card>
       <template #header>
         <span style="font-size: 18px; font-weight: bold">设置</span>
@@ -115,5 +112,8 @@ const soldOut = () => {
 <style scoped>
 .link {
   font-size: 16px;
+}
+.el-card {
+  width: 80%;
 }
 </style>
