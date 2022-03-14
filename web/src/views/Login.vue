@@ -13,7 +13,7 @@
     </el-form-item>
     <el-form-item>
       <el-space :size="10" spacer="|">
-        <el-button type="primary" @click.prevent="login()">登陆</el-button>
+        <el-button type="primary" @click.prevent="login()" style="font-weight: bold">登陆</el-button>
         <el-check-tag checked  @click="router.push({ name: 'Register' })">没有账号？点击注册</el-check-tag>
       </el-space>
     </el-form-item>
@@ -32,7 +32,7 @@ const router = useRouter();
 
 const user = reactive({
   username: "shirj",
-  password: String.constructor,
+  password: "",
 });
 const rememberPwd = ref(false);
 
@@ -41,7 +41,6 @@ function login() {
     (response) => {
       if (response.data.code === "0") {
         store.commit("setUserId", response.data.result.userId);
-        console.log(rememberPwd.value);
         if(rememberPwd.value){
           localStorage.setItem("pwd", user.password);
         } else {

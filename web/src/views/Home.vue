@@ -311,6 +311,7 @@ async function addAccount() {
       ElNotification({
         title: "成功",
         message: "账户添加成功！",
+        type: "success",
       });
     },
     (error) => {
@@ -332,6 +333,7 @@ function confirmTrade(){
       ElNotification({
         title: "成功",
         message: "提交成功！",
+        type: "success",
       });
       getUserInfo();
       isTrade.value = false;

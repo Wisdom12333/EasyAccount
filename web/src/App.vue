@@ -14,4 +14,7 @@ body,
   margin: 0;
   height: 100%;
 }
+.body {
+  font-family: "PingFang SC", "Helvetica Neue", sans-serif;
+}
 </style>
