@@ -32,7 +32,7 @@ const router = useRouter();
 
 const user = reactive({
   username: "shirj",
-  password: null,
+  password: String.constructor,
 });
 const rememberPwd = ref(false);
 
