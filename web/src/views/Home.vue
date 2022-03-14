@@ -72,8 +72,6 @@
       </div>
     </el-form>
   </div>
-  <h1>{{}}</h1>
-  <h1>{{}}</h1>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
   <br/><br/><br/>
@@ -239,12 +237,12 @@ const trade = reactive({
   tradeTag: [],
   tradeName: String.constructor,
   tradeType: String.constructor,
-  _tradeAmount: null,
+  _tradeAmount: 0,
   tradeAmount: Number.constructor,
   remark: null,
   isReTrade: "0",
   rsrvStr1: null, //转账时转入账户标识
-  _rsrvStr2: null,
+  _rsrvStr2: 0,
   rsrvStr2: Number.constructor, //转账时手续费
 });
 let data = reactive({

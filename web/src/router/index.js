@@ -30,6 +30,7 @@ const routes = [
         path: "home",
         name: "Home",
         component: Home,
+        meta: { keepalive: true },
         children: [
           {
             path: "assets",

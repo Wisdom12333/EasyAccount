@@ -14,7 +14,9 @@
         default-active="1"
         text-color="#fff"
         :router="true"
+        style="font-weight: bold"
       >
+        <h1 style="font-size: 20px;padding-left: 20px;color: white;">EasyAccount</h1>
         <el-menu-item index="1" route="/Index/Home">首页</el-menu-item>
         <el-menu-item index="2" route="/Index/Statistics">统计</el-menu-item>
         <el-menu-item index="3" route="/Index/Budget">预算</el-menu-item>
@@ -51,5 +53,8 @@ onUnmounted(() => store.dispatch("logout"));
 .menu {
   width: 200px;
   min-height: 400px;
+}
+.el-menu-item {
+  font-size: 18px;
 }
 </style>

@@ -58,7 +58,10 @@ function submit() {
   //提交
   axios.post("/user/register", user).then(
     () => {
-      console.log("注册成功");
+      ElNotification({
+        type: "success",
+        message: "注册成功！"
+      });
       router.push({ name: "Login" });
     },
     (error) => {
