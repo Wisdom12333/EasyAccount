@@ -13,7 +13,7 @@
     我的资产
     <el-switch v-model="isAssets" />
   </h1>
-  <Assets v-if="isAssets" :user="userInfo"></Assets>
+  <Assets v-if="isAssets" :user="userInfo" @getUserInfo="getUserInfo"></Assets>
   <el-divider></el-divider>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
@@ -231,7 +231,6 @@ function confirmTrade(){
       console.log(error.response);
     }
   );
-  // isTrade.value = false;
 }
 onMounted(getUserInfo);
 

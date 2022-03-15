@@ -83,11 +83,12 @@ const store = useStore();
 
 const props = defineProps({
   user: Object,
-})
+});
+const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref(false);
 const account = reactive({
-  accountName: "",
+  accountName: null,
   type: [],
   tag: String.constructor,
   _balance: 0,
@@ -121,9 +122,9 @@ async function addAccount() {
   account.balance =
       acType.value === 1
           ? account.rsrvStr1 - account.rsrvStr2
-          : account.balance * 100;
+          : account._balance * 100;
   account.isTotal = account.isTotal ? "0" : "1";
-  account.tagName = acMap.get(account.tag).toString;
+  account.tagName = acMap.get(account.tag).toString();
   console.log(account);
   await axios.post("/account/addAccount", account).then(
       () => {
@@ -132,13 +133,15 @@ async function addAccount() {
           message: "账户添加成功！",
           type: "success",
         });
+        account.type = [];
+        account._balance = 0;
+        showAddAccount.value = false;
+        emit("getUserInfo");
       },
       (error) => {
         console.log(error.response);
       }
   );
-  showAddAccount.value = false;
-
 }
 </script>
 
