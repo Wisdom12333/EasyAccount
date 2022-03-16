@@ -17,7 +17,6 @@
   <el-divider></el-divider>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
-  <edit/>
   <br/><br/><br/>
 
   <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
@@ -180,7 +179,7 @@ let data = reactive({
   userInfo: {
     userId: store.state.userId,
     username: String.constructor,
-    accounts: Array.constructor,
+    accounts: [],
     recentTrade: Array.constructor,
     expend: Number.constructor,
     income: Number.constructor,

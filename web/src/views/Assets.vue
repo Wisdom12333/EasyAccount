@@ -6,18 +6,32 @@
         <el-button class="button" type="text" @click="showAddAccount = true">新增账户</el-button>
       </div>
     </template>
-    <el-empty v-if="user.accounts.length===0" description="还没有任何账户！"></el-empty>
-    <template v-else>
-      <el-row v-for="item in user.accounts" :key="item.accountId" :gutter="5">
-        <el-col :span="12">{{ item.tagName }}</el-col>
-        <el-col :span="8">余额:{{ item.balance / 100 }}</el-col>
-        <el-col :span="4">
-          <el-button type="primary" size="small" @click="cl">
-            <el-icon :size="15"><edit /></el-icon>
-          </el-button>
-        </el-col>
-      </el-row>
-    </template>
+    <div>
+      <el-table :data="user.accounts" :row-key="user.accounts.accountId" :show-header="false" style="width: 100%">
+        <el-table-column label="账户类型" prop="tagName" />
+        <el-table-column label="余额" >
+          <template #default="scope">
+            {{ scope.row.balance / 100 }}
+          </template>
+        </el-table-column>
+        <el-table-column align="right">
+          <template #default="scope">
+            <el-space :size="5" spacer="|">
+              <el-button size="small" icon="el-icon-edit-outline" @click=""></el-button>
+              <el-button size="small"
+                         type="danger"
+                         icon="el-icon-delete"
+                         @click="handleDelete(scope.row)">
+              </el-button>
+            </el-space>
+          </template>
+        </el-table-column>
+        <!--为空时展示内容-->
+        <template #empty>
+          <el-empty description="还没有任何账户！" style="height: 250px"></el-empty>
+        </template>
+      </el-table>
+    </div>
   </el-card>
 
   <el-button type="primary">
@@ -160,11 +174,15 @@ async function addAccount() {
       }
   );
 }
+function handleDelete(row){
+
+  console.log(row);
+}
 </script>
 
 <style scoped>
 .el-card {
-  width: 60%;
+  width: 75%;
 }
 .card-header {
   display: flex;

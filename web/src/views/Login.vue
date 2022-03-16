@@ -17,7 +17,6 @@
         <el-check-tag checked  @click="router.push({ name: 'Register' })">没有账号？点击注册</el-check-tag>
       </el-space>
     </el-form-item>
-    <h1>{{ store.state }}</h1>
   </el-form>
 </template>
 
