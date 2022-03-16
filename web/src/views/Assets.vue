@@ -8,24 +8,49 @@
     </template>
     <div>
       <el-table :data="user.accounts" :row-key="user.accounts.accountId" :show-header="false" style="width: 100%">
-        <el-table-column label="账户类型" prop="tagName" />
-        <el-table-column label="余额" >
-          <template #default="scope">
-            {{ scope.row.balance / 100 }}
-          </template>
-        </el-table-column>
-        <el-table-column align="right">
-          <template #default="scope">
-            <el-space :size="5" spacer="|">
-              <el-button size="small" icon="el-icon-edit-outline" @click=""></el-button>
-              <el-button size="small"
-                         type="danger"
-                         icon="el-icon-delete"
-                         @click="handleDelete(scope.row)">
-              </el-button>
-            </el-space>
-          </template>
-        </el-table-column>
+        <template #default="scope">
+          <el-popover effect="light" trigger="hover" placement="top" width="auto">
+            <template #default>
+              {{ scope.row }}
+            </template>
+            <template #reference>
+              <el-table-column label="账户类型">
+                <template #default="scope">
+                  <div style="display: flex; align-items: center">
+                    <span style="font-weight: bold;font-size: large">{{ scope.row.tagName }}</span>
+                    <span style="margin-left: 10px;color: gray">{{ scope.row.accountName }}</span>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column label="余额" >
+                <template #default="scope">
+                  {{ scope.row.balance / 100 }}
+                </template>
+              </el-table-column>
+              <el-table-column align="right">
+                <template #default="scope">
+                  <el-space :size="5" spacer="|">
+                    <el-button size="small" icon="el-icon-edit-outline" @click="showDelete = true"></el-button>
+                    <el-popover v-model:visible="showDelete" :width="200">
+                      <p>确定要删除这个账户吗？</p>
+                      <div style="text-align: right; margin: 0">
+                        <el-button size="small" type="text" @click="showDelete = false">取消</el-button>
+                        <el-button size="small" type="danger" @click="handleDelete(scope.row)">确定</el-button>
+                      </div>
+                      <template #reference>
+                        <el-button size="small"
+                                   type="danger"
+                                   icon="el-icon-delete"
+                                   @click="visible = true">
+                        </el-button>
+                      </template>
+                    </el-popover>
+                  </el-space>
+                </template>
+              </el-table-column>
+            </template>
+          </el-popover>
+        </template>
         <!--为空时展示内容-->
         <template #empty>
           <el-empty description="还没有任何账户！" style="height: 250px"></el-empty>
@@ -35,7 +60,7 @@
   </el-card>
 
   <el-button type="primary">
-    <el-icon si>
+    <el-icon>
       <edit />
     </el-icon>
   </el-button>
@@ -92,7 +117,7 @@
     <template #footer>
       <span>
         <el-button @click="showAddAccount = false" style="font-weight: bold">取消</el-button>
-        <el-button type="primary" @click="addAccount" style="font-weight: bold">提交</el-button>
+        <el-button type="primary" ref="buttonRef" v-click-outside="vClickOutside" style="font-weight: bold">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -115,6 +140,7 @@ const props = defineProps({
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref(false);
+const showDelete = ref(false);
 const account = reactive({
   accountName: null,
   type: [],
@@ -177,6 +203,7 @@ async function addAccount() {
 function handleDelete(row){
   axios.get(`/account/deleteAccount?accountId=${row.accountId}`).then(
       () => {
+        showDelete.value = false;
         ElNotification({
           title: "成功",
           message: "账户删除成功！",
