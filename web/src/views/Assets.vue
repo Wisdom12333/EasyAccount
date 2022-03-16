@@ -175,8 +175,20 @@ async function addAccount() {
   );
 }
 function handleDelete(row){
+  axios.get(`/account/deleteAccount?accountId=${row.accountId}`).then(
+      () => {
+        ElNotification({
+          title: "成功",
+          message: "账户删除成功！",
+          type: "success",
+        });
+        emit("getUserInfo");
+      },
+      (error) => {
+        errorNotification(error.response.data.message);
+      }
+  )
 
-  console.log(row);
 }
 </script>
 

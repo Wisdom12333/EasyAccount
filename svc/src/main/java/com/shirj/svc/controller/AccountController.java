@@ -1,15 +1,13 @@
 package com.shirj.svc.controller;
 
 import com.shirj.api.core.controller.BaseController;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.service.IAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
@@ -27,16 +25,21 @@ public class AccountController extends BaseController {
     }
 
     @PostMapping("/addAccount")
-    public ResponseEntity<String> addAccount(@RequestBody Account account) {
+    public ResponseEntity<ResultDTO> addAccount(@RequestBody Account account) {
         try {
             boolean flag = iAccountService.save(account);
             if (flag) {
-                return returnOk(OK_MESSAGE);
+                return returnOk();
             } else {
                 return returnException();
             }
         } catch (Exception e) {
             return returnException();
         }
+    }
+
+    @GetMapping("/deleteAccount")
+    public ResponseEntity<ResultDTO> deleteAccount(@RequestParam Long accountId) {
+        return iAccountService.removeById(accountId) ? returnOk() : returnException();
     }
 }

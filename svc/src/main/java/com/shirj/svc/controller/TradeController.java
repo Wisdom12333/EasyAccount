@@ -1,6 +1,7 @@
 package com.shirj.svc.controller;
 
 import com.shirj.api.core.controller.BaseController;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +28,11 @@ public class TradeController extends BaseController {
     }
 
     @PostMapping("book")
-    public ResponseEntity<String> bookTrade(@RequestBody Trade trade) {
+    public ResponseEntity<ResultDTO> bookTrade(@RequestBody Trade trade) {
         try {
             boolean flag = iTradeService.save(trade);
             if (flag) {
-                return returnOk(OK_MESSAGE);
+                return returnOk();
             } else {
                 return returnException();
             }

@@ -94,7 +94,7 @@ const soldOut = () => {
     type: "warning",
   })
     .then(() => {
-      axios.get("/user/soldOut?userId=" + store.state.userId).then(
+      axios.get(`/user/soldOut?userId=${store.state.userId}`).then(
         () => {
           ElMessage({
             type: "success",

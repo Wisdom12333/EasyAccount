@@ -70,7 +70,7 @@ function submit() {
   );
 }
 function checkUsername() {
-  axios.get("/user/checkUsername?username=" + user.username).then(
+  axios.get(`/user/checkUsername?username=${user.username}`).then(
     () => usernameCheck.value = true,
     () => usernameCheck.value = false,
   );

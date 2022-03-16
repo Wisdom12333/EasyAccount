@@ -125,7 +125,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         //修改用户REMOVE_TAG为1
         User user = getBaseMapper().getById(userId);
         user.setRemoveTag("1");
-        user.setCreateTime(now());
+        user.setUpdateTime(now());
         user.setEndTime(now());
         return super.updateById(user);
     }

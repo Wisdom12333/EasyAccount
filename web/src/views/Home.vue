@@ -201,7 +201,7 @@ const transAccounts = computed(() => {
 //获取用户信息
 const getUserInfo = async () => {
   console.log("getUserInfo");
-  axios.get("/user/userInfo?userId=" + store.state.userId).then(
+  axios.get(`/user/userInfo?userId=${store.state.userId}`).then(
     (response) => {
       data.userInfo = response.data.result.userInfo;
     },

@@ -52,11 +52,11 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<ResultDTO> register(@RequestBody User user) {
         try {
             boolean flag = iUserService.save(user);
             if (flag) {
-                return returnOk("success");
+                return returnOk();
             } else {
                 return returnException();
             }
@@ -69,12 +69,12 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/checkUsername")
-    public ResponseEntity<Void> checkUsername(@RequestParam String username) {
+    public ResponseEntity<ResultDTO> checkUsername(@RequestParam String username) {
 
         if (iUserService.checkUsername(username)) {
-            return returnOk(null);
+            return returnOk();
         } else {
-            return returnException(null);
+            return returnException();
         }
 
     }
@@ -91,16 +91,16 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody User user) {
+    public ResponseEntity<ResultDTO> update(@RequestBody User user) {
         try {
-            return iUserService.update(user) ? returnOk(null) : returnException();
+            return iUserService.update(user) ? returnOk() : returnException();
         } catch (Exception e) {
             return returnException();
         }
     }
 
     @GetMapping("/soldOut")
-    public ResponseEntity<String> soldOut(@RequestParam Long userId) {
-        return iUserService.soldOut(userId) ? returnOk(null) : returnException();
+    public ResponseEntity<ResultDTO> soldOut(@RequestParam Long userId) {
+        return iUserService.soldOut(userId) ? returnOk() : returnException();
     }
 }
