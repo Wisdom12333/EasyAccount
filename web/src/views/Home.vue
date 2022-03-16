@@ -17,6 +17,7 @@
   <el-divider></el-divider>
   <el-button @click="click()">clicmk</el-button>
   <el-button @click="isTrade = true">记一笔</el-button>
+  <edit/>
   <br/><br/><br/>
 
   <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
@@ -24,8 +25,8 @@
       <div>
         <el-tabs v-model="tabName" type="card" :stretch="true">
           <el-tab-pane label="支出" name="1">
-            <el-form :model="trade" label-width="100px">
-              <el-form-item label="账户">
+            <el-form :model="trade" label-width="100px" ref="tradeForm">
+              <el-form-item label="账户" prop="accountId">
                 <el-select
                   v-model="trade.accountId"
                   placeholder="请选择支出账户"
@@ -41,7 +42,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="消费类型">
+              <el-form-item label="消费类型" prop="tradeTag">
                 <el-cascader
                     :options="expendMenu"
                     v-model="trade.tradeTag"
@@ -49,17 +50,17 @@
                     placeholder="请选择消费类型"
                 />
               </el-form-item>
-              <el-form-item label="金额">
+              <el-form-item label="金额" prop="tradeAmount">
                 <el-input-number v-model="trade._tradeAmount" :precision="2" :min="0" :controls="false" placeholder="0.00" />
               </el-form-item>
-              <el-form-item label="备注">
+              <el-form-item label="备注" prop="remark">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="收入" name="2">
-            <el-form :model="trade" label-width="100px">
-              <el-form-item label="账户">
+            <el-form :model="trade" label-width="100px" ref="tradeForm">
+              <el-form-item label="账户" prop="accountId">
                 <el-select
                   v-model="trade.accountId"
                   placeholder="请选择收入账户"
@@ -75,7 +76,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="收入类型">
+              <el-form-item label="收入类型" prop="tradeTag">
                 <el-cascader
                     :options="incomeMenu"
                     v-model="trade.tradeTag"
@@ -83,18 +84,18 @@
                     placeholder="请选择收入类型"
                 />
               </el-form-item>
-              <el-form-item label="金额">
+              <el-form-item label="金额" prop="tradeAmount">
                 <el-input-number v-model="trade._tradeAmount" :precision="2" :min="0" :controls="false" placeholder="0.00" />
               </el-form-item>
-              <el-form-item label="备注">
+              <el-form-item label="备注" prop="remark">
                 <el-input v-model="trade.remark" placeholder="请输入备注信息" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
 <!--          todo 可以优化为组件-->
           <el-tab-pane label="转账" name="3">
-            <el-form label-width="100px">
-              <el-form-item label="转出账户">
+            <el-form label-width="100px" ref="tradeForm">
+              <el-form-item label="转出账户" prop="accountId">
                 <el-select
                   v-model="trade.accountId"
                   placeholder="请选择转出账户"
@@ -110,7 +111,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="转入账户">
+              <el-form-item label="转入账户" prop="rsrvStr1">
                 <el-select
                   v-model="trade.rsrvStr1"
                   placeholder="请选择转入账户"
@@ -126,11 +127,14 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="金额">
+              <el-form-item label="金额" prop="tradeAmount">
                 <el-input-number v-model="trade._tradeAmount" :precision="2" :min="0" :controls="false" placeholder="0.00" />
               </el-form-item>
-              <el-form-item label="手续费">
+              <el-form-item label="手续费" prop="rsrvStr2">
                 <el-input-number v-model="trade._rsrvStr2" :precision="2" :min="0" :controls="false" placeholder="0.00"/>
+              </el-form-item>
+              <el-form-item label="备注" prop="remark">
+                <el-input v-model="trade.remark" placeholder="请输入备注信息" />
               </el-form-item>
             </el-form>
           </el-tab-pane>
@@ -152,6 +156,7 @@ import useElMessage from "@/hooks/useElMessage";
 import Assets from "@/views/Assets";
 import {expendMenu, incomeMenu} from "@/static/trade";
 import {ElNotification} from "element-plus";
+import errorNotification from "@/hooks/errorNotification";
 
 const store = useStore();
 const isAssets = ref(true); //是否显示资产详情
@@ -224,11 +229,13 @@ function confirmTrade(){
         message: "提交成功！",
         type: "success",
       });
+      //重置表单
+      this.$refs.tradeForm.resetFields();
       getUserInfo();
       isTrade.value = false;
     },
     (error) => {
-      console.log(error.response);
+      errorNotification(error.response.data.message);
     }
   );
 }

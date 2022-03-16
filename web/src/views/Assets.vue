@@ -9,18 +9,31 @@
     <el-empty v-if="user.accounts.length===0" description="还没有任何账户！"></el-empty>
     <template v-else>
       <el-row v-for="item in user.accounts" :key="item.accountId" :gutter="5">
-        <el-col :span="16">{{ item.tagName }}</el-col>
+        <el-col :span="12">{{ item.tagName }}</el-col>
         <el-col :span="8">余额:{{ item.balance / 100 }}</el-col>
+        <el-col :span="4">
+          <el-button type="primary" size="small" @click="cl">
+            <el-icon :size="15"><edit /></el-icon>
+          </el-button>
+        </el-col>
       </el-row>
     </template>
   </el-card>
+
+  <el-button type="primary">
+    <el-icon si>
+      <edit />
+    </el-icon>
+  </el-button>
+
+
 
   <el-dialog v-model="showAddAccount" destroy-on-close>
     <template #title>
       <h1>新建账户</h1>
     </template>
-    <el-form :model="account" label-width="100px">
-      <el-form-item label="账户类型">
+    <el-form :model="account" label-width="100px" ref="accountForm">
+      <el-form-item label="账户类型" prop="type">
         <el-cascader
             :options="accounts"
             v-model="account.type"
@@ -28,36 +41,36 @@
         />
       </el-form-item>
       <div v-show="account.type[1]">
-        <el-form-item :label="acType === 4 ? '借款方名称' : '账户名称'">
+        <el-form-item :label="acType === 4 ? '借款方名称' : '账户名称'" prop="accountName">
           <el-input
               v-model="account.accountName"
               :placeholder="'请输入' + (acType === 4 ? '借款方' : '账户') + '名称（可不填）'"
           />
         </el-form-item>
-        <el-form-item label="备注信息">
+        <el-form-item label="备注信息" prop="remark">
           <el-input
               v-model="account.remark"
               placeholder="请输入备注信息（可不填）"
           />
         </el-form-item>
         <template v-if="acType === 1">
-          <el-form-item label="信用额度">
+          <el-form-item label="信用额度" prop="rsrvStr1">
             <el-input-number v-model="account._rsrvStr1" :precision="2" :min="0" :controls="false" placeholder="0.00" />
           </el-form-item>
-          <el-form-item label="当前欠款">
+          <el-form-item label="当前欠款" prop="rsrvStr2">
             <el-input-number v-model="account._rsrvStr2" :precision="2" :min="0" :controls="false" placeholder="0.00" />
           </el-form-item>
-          <el-form-item label="账户余额" style="display: none">
+          <el-form-item label="账户余额" style="display: none" prop="balance">
             <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
           </el-form-item>
         </template>
-        <el-form-item v-else-if="acType === 4" label="借款金额">
+        <el-form-item v-else-if="acType === 4" label="借款金额" prop="balance">
           <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
         </el-form-item>
-        <el-form-item v-else label="账户余额">
+        <el-form-item v-else label="账户余额" prop="balance">
           <el-input-number v-model="account._balance" :precision="2" :min="0" :controls="false" placeholder="0.00" />
         </el-form-item>
-        <el-form-item label="不计入可支配资产" label-width="150px">
+        <el-form-item label="不计入可支配资产" label-width="150px" prop="isTotal">
           <el-switch v-model="account.isTotal" />
         </el-form-item>
       </div>
@@ -78,6 +91,7 @@ import {useStore} from "vuex";
 import {accounts, acMap} from "@/static/accounts";
 import axios from "axios";
 import {ElNotification} from "element-plus";
+import errorNotification from "@/hooks/errorNotification";
 
 const store = useStore();
 
@@ -111,6 +125,9 @@ const acType = computed(() => {
   else return undefined;
 });
 
+const cl = () => {
+  console.log('log');
+}
 //新建账户
 async function addAccount() {
   account.tag = account.type[1];
@@ -133,13 +150,13 @@ async function addAccount() {
           message: "账户添加成功！",
           type: "success",
         });
-        account.type = [];
-        account._balance = 0;
+        //重置表单
+        this.$refs.accountForm.resetFields();
         showAddAccount.value = false;
         emit("getUserInfo");
       },
       (error) => {
-        console.log(error.response);
+        errorNotification(error.response.data.message);
       }
   );
 }

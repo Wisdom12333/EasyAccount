@@ -5,6 +5,7 @@ import ElementPlus from "./plugins/element";
 import store from "./store";
 import axios from "axios";
 import useElMessage from "@/hooks/useElMessage";
+import * as ElIcons from '@element-plus/icons'
 
 //配置基础URL
 axios.defaults.baseURL = "http://localhost:8181";
@@ -43,4 +44,8 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-createApp(App).use(store).use(router).use(ElementPlus).mount("#app");
+const app = createApp(App).use(store).use(router).use(ElementPlus);
+for (const name in ElIcons){
+    app.component(name,ElIcons[name]);
+}
+app.mount("#app");

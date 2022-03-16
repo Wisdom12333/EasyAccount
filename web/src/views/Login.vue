@@ -26,7 +26,7 @@ import axios from "axios";
 import {useStore} from "vuex";
 import {onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
-import {ElNotification} from "element-plus";
+import errorNotification from "@/hooks/errorNotification";
 
 const store = useStore();
 const router = useRouter();
@@ -51,11 +51,8 @@ function login() {
       }
     },
     (error) => {
-      ElNotification({
-        type: "error",
-        message: error.response.data.message,
-      });
-    }
+      errorNotification(error.response.data.message);
+    },
   );
 }
 
