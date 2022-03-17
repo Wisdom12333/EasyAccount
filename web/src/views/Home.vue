@@ -1,22 +1,25 @@
 <template>
-  <h1 style="font-size: 30px">EasyAccount</h1>
-  <hr />
-  <p>
-    本月支出：¥{{ userInfo.expend ? userInfo.expend : "0.00" }}， 本月收入：¥{{
-      userInfo.income ? userInfo.income : "0.00"
-    }}， 本月结余：¥{{
-      (userInfo.income ? userInfo.income : 0.0) -
-      (userInfo.expend ? userInfo.expend : 0.0)
-    }}
-  </p>
+  <div class="data-header">
+    <p style="margin-left: 20px">
+      本月支出：¥{{ data.userInfo.expend ? data.userInfo.expend : "0.00" }}， 本月收入：¥{{
+        data.userInfo.income ? data.userInfo.income : "0.00"
+      }}， 本月结余：¥{{
+        (data.userInfo.income ? data.userInfo.income : 0.0) -
+        (data.userInfo.expend ? data.userInfo.expend : 0.0)
+      }}
+    </p>
+    <el-button type="success" icon="el-icon-edit" @click="isTrade = true" style="font-weight: bold; margin-right: 20px">记一笔</el-button>
+  </div>
+
+  <el-divider></el-divider>
+
   <h1>
     我的资产
     <el-switch v-model="isAssets" />
   </h1>
-  <Assets v-if="isAssets" :user="userInfo" @getUserInfo="getUserInfo"></Assets>
+  <Assets v-if="isAssets" :user="data.userInfo" @getUserInfo="getUserInfo"></Assets>
   <el-divider></el-divider>
   <el-button @click="click()">clicmk</el-button>
-  <el-button @click="isTrade = true">记一笔</el-button>
   <br/><br/><br/>
 
   <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
@@ -31,7 +34,7 @@
                   placeholder="请选择支出账户"
                 >
                   <el-option
-                    v-for="item in userInfo.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -65,7 +68,7 @@
                   placeholder="请选择收入账户"
                 >
                   <el-option
-                    v-for="item in userInfo.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -100,7 +103,7 @@
                   placeholder="请选择转出账户"
                 >
                   <el-option
-                    v-for="item in userInfo.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -139,7 +142,7 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-      <div style="flex: auto">
+      <div style="padding-left: 50%;padding-top: 200px">
         <el-button @click="isTrade = false">取消</el-button>
         <el-button type="primary" @click="confirmTrade">确定</el-button>
       </div>
@@ -187,13 +190,9 @@ let data = reactive({
   }, //用户基本信息
 });
 
-//用户信息
-const userInfo = computed(() => {
-  return data.userInfo;
-});
 //转入账户
 const transAccounts = computed(() => {
-  return userInfo.value.accounts.filter((account) => {
+  return data.userInfo.accounts.filter((account) => {
     return account.accountId !== trade.accountId;
   });
 });
@@ -241,8 +240,25 @@ function confirmTrade(){
 onMounted(getUserInfo);
 
 const click = () => {
-  console.log(!!userInfo.value.expend);
+  console.log(!!data.userInfo.expend);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.data-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 75%;
+  height: 100px;
+  margin-top: 30px;
+  border-radius: 25px;
+  background-color:  #a0cfff;
+}
+.el-select,
+.el-input__inner,
+.el-input-number,
+.el-input {
+  width: 200px;
+}
+</style>
