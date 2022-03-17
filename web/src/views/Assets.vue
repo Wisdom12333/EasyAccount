@@ -7,50 +7,52 @@
       </div>
     </template>
     <div>
-      <el-table :data="user.accounts" :row-key="user.accounts.accountId" :show-header="false" style="width: 100%">
-        <template #default="scope">
-          <el-popover effect="light" trigger="hover" placement="top" width="auto">
-            <template #default>
-              {{ scope.row }}
-            </template>
-            <template #reference>
-              <el-table-column label="账户类型">
-                <template #default="scope">
-                  <div style="display: flex; align-items: center">
-                    <span style="font-weight: bold;font-size: large">{{ scope.row.tagName }}</span>
-                    <span style="margin-left: 10px;color: gray">{{ scope.row.accountName }}</span>
-                  </div>
+      <el-table
+          :data="user.accounts"
+          :row-key="user.accounts.accountId"
+          :show-header="false"
+          style="width: 100%"
+          @expand-change="cl"
+      >
+        <el-table-column type="expand">
+          <template #default="scope">
+            <p>账户名称: {{ scope.row.accountName }}</p>
+            <p>备注: {{ scope.row.tagName }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column label="账户类型">
+          <template #default="scope">
+            <div style="display: flex; align-items: center">
+              <span style="font-weight: bold;font-size: large">{{ scope.row.tagName }}</span>
+              <span style="margin-left: 10px;color: gray">{{ scope.row.accountName }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="余额">
+          <template #default="scope">
+            {{ scope.row.balance / 100 }}
+          </template>
+        </el-table-column>
+        <el-table-column align="right">
+          <template #default="scope">
+            <el-space :size="5" spacer="|">
+              <el-button size="small" icon="el-icon-edit-outline" @click=""></el-button>
+              <el-popover placement="bottom" :width="200">
+                <p>确定要删除这个账户吗？</p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="small" type="danger" @click="handleDelete(scope.row)">确定</el-button>
+                </div>
+                <template #reference>
+                  <el-button size="small"
+                             type="danger"
+                             icon="el-icon-delete"
+                             @click="">
+                  </el-button>
                 </template>
-              </el-table-column>
-              <el-table-column label="余额" >
-                <template #default="scope">
-                  {{ scope.row.balance / 100 }}
-                </template>
-              </el-table-column>
-              <el-table-column align="right">
-                <template #default="scope">
-                  <el-space :size="5" spacer="|">
-                    <el-button size="small" icon="el-icon-edit-outline" @click="showDelete = true"></el-button>
-                    <el-popover v-model:visible="showDelete" :width="200">
-                      <p>确定要删除这个账户吗？</p>
-                      <div style="text-align: right; margin: 0">
-                        <el-button size="small" type="text" @click="showDelete = false">取消</el-button>
-                        <el-button size="small" type="danger" @click="handleDelete(scope.row)">确定</el-button>
-                      </div>
-                      <template #reference>
-                        <el-button size="small"
-                                   type="danger"
-                                   icon="el-icon-delete"
-                                   @click="visible = true">
-                        </el-button>
-                      </template>
-                    </el-popover>
-                  </el-space>
-                </template>
-              </el-table-column>
-            </template>
-          </el-popover>
-        </template>
+              </el-popover>
+            </el-space>
+          </template>
+        </el-table-column>
         <!--为空时展示内容-->
         <template #empty>
           <el-empty description="还没有任何账户！" style="height: 250px"></el-empty>
@@ -58,13 +60,6 @@
       </el-table>
     </div>
   </el-card>
-
-  <el-button type="primary">
-    <el-icon>
-      <edit />
-    </el-icon>
-  </el-button>
-
 
 
   <el-dialog v-model="showAddAccount" destroy-on-close>
@@ -117,7 +112,7 @@
     <template #footer>
       <span>
         <el-button @click="showAddAccount = false" style="font-weight: bold">取消</el-button>
-        <el-button type="primary" ref="buttonRef" v-click-outside="vClickOutside" style="font-weight: bold">提交</el-button>
+        <el-button type="primary" @click="addAccount" style="font-weight: bold">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -140,7 +135,6 @@ const props = defineProps({
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref(false);
-const showDelete = ref(false);
 const account = reactive({
   accountName: null,
   type: [],
@@ -165,8 +159,13 @@ const acType = computed(() => {
   else return undefined;
 });
 
-const cl = () => {
-  console.log('log');
+function cl(row,num){
+  if(num.length===1){
+    console.log("展开");
+  }else {
+    console.log("关闭")
+  }
+  console.log(row,num);
 }
 //新建账户
 async function addAccount() {
@@ -203,7 +202,6 @@ async function addAccount() {
 function handleDelete(row){
   axios.get(`/account/deleteAccount?accountId=${row.accountId}`).then(
       () => {
-        showDelete.value = false;
         ElNotification({
           title: "成功",
           message: "账户删除成功！",

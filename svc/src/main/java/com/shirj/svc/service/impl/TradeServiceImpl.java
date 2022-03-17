@@ -6,6 +6,7 @@ import com.shirj.api.dao.TradeDAO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
+import com.shirj.pub.consts.AccountConst;
 import com.shirj.pub.consts.CommConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,21 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             //支出
             case 1: {
                 account.setBalance(balance - tradeAmount);
+                //如果是信用账户,还需要修改欠款
+                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                    long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
+                    account.setRsrvStr2(String.valueOf(rsrvStr2 + tradeAmount));
+                }
                 break;
             }
             //收入
             case 2: {
                 account.setBalance(balance + tradeAmount);
+                //如果是信用账户,还需要修改欠款
+                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                    long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
+                    account.setRsrvStr2(String.valueOf(rsrvStr2 - tradeAmount));
+                }
                 break;
             }
             //转账

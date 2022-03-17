@@ -49,10 +49,10 @@ export const accounts = [
         value: "12",
         label: "京东白条",
       },
-      {
-        value: "13",
-        label: "分期付款",
-      },
+      // {
+      //   value: "13",
+      //   label: "分期付款",
+      // },
       {
         value: "14",
         label: "其他",

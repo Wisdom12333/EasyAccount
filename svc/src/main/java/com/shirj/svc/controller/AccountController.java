@@ -40,6 +40,6 @@ public class AccountController extends BaseController {
 
     @GetMapping("/deleteAccount")
     public ResponseEntity<ResultDTO> deleteAccount(@RequestParam Long accountId) {
-        return iAccountService.removeById(accountId) ? returnOk() : returnException();
+        return iAccountService.deleteAccount(accountId) ? returnOk() : returnException();
     }
 }

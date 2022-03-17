@@ -83,7 +83,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         List<Account> accounts = accountDAO.selectList(
                 new QueryWrapper<Account>().lambda()
                         .eq(Account::getUserId, userId)
-                        .eq(Account::getRemoveTag, "0"));
+                        .eq(Account::getRemoveTag, CommConst.VALID));
         List<Trade> trades = tradeDAO.selectList(
                 new QueryWrapper<Trade>().lambda()
                         .eq(Trade::getUserId, userId)
@@ -113,7 +113,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         //根据Id更新非空字段
         LambdaUpdateWrapper<User> wrapper = new UpdateWrapper<User>().lambda()
                 .eq(User::getUserId, entity.getUserId())
-                .eq(User::getRemoveTag, "0")
+                .eq(User::getRemoveTag, CommConst.VALID)
                 .set(StringUtils.isNotBlank(entity.getPassword()), User::getPassword, entity.getPassword())
                 .set(StringUtils.isNotBlank(entity.getEMail()), User::getEMail, entity.getEMail())
                 .set(User::getUpdateTime, now());
@@ -124,7 +124,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
     public boolean soldOut(Long userId) {
         //修改用户REMOVE_TAG为1
         User user = getBaseMapper().getById(userId);
-        user.setRemoveTag("1");
+        user.setRemoveTag(CommConst.INVALID);
         user.setUpdateTime(now());
         user.setEndTime(now());
         return super.updateById(user);
