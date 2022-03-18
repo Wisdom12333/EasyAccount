@@ -13,6 +13,7 @@ log
 
 ### NPM ###
 /web/node_modules
+/web-old/node_modules
 
 ### MAC ###
 *.DS_Store

@@ -1,9 +1,11 @@
-import {createStore} from "vuex";
+import { createStore } from "vuex";
 import router from "@/router";
 
 export default createStore({
   state: {
-    token: sessionStorage.getItem("token") ? sessionStorage.getItem("token") : "",
+    token: sessionStorage.getItem("token")
+      ? sessionStorage.getItem("token")
+      : "",
     userId: sessionStorage.getItem("userId")
       ? sessionStorage.getItem("userId")
       : "",

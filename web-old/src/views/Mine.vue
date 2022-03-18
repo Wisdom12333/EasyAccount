@@ -33,9 +33,9 @@
 </template>
 
 <script setup>
-import {ElMessage, ElMessageBox} from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "axios";
-import {useStore} from "vuex";
+import { useStore } from "vuex";
 
 const store = useStore();
 //新的用户信息
@@ -84,7 +84,7 @@ const Update = (type) => {
         message: "修改成功!",
       });
     })
-    .catch(()=>{});
+    .catch(() => {});
 };
 //注销用户
 const soldOut = () => {
@@ -105,7 +105,7 @@ const soldOut = () => {
         () => {}
       );
     })
-    .catch(()=>{});
+    .catch(() => {});
 };
 </script>
 

@@ -1,11 +1,11 @@
-import {createApp} from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import ElementPlus from "./plugins/element";
 import store from "./store";
 import axios from "axios";
 import useElMessage from "@/hooks/useElMessage";
-import * as ElIcons from '@element-plus/icons'
+import * as ElIcons from "@element-plus/icons";
 
 //配置基础URL
 axios.defaults.baseURL = "http://localhost:8181";
@@ -14,7 +14,8 @@ const tokenType = "Bearer ";
 axios.interceptors.request.use(
   (config) => {
     if (sessionStorage.getItem("token")) {
-      config.headers.Authorization = tokenType + sessionStorage.getItem("token");
+      config.headers.Authorization =
+        tokenType + sessionStorage.getItem("token");
     } else if (store.state.token) {
       config.headers.Authorization = tokenType + store.state.token;
     }
@@ -45,7 +46,7 @@ axios.interceptors.response.use(
   }
 );
 const app = createApp(App).use(store).use(router).use(ElementPlus);
-for (const name in ElIcons){
-    app.component(name,ElIcons[name]);
+for (const name in ElIcons) {
+  app.component(name, ElIcons[name]);
 }
 app.mount("#app");
