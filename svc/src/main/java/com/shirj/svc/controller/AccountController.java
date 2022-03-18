@@ -5,6 +5,7 @@ import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.service.IAccountService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +42,13 @@ public class AccountController extends BaseController {
     @GetMapping("/deleteAccount")
     public ResponseEntity<ResultDTO> deleteAccount(@RequestParam Long accountId) {
         return iAccountService.deleteAccount(accountId) ? returnOk() : returnException();
+    }
+
+    @GetMapping("/queryAccount")
+    public ResponseEntity<ResultDTO> queryAccount(@RequestParam Long accountId) {
+        Account account = iAccountService.getById(accountId);
+        String result = StringUtils.isBlank(account.getAccountName()) ?
+                account.getTagName() : account.getAccountName();
+        return returnOk(result);
     }
 }

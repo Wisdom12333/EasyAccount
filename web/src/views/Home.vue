@@ -1,24 +1,38 @@
 <template>
   <div class="data-header">
     <p style="margin-left: 20px">
-      本月支出：¥{{ data.userInfo.expend ? data.userInfo.expend : "0.00" }}， 本月收入：¥{{
-        data.userInfo.income ? data.userInfo.income : "0.00"
-      }}， 本月结余：¥{{
-        (data.userInfo.income ? data.userInfo.income : 0.0) -
-        (data.userInfo.expend ? data.userInfo.expend : 0.0)
-      }}
+      <span style="font-size: 18px;font-weight: bold">
+        本月支出：¥{{ data.userInfo.expend ? data.userInfo.expend : "0.00" }}
+      </span>
+      <span style="font-size: 14px">
+        收入：¥{{data.userInfo.income ? data.userInfo.income : "0.00" }}
+      </span>
+      <span style="font-size: 14px">
+        结余：¥{{
+          (data.userInfo.income ? data.userInfo.income : 0.0) -
+          (data.userInfo.expend ? data.userInfo.expend : 0.0)
+        }}
+      </span>
     </p>
     <el-button type="success" icon="el-icon-edit" @click="isTrade = true" style="font-weight: bold; margin-right: 20px">记一笔</el-button>
   </div>
 
   <el-divider></el-divider>
 
-  <h1>
-    我的资产
-    <el-switch v-model="isAssets" />
-  </h1>
-  <Assets v-if="isAssets" :user="data.userInfo" @getUserInfo="getUserInfo"></Assets>
+  <div>
+    <h1>
+      我的资产
+      <el-switch v-model="isAssets" />
+    </h1>
+    <Assets v-if="isAssets" :user="data.userInfo" @getUserInfo="getUserInfo"></Assets>
+  </div>
+
   <el-divider></el-divider>
+
+  <div>
+    <Trades :recent-trade="data.userInfo.recentTrade"></Trades>
+  </div>
+
   <el-button @click="click()">clicmk</el-button>
   <br/><br/><br/>
 
@@ -96,7 +110,7 @@
           </el-tab-pane>
 <!--          todo 可以优化为组件-->
           <el-tab-pane label="转账" name="3">
-            <el-form label-width="100px" ref="tradeForm">
+            <el-form :model="trade" label-width="100px" ref="tradeForm">
               <el-form-item label="转出账户" prop="accountId">
                 <el-select
                   v-model="trade.accountId"
@@ -144,7 +158,7 @@
       </div>
       <div style="padding-left: 50%;padding-top: 200px">
         <el-button @click="isTrade = false">取消</el-button>
-        <el-button type="primary" @click="confirmTrade">确定</el-button>
+        <el-button type="primary" @click="confirmTrade(tradeForm)">确定</el-button>
       </div>
     </template>
   </el-drawer>
@@ -155,15 +169,17 @@ import axios from "axios";
 import {useStore} from "vuex";
 import {computed, onMounted, reactive, ref} from "vue";
 import useElMessage from "@/hooks/useElMessage";
-import Assets from "@/views/Assets";
+import Assets from "@/components/Assets";
 import {expendMenu, incomeMenu} from "@/static/trade";
 import {ElNotification} from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
+import Trades from "@/components/Trades";
 
 const store = useStore();
 const isAssets = ref(true); //是否显示资产详情
 let isTrade = ref(false); //是否显示记账
 const tabName = ref("1");
+const tradeForm = ref();//记账表单
 const trade = reactive({
   userId: store.state.userId,
   accountId: null,
@@ -183,7 +199,7 @@ let data = reactive({
     userId: store.state.userId,
     username: String.constructor,
     accounts: [],
-    recentTrade: Array.constructor,
+    recentTrade: [],
     expend: Number.constructor,
     income: Number.constructor,
     menu: Array.constructor,
@@ -214,27 +230,28 @@ const getUserInfo = async () => {
   );
 };
 //记账
-function confirmTrade(){
+async function confirmTrade(tradeForm) {
   trade.tradeType = tabName.value;
   trade.tradeName = trade.tradeTag.slice(-1).pop();
   trade.tradeAmount = trade._tradeAmount * 100;
   trade.rsrvStr2 = trade._rsrvStr2 * 100;
   console.log(trade);
-  axios.post("/trade/book", trade).then(
-    () => {
-      ElNotification({
-        title: "成功",
-        message: "提交成功！",
-        type: "success",
-      });
-      //重置表单
-      this.$refs.tradeForm.resetFields();
-      getUserInfo();
-      isTrade.value = false;
-    },
-    (error) => {
-      errorNotification(error.response.data.message);
-    }
+  await axios.post("/trade/book", trade).then(
+      () => {
+        //重置表单
+        tradeForm.resetFields();
+        getUserInfo();
+        isTrade.value = false;
+        ElNotification({
+          title: "成功",
+          message: "提交成功！",
+          type: "success",
+        });
+
+      },
+      (error) => {
+        errorNotification(error.response.data.message);
+      }
   );
 }
 onMounted(getUserInfo);

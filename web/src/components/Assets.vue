@@ -1,5 +1,5 @@
 <template>
-  <el-card class="account_card" shadow="hover">
+  <el-card class="account-card" shadow="hover">
     <template #header>
       <div class="card-header">
         <span style="font-weight: bold">我的账户</span>
@@ -17,14 +17,14 @@
         <el-table-column type="expand">
           <template #default="scope">
             <p>账户名称: {{ scope.row.accountName }}</p>
-            <p>备注: {{ scope.row.tagName }}</p>
+            <p>备注: {{ scope.row.remark ? scope.row.remark : "无" }}</p>
           </template>
         </el-table-column>
         <el-table-column label="账户类型">
           <template #default="scope">
             <div style="display: flex; align-items: center">
               <span style="font-weight: bold;font-size: large">{{ scope.row.tagName }}</span>
-              <span style="margin-left: 10px;color: gray">{{ scope.row.accountName }}</span>
+              <span style="margin-left: 10px;color: #c8c9cc">{{ scope.row.accountName }}</span>
             </div>
           </template>
         </el-table-column>
@@ -112,7 +112,7 @@
     <template #footer>
       <span>
         <el-button @click="showAddAccount = false" style="font-weight: bold">取消</el-button>
-        <el-button type="primary" @click="addAccount" style="font-weight: bold">提交</el-button>
+        <el-button type="primary" @click="addAccount(accountForm)" style="font-weight: bold">提交</el-button>
       </span>
     </template>
   </el-dialog>
@@ -135,6 +135,7 @@ const props = defineProps({
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref(false);
+const accountForm = ref();
 const account = reactive({
   accountName: null,
   type: [],
@@ -168,7 +169,7 @@ function cl(row,num){
   console.log(row,num);
 }
 //新建账户
-async function addAccount() {
+async function addAccount(accountForm) {
   account.tag = account.type[1];
   account.userId = store.state.userId;
   if (acType.value === 1) {
@@ -190,7 +191,7 @@ async function addAccount() {
           type: "success",
         });
         //重置表单
-        this.$refs.accountForm.resetFields();
+        accountForm.resetFields();
         showAddAccount.value = false;
         emit("getUserInfo");
       },

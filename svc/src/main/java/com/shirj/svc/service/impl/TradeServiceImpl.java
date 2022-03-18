@@ -63,6 +63,15 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
                 //转账
                 transAccount.setBalance(transAccount.getBalance() + tradeAmount);
                 balance -= (tradeAmount + transFee);
+                //如果是信用账户,还需要修改欠款
+                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                    long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
+                    account.setRsrvStr2(String.valueOf(rsrvStr2 + tradeAmount + transFee));
+                }
+                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(transAccount.getTag().substring(0,1))){
+                    long rsrvStr2 = Long.parseLong(transAccount.getRsrvStr2());
+                    account.setRsrvStr2(String.valueOf(rsrvStr2 - tradeAmount));
+                }
                 account.setBalance(balance);
                 transAccount.setUpdateTime(now());
                 break;
