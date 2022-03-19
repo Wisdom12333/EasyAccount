@@ -1,30 +1,39 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+  <router-view />
 </template>
 
+<script setup lang="ts"></script>
+
 <style>
+/*使布局容器占据整个页面*/
+html,
+body,
+.el-container,
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+.body {
+  font-family: "PingFang SC", "Helvetica Neue", sans-serif;
 }
 
-#nav {
-  padding: 30px;
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+::-webkit-scrollbar-thumb {
+  background-color: #eaecf1;
+  border-radius: 3px;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.el-table__body-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #d1d8e1;
+  border-radius: 3px;
 }
 </style>
