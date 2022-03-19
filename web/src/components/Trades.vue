@@ -89,9 +89,9 @@ const trades = computed(() => {
   }
 });
 
-function getAccountName(accountId: number) {
+function getAccountName(accountId: number): string | null {
   if (accountMap.value.has(accountId)) {
-    return accountMap.value.get(accountId);
+    return accountMap.value.get(accountId) as string;
   } else {
     axios.get(`/account/queryAccount?accountId=${accountId}`).then(
       (response) => {
@@ -102,9 +102,10 @@ function getAccountName(accountId: number) {
         console.log(error.response);
       }
     );
+    return null;
   }
 }
-function getTradeColor(tradeType: string) {
+function getTradeColor(tradeType: string): string {
   switch (tradeType) {
     case "1":
       return "#F56C6C";

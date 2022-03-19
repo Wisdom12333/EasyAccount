@@ -213,7 +213,7 @@ function cl(row: never, num: string[]) {
   console.log(row, num);
 }
 //新建账户
-async function addAccount(accountForm: FormInstance) {
+async function addAccount(accountForm: FormInstance): Promise<void> {
   if (accountNew.type) accountNew.tag = accountNew.type[1];
   accountNew.userId = store.state.userId;
   if (acType.value === 1) {
@@ -245,7 +245,7 @@ async function addAccount(accountForm: FormInstance) {
     }
   );
 }
-function handleDelete(row: account) {
+function handleDelete(row: account): void {
   axios.get(`/account/deleteAccount?accountId=${row.accountId}`).then(
     () => {
       ElNotification({
