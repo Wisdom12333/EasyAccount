@@ -51,15 +51,14 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { computed, ref, defineProps } from "vue";
-import { userInfo } from "@/static/entity";
+import { computed, ref } from "vue";
 
 const props = defineProps({
-  userInfo: userInfo,
+  userInfo: Object,
 });
 
 const accountMap = ref<Map<number, string>>(new Map());
-const search = ref<string>();
+const search = ref<string>("");
 
 const trades = computed(() => {
   if (!props.userInfo) return;
@@ -116,7 +115,7 @@ function getTradeColor(tradeType: string): string {
   }
 }
 function test() {
-  console.log();
+  console.log(search.value);
 }
 </script>
 

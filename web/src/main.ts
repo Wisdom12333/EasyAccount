@@ -7,6 +7,7 @@ import "element-plus/dist/index.css";
 import * as ElIcons from "@element-plus/icons-vue";
 import useElMessage from "@/hooks/useElMessage";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import locale from "element-plus/lib/locale/lang/zh-cn";
 
 //配置基础URL
 axios.defaults.baseURL = "http://localhost:8181";
@@ -50,7 +51,12 @@ axios.interceptors.response.use(
   }
 );
 
-const app = createApp(App).use(store).use(router).use(ElementPlus);
+const app = createApp(App)
+  .use(store)
+  .use(router)
+  .use((app) => {
+    app.use(ElementPlus, { locale });
+  });
 for (const name in ElIcons) {
   app.component(name, ElIcons[name as keyof typeof ElIcons]);
 }

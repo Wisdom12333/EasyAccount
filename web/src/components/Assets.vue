@@ -10,11 +10,11 @@
     </template>
     <div>
       <el-table
-        :data="user.accounts"
+        :data="userInfoProps?.accounts"
         :show-header="false"
         style="width: 100%"
-        @expand-change="cl"
       >
+        <!--        @expand-change="cl"-->
         <el-table-column type="expand">
           <template #default="scope">
             <p>账户名称: {{ scope.row.accountName }}</p>
@@ -43,7 +43,7 @@
             <el-space :size="5" spacer="|">
               <el-button
                 size="small"
-                icon="el-icon-edit-outline"
+                :icon="Edit"
                 @click="console.log('dd')"
               ></el-button>
               <el-popover placement="bottom" :width="200">
@@ -57,7 +57,7 @@
                   >
                 </div>
                 <template #reference>
-                  <el-button size="small" type="danger" icon="el-icon-delete">
+                  <el-button size="small" type="danger" :icon="Delete">
                   </el-button>
                 </template>
               </el-popover>
@@ -175,22 +175,24 @@
       </span>
     </template>
   </el-dialog>
+  <el-button @click="cl">assets</el-button>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, defineProps, defineEmits } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { accounts, acMap } from "@/static/accounts";
 import axios from "axios";
 import { ElNotification } from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
 import type { FormInstance } from "element-plus";
-import { account, userInfo } from "@/static/entity";
+import { account } from "@/static/entity";
 import { str2MoneyStr } from "@/hooks/StringUtils";
+import { Edit, Delete } from "@element-plus/icons-vue";
 
 const store = useStore();
 
-defineProps({ user: userInfo });
+const props = defineProps({ userInfoProps: Object });
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref<boolean>(false);
@@ -204,13 +206,8 @@ const acType = computed(() => {
   else return undefined;
 });
 
-function cl(row: never, num: string[]) {
-  if (num.length === 1) {
-    console.log("展开");
-  } else {
-    console.log("关闭");
-  }
-  console.log(row, num);
+function cl() {
+  console.log(props);
 }
 //新建账户
 async function addAccount(accountForm: FormInstance): Promise<void> {

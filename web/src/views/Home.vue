@@ -2,21 +2,21 @@
   <div class="data-header">
     <p style="margin-left: 20px">
       <span style="font-size: 18px; font-weight: bold">
-        本月支出：¥{{ userInfoNow.expend ? userInfoNow.expend : "0.00" }}
+        本月支出：¥{{ data.userInfo.expend ? data.userInfo.expend : "0.00" }}
       </span>
       <span style="font-size: 14px">
-        收入：¥{{ userInfoNow.income ? userInfoNow.income : "0.00" }}
+        收入：¥{{ data.userInfo.income ? data.userInfo.income : "0.00" }}
       </span>
       <span style="font-size: 14px">
         结余：¥{{
-          (userInfoNow.income ? userInfoNow.income : 0.0) -
-          (userInfoNow.expend ? userInfoNow.expend : 0.0)
+          (data.userInfo.income ? data.userInfo.income : 0.0) -
+          (data.userInfo.expend ? data.userInfo.expend : 0.0)
         }}
       </span>
     </p>
     <el-button
       type="success"
-      icon="el-icon-edit"
+      :icon="EditPen"
       @click="isTrade = true"
       style="font-weight: bold; margin-right: 20px"
       >记一笔</el-button
@@ -32,7 +32,7 @@
     </h1>
     <Assets
       v-if="isAssets"
-      :user="userInfoNow"
+      :user-info-props="data.userInfo"
       @getUserInfo="getUserInfo"
     ></Assets>
   </div>
@@ -40,7 +40,7 @@
   <el-divider></el-divider>
 
   <div>
-    <Trades :user-info="userInfoNow"></Trades>
+    <Trades :user-info="data.userInfo"></Trades>
   </div>
 
   <el-button @click="click()">click</el-button>
@@ -58,7 +58,7 @@
                   placeholder="请选择支出账户"
                 >
                   <el-option
-                    v-for="item in userInfoNow.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -101,7 +101,7 @@
                   placeholder="请选择收入账户"
                 >
                   <el-option
-                    v-for="item in userInfoNow.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -145,7 +145,7 @@
                   placeholder="请选择转出账户"
                 >
                   <el-option
-                    v-for="item in userInfoNow.accounts"
+                    v-for="item in data.userInfo.accounts"
                     :key="item.accountId"
                     :label="
                       item.accountName != null ? item.accountName : item.tagName
@@ -221,6 +221,15 @@ import errorNotification from "@/hooks/errorNotification";
 import Trades from "@/components/Trades.vue";
 import type { FormInstance } from "element-plus";
 import { account, trade, userInfo } from "@/static/entity";
+import { EditPen } from "@element-plus/icons-vue";
+
+class UserInfoHome {
+  userInfo: userInfo;
+
+  constructor() {
+    this.userInfo = new userInfo();
+  }
+}
 
 const store = useStore();
 const isAssets = ref<boolean>(true); //是否显示资产详情
@@ -228,11 +237,11 @@ let isTrade = ref<boolean>(false); //是否显示记账
 const tabName = ref<string>("1");
 const tradeForm = ref<FormInstance>(); //记账表单
 const tradeNew = reactive<trade>(new trade());
-let userInfoNow = reactive<userInfo>(new userInfo()); //用户基本信息
+const data = reactive<UserInfoHome>(new UserInfoHome()); //用户基本信息
 
 //转入账户
 const transAccounts = computed(() => {
-  return userInfoNow.accounts.filter((account: account) => {
+  return data.userInfo?.accounts.filter((account: account) => {
     return account.accountId !== tradeNew.accountId;
   });
 });
@@ -242,7 +251,7 @@ const getUserInfo = async () => {
   console.log("getUserInfo");
   axios.get(`/user/userInfo?userId=${store.state.userId}`).then(
     (response) => {
-      userInfoNow = response.data.result.userInfo;
+      data.userInfo = response.data.result.userInfo;
     },
     (error) => {
       if (error.response.status === 400) {
@@ -256,16 +265,22 @@ const getUserInfo = async () => {
 //记账
 async function confirmTrade(tradeForm: FormInstance) {
   tradeNew.tradeType = tabName.value;
-  tradeNew.tradeName = (tradeNew.tradeTag as []).slice(-1).pop();
+  tradeNew.userId = store.state.userId;
+  if (tradeNew.tradeType != "3") {
+    tradeNew.tradeName = (tradeNew.tradeTag as []).slice(-1).pop();
+  }
   tradeNew.tradeAmount = (tradeNew.tradeAmount as number) * 100;
-  tradeNew.rsrvStr2 = (
-    parseFloat(tradeNew.rsrvStr2 as string) * 100
-  ).toString();
+  if (tradeNew.rsrvStr2 != undefined) {
+    tradeNew.rsrvStr2 = (
+      parseFloat(tradeNew.rsrvStr2 as string) * 100
+    ).toString();
+  }
   console.log(tradeNew);
   await axios.post("/trade/book", tradeNew).then(
     () => {
       //重置表单
       tradeForm.resetFields();
+      tradeNew.tradeTag = [];
       getUserInfo();
       isTrade.value = false;
       ElNotification({
@@ -276,13 +291,16 @@ async function confirmTrade(tradeForm: FormInstance) {
     },
     (error) => {
       errorNotification(error.response.data.message);
+      tradeForm.resetFields();
+      tradeNew.tradeTag = [];
     }
   );
 }
 onMounted(getUserInfo);
 
 const click = () => {
-  console.log();
+  data.userInfo.income = 484;
+  console.log(data.userInfo);
 };
 </script>
 
