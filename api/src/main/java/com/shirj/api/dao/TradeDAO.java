@@ -4,6 +4,7 @@ import com.shirj.api.core.dao.BaseDAO;
 import com.shirj.api.entity.Trade;
 import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -20,5 +21,5 @@ public interface TradeDAO extends BaseDAO<Trade> {
      * @param userId the userId
      * @return the statistic include expend and income
      */
-    List<Map<String, Object>> getStat(@NonNull Long userId);
+    List<Map<String, Object>> getStat(@NonNull @Param("id") Long userId);
 }
