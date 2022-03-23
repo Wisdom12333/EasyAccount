@@ -1,7 +1,10 @@
 package com.shirj.api.service;
 
 import com.shirj.api.core.service.IBaseService;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Trade;
+
+import java.util.List;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
@@ -16,4 +19,9 @@ public interface ITradeService extends IBaseService<Trade> {
      */
     @Override
     boolean save(Trade entity);
+
+    ResultDTO delete(List<Trade> trades);
+
+    @Override
+    boolean removeById(Trade trade);
 }

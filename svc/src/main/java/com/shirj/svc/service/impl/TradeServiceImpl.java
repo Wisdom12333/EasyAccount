@@ -3,17 +3,20 @@ package com.shirj.svc.service.impl;
 import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.AccountDAO;
 import com.shirj.api.dao.TradeDAO;
+import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
 import com.shirj.pub.consts.AccountConst;
 import com.shirj.pub.consts.CommConst;
+import com.shirj.pub.consts.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
@@ -94,5 +97,33 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return false;
         }
+    }
+
+    @Override
+    public ResultDTO delete(List<Trade> trades) {
+        try {
+            trades.forEach(this::removeById);
+            return new ResultDTO(ResultCode.SUCCESS,null);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new ResultDTO(ResultCode.SVC_EXCEPTION,null);
+        }
+    }
+
+    @Override
+    public boolean removeById(Trade trade) {
+        //删除原账单
+        super.removeById(trade);
+        //先进行退款,这里新增一条与原账单金额相反的账单
+        Integer tradeAmount = trade.getTradeAmount() * -1;
+        trade.setTradeAmount(tradeAmount);
+        if("3".equals(trade.getTradeType())){
+            int transFee = Integer.parseInt(trade.getRsrvStr2());
+            trade.setRsrvStr2(String.valueOf(transFee * -1));
+        }
+        this.save(trade);
+        super.removeById(trade);
+
+        return false;
     }
 }

@@ -26,7 +26,7 @@ public class UserInfoDTO {
 
     private List<Trade> recentTrade;
 
-    private Double expend;
+    private Integer expend;
 
-    private Double income;
+    private Integer income;
 }

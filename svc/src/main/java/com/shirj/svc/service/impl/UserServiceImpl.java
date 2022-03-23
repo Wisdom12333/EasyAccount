@@ -94,12 +94,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
         for (Map<String, Object> stringObjectMap : stat) {
             String tradeType = String.valueOf(stringObjectMap.get("TRADE_TYPE"));
             //实际数据库中以分为单位存储
-            double amount = Double.parseDouble(String.valueOf(stringObjectMap.get("AMOUNT")));
+            int amount = Integer.parseInt(String.valueOf(stringObjectMap.get("AMOUNT")));
             //转换为元传给界面
             if (CommConst.TRADE_TYPE.EXPEND.equals(tradeType)) {
-                userInfoDTO.setExpend(amount / 100);
+                userInfoDTO.setExpend(amount);
             } else if (CommConst.TRADE_TYPE.INCOME.equals(tradeType)) {
-                userInfoDTO.setIncome(amount / 100);
+                userInfoDTO.setIncome(amount);
             }
         }
 
