@@ -39,7 +39,7 @@
   <el-divider></el-divider>
 
   <div>
-    <Trades :user-info="data.userInfo"></Trades>
+    <Trades :user-info="data.userInfo" @getUserInfo="getUserInfo"></Trades>
   </div>
 
   <el-button @click="click()">click</el-button>

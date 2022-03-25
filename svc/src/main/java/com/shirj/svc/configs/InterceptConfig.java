@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 拦截器配置
  * @author shirj, wisdom12333@iCloud.com
  */
 @Configuration
