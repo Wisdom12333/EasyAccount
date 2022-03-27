@@ -3,7 +3,7 @@
     <template #header>
       <div class="card-header">
         <span style="font-weight: bold">我的账户</span>
-        <el-button class="button" type="text" @click="showAddAccount = true"
+        <el-button type="text" @click="showAddAccount = true"
           >新增账户</el-button
         >
       </div>
@@ -14,7 +14,6 @@
         :show-header="false"
         style="width: 100%"
       >
-        <!--        @expand-change="cl"-->
         <el-table-column type="expand">
           <template #default="scope">
             <p>账户名称: {{ scope.row.accountName }}</p>

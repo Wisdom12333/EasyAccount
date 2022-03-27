@@ -8,9 +8,7 @@
         收入：¥{{ data.userInfo.income / 100 }}
       </span>
       <span style="font-size: 14px">
-        结余：¥{{
-          (data.userInfo.income - data.userInfo.expend) / 100
-        }}
+        结余：¥{{ (data.userInfo.income - data.userInfo.expend) / 100 }}
       </span>
     </p>
     <el-button
@@ -210,17 +208,17 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import {useStore} from "vuex";
-import {computed, onMounted, reactive, ref} from "vue";
+import { useStore } from "vuex";
+import { computed, onMounted, reactive, ref } from "vue";
 import useElMessage from "@/hooks/useElMessage";
 import Assets from "@/components/Assets.vue";
-import {expendMenu, incomeMenu} from "@/static/trade";
-import type {FormInstance} from "element-plus";
-import {ElNotification} from "element-plus";
+import { expendMenu, incomeMenu } from "@/static/trade";
+import type { FormInstance } from "element-plus";
+import { ElNotification } from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
 import Trades from "@/components/Trades.vue";
-import {account, trade, userInfo} from "@/static/entity";
-import {EditPen} from "@element-plus/icons-vue";
+import { account, trade, userInfo } from "@/static/entity";
+import { EditPen } from "@element-plus/icons-vue";
 
 class UserInfoHome {
   userInfo: userInfo;
@@ -251,11 +249,11 @@ const getUserInfo = async () => {
   axios.get(`/user/userInfo?userId=${store.state.userId}`).then(
     (response) => {
       data.userInfo = response.data.result.userInfo;
-      if(!data.userInfo.income){
-        data.userInfo.income = 0.00;
+      if (!data.userInfo.income) {
+        data.userInfo.income = 0.0;
       }
-      if(!data.userInfo.expend){
-        data.userInfo.expend = 0.00;
+      if (!data.userInfo.expend) {
+        data.userInfo.expend = 0.0;
       }
     },
     (error) => {

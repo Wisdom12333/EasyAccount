@@ -1,75 +1,101 @@
 <template>
-  <div>Budget</div>
+  <el-card style="text-align: center">
+    <div class="budget-head">
+      <span> 本月预算 </span>
+      <el-button type="text" :plain="true" size="large" @click="setBudget">
+        <el-icon :size="25">
+          <edit></edit>
+        </el-icon>
+      </el-button>
+    </div>
+    <el-progress
+      type="dashboard"
+      :percentage="80"
+      status="exception"
+      :stroke-width="12"
+      stroke-linecap="round"
+      width="300"
+    >
+      <template #default="{ percentage }">
+        <template v-if="false">
+          <span class="percentage-value">{{ percentage }}%</span>
+          <span class="percentage-label">Progressing</span>
+        </template>
+        <template v-else>
+          <span>还没有设置预算!</span>
+        </template>
+      </template>
+    </el-progress>
+  </el-card>
 </template>
 
 <script setup lang="ts">
-import {ElMessage, ElMessageBox} from "element-plus";
 import axios from "axios";
-import {useStore} from "vuex";
-import {user} from "@/static/entity";
+import { useStore } from "vuex";
+import { onMounted } from "vue";
+import { ElMessageBox, ElMessage, ElNotification } from "element-plus";
+import errorNotification from "@/hooks/errorNotification";
 
 const store = useStore();
-//新的用户信息
-const userNew = new user();
-const upInfo = [
-  {
-    message: "请输入新的邮箱",
-    verify:
-        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-    errorMessage: "非法的邮箱！",
-  },
-  {
-    message: "请输入新密码",
-    verify:
-        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-    errorMessage: "密码不合法！",
-  },
-];
-//更新用户
-const Update = (type: number): void => {
-  ElMessageBox.prompt(upInfo[type].message, "提示", {
+
+const getBudgetInfo = () => {
+  axios.get(`/user/getBudget?userId=${store.state.userId}`).then();
+};
+function setBudget() {
+  ElMessageBox.prompt("请设置当月预算", "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
-    inputPattern: upInfo[type].verify,
-    inputErrorMessage: upInfo[type].errorMessage,
-  }).then(({ value }) => {
-    if (type === 0) {
-      userNew.eMail = value;
-      userNew.password = "";
-    } else if (type === 1) {
-      userNew.password = value;
-      userNew.eMail = "";
-    }
-    userNew.userId = store.state.userId;
-    axios.post("/user/update", userNew).then(
+    inputPattern: /^(0|[1-9]+[0-9]*)(.[0-9]{0,2})?$/,
+    inputErrorMessage: "请输入非负两位小数!",
+  })
+    .then(({ value }) => {
+      axios.get(`${value}`).then(
         () => {
-          ElMessage({
+          ElNotification({
             type: "success",
-            message: "修改成功!",
+            message: "设置成功!",
           });
+          getBudgetInfo();
         },
         (error) => {
-          console.log(error.response);
+          errorNotification(error.response.data.message);
         }
-    );
-  });
-};
-//注销用户
-const soldOut = () => {
-  ElMessageBox.confirm("这个操作将注销账号，仍要继续吗？", "警告！", {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: "warning",
-  }).then(() => {
-    axios.get(`/user/soldOut?userId=${store.state.userId}`).then(() => {
+      );
+    })
+    .catch(() => {
       ElMessage({
-        type: "success",
-        message: "注销成功",
+        type: "info",
+        message: "取消设置",
       });
-      store.dispatch("logout");
-    }, null);
-  });
-};
+    });
+}
+
+onMounted(getBudgetInfo);
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-card {
+  width: 75%;
+}
+.budget-head {
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.percentage-value {
+  display: block;
+  margin-top: 5px;
+  font-size: 28px;
+  font-weight: bold;
+}
+.percentage-label {
+  display: block;
+  margin-top: 10px;
+  font-size: 23px;
+  font-weight: bolder;
+}
+</style>
