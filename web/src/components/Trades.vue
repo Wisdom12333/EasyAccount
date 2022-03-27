@@ -11,7 +11,9 @@
             <el-button type="primary" size="small" style="margin-right: 5px"
               >编辑</el-button
             >
-            <el-button type="danger" size="small" @click="deleteBatch()">批量删除</el-button>
+            <el-button type="danger" size="small" @click="deleteBatch()"
+              >批量删除</el-button
+            >
           </el-col>
         </el-row>
       </template>
@@ -51,9 +53,11 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import errorNotification from "@/hooks/errorNotification";
-import {ElNotification} from "element-plus";
+import type { ElTable } from "element-plus";
+import { ElNotification } from "element-plus";
+import { trade } from "@/static/entity";
 
 const props = defineProps({
   userInfo: Object,
@@ -62,6 +66,7 @@ const emits = defineEmits(["getUserInfo"]);
 
 const accountMap = ref<Map<number, string>>(new Map());
 const search = ref<string>("");
+const tradesRef = ref<InstanceType<typeof ElTable>>();
 
 const trades = computed(() => {
   if (!props.userInfo) return;
@@ -109,19 +114,20 @@ function getAccountName(accountId: number): string | null {
 }
 
 function deleteBatch(): void {
-  axios.post("/trade/delete",null).then(
-      () => {
-        emits("getUserInfo");
-        ElNotification({
-          title: "成功",
-          message: "删除成功！",
-          type: "success",
-        });
-      },
-      (error) => {
-        errorNotification(error.response.data.message);
-      }
-  )
+  let rows: trade[] = tradesRef.value?.getSelectionRows();
+  axios.post("/trade/delete", rows).then(
+    () => {
+      emits("getUserInfo");
+      ElNotification({
+        title: "成功",
+        message: "删除成功！",
+        type: "success",
+      });
+    },
+    (error) => {
+      errorNotification(error.response.data.message);
+    }
+  );
 }
 
 function getTradeColor(tradeType: string): string {

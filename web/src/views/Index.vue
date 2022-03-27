@@ -8,7 +8,7 @@
         <el-col :span="16"
           ><el-image
             style="width: 120px; height: 100%"
-            :src="imgUrl"
+            :src="require('@/assets/logo.png')"
             fit="contain"
           ></el-image
         ></el-col>
@@ -54,12 +54,10 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { onUnmounted, ref } from "vue";
+import { onUnmounted } from "vue";
 
 const store = useStore();
 const router = useRouter();
-
-const imgUrl = ref("@/assets/logo.png");
 
 function logout() {
   console.log("logout");

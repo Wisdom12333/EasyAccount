@@ -1,30 +1,37 @@
 <template>
-  <h1>Login</h1>
-  <br />
-  <el-form :model="userLogin" label-width="100px" style="width: 50%">
-    <el-form-item label="用户名">
-      <el-input v-model="userLogin.username" placeholder="请输入用户名" />
-    </el-form-item>
-    <el-form-item label="密码">
-      <el-input v-model="userLogin.password" type="password" />
-    </el-form-item>
-    <el-form-item label="记住密码">
-      <input v-model="rememberPwd" type="checkbox" />
-    </el-form-item>
-    <el-form-item>
-      <el-space :size="10" spacer="|">
-        <el-button
-          type="primary"
-          @click.prevent="login()"
-          style="font-weight: bold"
-          >登陆</el-button
-        >
-        <el-check-tag checked @click="router.push({ name: 'Register' })"
-          >没有账号？点击注册</el-check-tag
-        >
-      </el-space>
-    </el-form-item>
-  </el-form>
+  <el-card style="width: 33%; margin: 10% auto auto">
+    <template #header>
+      <div>Login</div>
+    </template>
+    <el-form
+      :model="userLogin"
+      label-width="100px"
+      style="width: 60%; margin: auto auto"
+    >
+      <el-form-item label="用户名">
+        <el-input v-model="userLogin.username" placeholder="请输入用户名" />
+      </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="userLogin.password" type="password" />
+      </el-form-item>
+      <el-form-item label="记住密码">
+        <input v-model="rememberPwd" type="checkbox" />
+      </el-form-item>
+      <el-form-item>
+        <el-space :size="10" spacer="|">
+          <el-button
+            type="primary"
+            @click.prevent="login()"
+            style="font-weight: bold"
+            >登陆</el-button
+          >
+          <el-check-tag checked @click="router.push({ name: 'Register' })"
+            >没有账号？点击注册</el-check-tag
+          >
+        </el-space>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script setup lang="ts">

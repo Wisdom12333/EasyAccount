@@ -122,8 +122,6 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             trade.setRsrvStr2(String.valueOf(transFee * -1));
         }
         this.save(trade);
-        super.removeById(trade);
-
-        return false;
+        return super.removeById(trade);
     }
 }
