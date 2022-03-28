@@ -36,11 +36,11 @@
 import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "axios";
 import { useStore } from "vuex";
-import { user } from "@/static/entity";
+import { User } from "@/static/entity";
 
 const store = useStore();
 //新的用户信息
-const userNew = new user();
+const userNew = new User();
 const upInfo = [
   {
     message: "请输入新的邮箱",

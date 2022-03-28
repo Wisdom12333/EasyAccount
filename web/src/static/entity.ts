@@ -1,4 +1,4 @@
-export class user {
+export class User {
   userId?: number;
   username?: string;
   password?: string;
@@ -12,11 +12,11 @@ export class user {
   }
 }
 
-export class userInfo {
+export class UserInfo {
   userId?: number;
   username?: string;
-  accounts: account[];
-  recentTrade: trade[];
+  accounts: Account[];
+  recentTrade: Trade[];
   expend: number;
   income: number;
 
@@ -28,7 +28,7 @@ export class userInfo {
   }
 }
 
-export class account {
+export class Account {
   accountId?: number;
   accountName?: string;
   type?: string[];
@@ -47,7 +47,7 @@ export class account {
   }
 }
 
-export class trade {
+export class Trade {
   tradeId?: number;
   userId?: number;
   accountId?: number;
@@ -61,4 +61,20 @@ export class trade {
   isReTrade?: string;
   rsrvStr1?: string;
   rsrvStr2?: string;
+}
+
+export class Budget {
+  budgetId?: number;
+  userId?: number;
+  budgetName?: string;
+  budgetAmount?: number;
+  createTime?: Date;
+}
+
+export class BudgetInfo {
+  userId?: number;
+  totalBudget?: number;
+  expend?: number;
+  trades?: Trade[];
+  budgets?: Budget[];
 }

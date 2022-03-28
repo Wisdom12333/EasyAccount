@@ -82,6 +82,21 @@ create table if not exists t_trade
 create index T_TRADE_MONTH_index
     on T_TRADE (ACCEPT_MONTH);
 
+-- T_BUDGET
+create table t_budget
+(
+    BUDGET_ID     bigint auto_increment comment '预算标识'
+        primary key,
+    USER_ID       bigint                             not null comment '用户标识',
+    BUDGET_NAME   varchar(15)                        null comment '预算名称',
+    BUDGET_AMOUNT bigint                             not null comment '预算额度',
+    CREATE_TIME   datetime default CURRENT_TIMESTAMP null comment '生成时间'
+)
+    comment '用户预算表';
+
+create index t_budget_USER_ID_BUDGET_NAME_index
+    on t_budget (USER_ID, BUDGET_NAME);
+
 -- T_PARAM
 create table if not exists t_param
 (

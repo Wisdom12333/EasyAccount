@@ -46,13 +46,13 @@ import { ElNotification } from "element-plus";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { user } from "@/static/entity";
+import { User } from "@/static/entity";
 
 const router = useRouter();
 
 let usernameCheck = ref<boolean>(true);
 const checkPwd = ref<string>();
-const userReg = reactive<user>(new user());
+const userReg = reactive<User>(new User());
 
 function submit() {
   //提交前校验

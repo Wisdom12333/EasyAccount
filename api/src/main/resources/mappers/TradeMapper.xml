@@ -11,10 +11,29 @@
     </select>
 
     <select id="getStat" resultType="java.util.HashMap">
-        SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE FROM T_TRADE T
+        SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE
+        FROM T_TRADE T
         WHERE T.USER_ID = #{id}
           AND T.ACCEPT_MONTH = MONTH(SYSDATE())
           AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
         GROUP BY TRADE_TYPE;
+    </select>
+
+    <select id="getExpend" resultType="java.lang.Integer">
+        SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT
+        FROM T_TRADE T
+        WHERE T.USER_ID = #{id}
+          AND T.ACCEPT_MONTH = MONTH(SYSDATE())
+          AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
+          AND T.TRADE_TYPE = '1';
+    </select>
+
+    <select id="getMonthTrades" resultType="Trade">
+        SELECT T.*
+        FROM T_TRADE T
+        WHERE T.USER_ID = #{id}
+          AND T.ACCEPT_MONTH = MONTH(SYSDATE())
+          AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
+          AND T.TRADE_TYPE = '1';
     </select>
 </mapper>

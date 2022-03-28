@@ -57,7 +57,7 @@ import { computed, ref } from "vue";
 import errorNotification from "@/hooks/errorNotification";
 import type { ElTable } from "element-plus";
 import { ElNotification } from "element-plus";
-import { trade } from "@/static/entity";
+import { Trade } from "@/static/entity";
 
 const props = defineProps({
   userInfo: Object,
@@ -114,7 +114,7 @@ function getAccountName(accountId: number): string | null {
 }
 
 function deleteBatch(): void {
-  let rows: trade[] = tradesRef.value?.getSelectionRows();
+  let rows: Trade[] = tradesRef.value?.getSelectionRows();
   axios.post("/trade/delete", rows).then(
     () => {
       emits("getUserInfo");
@@ -146,9 +146,6 @@ function test() {
 </script>
 
 <style scoped>
-.el-table {
-  width: 75%;
-}
 .trade-remark {
   margin-left: 10px;
   color: #c8c9cc;

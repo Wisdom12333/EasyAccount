@@ -40,12 +40,12 @@ import { useStore } from "vuex";
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import errorNotification from "@/hooks/errorNotification";
-import { user } from "@/static/entity";
+import { User } from "@/static/entity";
 
 const store = useStore();
 const router = useRouter();
 
-const userLogin = reactive<user>(new user());
+const userLogin = reactive<User>(new User());
 const rememberPwd = ref<boolean>(false);
 
 function login() {

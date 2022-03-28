@@ -36,7 +36,7 @@
 
   <el-divider></el-divider>
 
-  <div>
+  <div style="width: 75%">
     <Trades :user-info="data.userInfo" @getUserInfo="getUserInfo"></Trades>
   </div>
 
@@ -217,14 +217,14 @@ import type { FormInstance } from "element-plus";
 import { ElNotification } from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
 import Trades from "@/components/Trades.vue";
-import { account, trade, userInfo } from "@/static/entity";
+import { Account, Trade, UserInfo } from "@/static/entity";
 import { EditPen } from "@element-plus/icons-vue";
 
 class UserInfoHome {
-  userInfo: userInfo;
+  userInfo: UserInfo;
 
   constructor() {
-    this.userInfo = new userInfo();
+    this.userInfo = new UserInfo();
   }
 }
 
@@ -233,12 +233,12 @@ const isAssets = ref<boolean>(true); //是否显示资产详情
 let isTrade = ref<boolean>(false); //是否显示记账
 const tabName = ref<string>("1");
 const tradeForm = ref<FormInstance>(); //记账表单
-const tradeNew = reactive<trade>(new trade());
+const tradeNew = reactive<Trade>(new Trade());
 const data = reactive<UserInfoHome>(new UserInfoHome()); //用户基本信息
 
 //转入账户
 const transAccounts = computed(() => {
-  return data.userInfo?.accounts.filter((account: account) => {
+  return data.userInfo?.accounts.filter((account: Account) => {
     return account.accountId !== tradeNew.accountId;
   });
 });

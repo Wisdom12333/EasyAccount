@@ -4,25 +4,25 @@
 </template>
 
 <script setup lang="ts">
-import {ElMessage, ElMessageBox} from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "axios";
-import {useStore} from "vuex";
-import {user} from "@/static/entity";
+import { useStore } from "vuex";
+import { User } from "@/static/entity";
 
 const store = useStore();
 //新的用户信息
-const userNew = new user();
+const userNew = new User();
 const upInfo = [
   {
     message: "请输入新的邮箱",
     verify:
-        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
     errorMessage: "非法的邮箱！",
   },
   {
     message: "请输入新密码",
     verify:
-        /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
     errorMessage: "密码不合法！",
   },
 ];
@@ -43,15 +43,15 @@ const Update = (type: number): void => {
     }
     userNew.userId = store.state.userId;
     axios.post("/user/update", userNew).then(
-        () => {
-          ElMessage({
-            type: "success",
-            message: "修改成功!",
-          });
-        },
-        (error) => {
-          console.log(error.response);
-        }
+      () => {
+        ElMessage({
+          type: "success",
+          message: "修改成功!",
+        });
+      },
+      (error) => {
+        console.log(error.response);
+      }
     );
   });
 };

@@ -185,7 +185,7 @@ import axios from "axios";
 import { ElNotification } from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
 import type { FormInstance } from "element-plus";
-import { account } from "@/static/entity";
+import { Account } from "@/static/entity";
 import { str2MoneyStr } from "@/hooks/StringUtils";
 import { Edit, Delete } from "@element-plus/icons-vue";
 
@@ -196,7 +196,7 @@ const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref<boolean>(false);
 const accountForm = ref<FormInstance>();
-const accountNew = reactive<account>(new account()); //新建账户对象
+const accountNew = reactive<Account>(new Account()); //新建账户对象
 
 //账户类型
 const acType = computed(() => {
@@ -241,7 +241,7 @@ async function addAccount(accountForm: FormInstance): Promise<void> {
     }
   );
 }
-function handleDelete(row: account): void {
+function handleDelete(row: Account): void {
   axios.get(`/account/deleteAccount?accountId=${row.accountId}`).then(
     () => {
       ElNotification({
