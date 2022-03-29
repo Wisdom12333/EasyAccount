@@ -77,9 +77,10 @@ public final class TokenUtils {
     public static Boolean checkRefresh(String token) {
 
         try {
+            final String realToken = token.split(" ")[1];
             Claims claims = Jwts.parser()
                     .setSigningKey(TOKEN_SECRET)
-                    .parseClaimsJws(token)
+                    .parseClaimsJws(realToken)
                     .getBody();
             //final Date iat = claims.getIssuedAt(); 获取签发时间
             final LocalDateTime exp = TimeUtils.date2LocalDateTime(claims.getExpiration());
@@ -98,9 +99,10 @@ public final class TokenUtils {
     public static String refreshToken(String token) {
 
         try {
+            final String realToken = token.split(" ")[1];
             final Claims claims = Jwts.parser()
                     .setSigningKey(TOKEN_SECRET)
-                    .parseClaimsJws(token)
+                    .parseClaimsJws(realToken)
                     .getBody();
             User user = User.builder()
                     .username(String.valueOf(claims.get("username")))
