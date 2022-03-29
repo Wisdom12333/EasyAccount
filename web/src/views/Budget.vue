@@ -4,7 +4,12 @@
       ><el-card style="text-align: center; margin-top: 20px">
         <div class="budget-head">
           <span> 本月预算 </span>
-          <el-button type="text" :plain="true" size="large" @click="setBudget">
+          <el-button
+            type="text"
+            :plain="true"
+            size="large"
+            @click="setBudget(0, '')"
+          >
             <el-icon :size="25">
               <edit />
             </el-icon>
@@ -13,7 +18,7 @@
         <el-progress
           type="dashboard"
           :percentage="totalPercent"
-          :status="totalStatus"
+          :status="status(totalPercent)"
           :stroke-width="12"
           stroke-linecap="round"
           :width="300"
@@ -50,7 +55,7 @@
               type="text"
               :plain="true"
               size="large"
-              @click="setBudget"
+              @click="addBudgetForm = true"
             >
               <el-icon :size="25">
                 <circle-plus />
@@ -59,21 +64,87 @@
           </div>
         </template>
         <el-table :data="data.budgetInfo.budgets" style="max-height: 100%">
-          <el-table-column prop="budgetName"></el-table-column>
+          <el-table-column min-width="100">
+            <template #default="scope">
+              <div style="font-weight: bold">{{ scope.row.budgetName }}</div>
+              <div>总预算: {{ scope.row.budgetAmount / 100 }}</div>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="300">
+            <template #default="scope">
+              <el-progress
+                :text-inside="true"
+                :stroke-width="26"
+                :percentage="
+                  getPercent(scope.row) > 100 ? 100 : getPercent(scope.row)
+                "
+                :status="status(getPercent(scope.row))"
+              >
+                <span style="padding-right: 5px"
+                  >{{ getPercent(scope.row) }} %</span
+                >
+                <span v-show="getPercent(scope.row) > 100"
+                  >本月预算已超出!</span
+                >
+              </el-progress>
+            </template>
+          </el-table-column>
+          <el-table-column min-width="50" align="right">
+            <template #default="scope">
+              <el-button round @click="setBudget(1, scope.row.budgetName)"
+                >编辑</el-button
+              >
+            </template>
+          </el-table-column>
         </el-table>
       </el-card>
     </el-main>
   </el-container>
+
+  <!-- 添加分类预算 -->
+  <el-dialog v-model="addBudgetForm" title="添加分类预算" width="30%" center>
+    <div style="text-align: center">
+      <div style="width: 320px; margin: auto auto">
+        <el-form :model="newBudget" ref="newBudgetForm">
+          <el-form-item label="预算类型">
+            <el-cascader
+              :options="budgetMenu"
+              v-model="budgetType"
+              placeholder="请选择预算类型"
+            />
+          </el-form-item>
+          <el-form-item label="预算额度">
+            <el-input-number
+              v-model="newBudget.budgetAmount"
+              :precision="2"
+              :min="0"
+              :controls="false"
+            />
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="addBudgetForm = false">取消</el-button>
+        <el-button type="primary" @click="afterSubmit(newBudgetForm)"
+          >确定</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
 import { useStore } from "vuex";
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { ElMessageBox, ElMessage, ElNotification } from "element-plus";
 import errorNotification from "@/hooks/errorNotification";
 import { Budget, BudgetInfo, Trade, UserInfo } from "@/static/entity";
 import Trades from "@/components/Trades.vue";
+import { budgetMap, budgetMenu } from "@/static/trade";
+import type { FormInstance } from "element-plus";
 
 class Info {
   budgetInfo: BudgetInfo;
@@ -84,7 +155,11 @@ class Info {
 }
 
 const store = useStore();
+const addBudgetForm = ref<boolean>(false);
+const budgetType = ref<string[]>();
+const newBudgetForm = ref<FormInstance>();
 const data = reactive<Info>(new Info());
+const newBudget = reactive<Budget>(new Budget(store.state.userId));
 const userInfoBudget = computed(() => {
   let info = new UserInfo();
   if (data.budgetInfo.trades) {
@@ -101,13 +176,13 @@ const totalPercent = computed(() => {
     return 0;
   }
 });
-const totalStatus = computed(() => {
-  if (totalPercent.value >= 0 && totalPercent.value <= 50) {
+const status = (percent: number): string => {
+  if (percent >= 0 && percent <= 50) {
     return "success";
-  } else if (totalPercent.value <= 80) {
+  } else if (percent <= 80) {
     return "warning";
   } else return "exception";
-});
+};
 
 const getBudgetInfo = () => {
   axios.get(`/budget/getInfo?userId=${store.state.userId}`).then(
@@ -123,33 +198,42 @@ const getBudgetInfo = () => {
   );
 };
 
-function addBudget() {
-  return false;
+function afterSubmit(form: FormInstance): boolean {
+  if (budgetType.value) {
+    newBudget.budgetName = budgetType.value[0];
+  } else {
+    ElMessage({
+      message: "请选择预算类型!",
+      type: "warning",
+    });
+    return false;
+  }
+  if (!newBudget.budgetAmount) {
+    ElMessage({
+      message: "请输入预算额度!",
+      type: "warning",
+    });
+    return false;
+  }
+  newBudget.budgetAmount *= 100;
+  addBudget(newBudget as Budget);
+  addBudgetForm.value = false;
+  form.resetFields();
+  return true;
 }
-function setBudget() {
-  ElMessageBox.prompt("请设置当月预算", "提示", {
+function setBudget(type: number, budgetName: string) {
+  let message = type === 0 ? "当月" : budgetName; //0为总预算,1为分类预算
+  ElMessageBox.prompt(`请设置${message}预算`, "提示", {
     confirmButtonText: "确认",
     cancelButtonText: "取消",
     inputPattern: /^(0|[1-9]+[0-9]*)(.[0-9]{0,2})?$/,
     inputErrorMessage: "请输入非负两位小数!",
   })
     .then(({ value }) => {
-      let budget = new Budget();
-      budget.budgetName = "";
-      budget.userId = store.state.userId;
+      let budget = new Budget(store.state.userId);
+      budget.budgetName = budgetName;
       budget.budgetAmount = parseFloat(value) * 100;
-      axios.post("/budget/addBudget", budget).then(
-        () => {
-          ElNotification({
-            type: "success",
-            message: "设置成功!",
-          });
-          getBudgetInfo();
-        },
-        (error) => {
-          errorNotification(error.response.data.message);
-        }
-      );
+      addBudget(budget);
     })
     .catch(() => {
       ElMessage({
@@ -157,6 +241,36 @@ function setBudget() {
         message: "取消设置",
       });
     });
+}
+function addBudget(budget: Budget) {
+  axios.post("/budget/addBudget", budget).then(
+    () => {
+      ElNotification({
+        type: "success",
+        message: "设置成功!",
+      });
+      getBudgetInfo();
+    },
+    (error) => {
+      errorNotification(error.response.data.message);
+    }
+  );
+}
+function getPercent(budget: Budget): number {
+  if (!budget.budgetAmount) {
+    return 0;
+  }
+  let name = budget.budgetName;
+  let trades = data.budgetInfo.trades?.filter((x) => {
+    return budgetMap.get(x.tradeName as string) === name;
+  });
+  let expend = 0;
+  if (trades) {
+    trades.forEach((x) => {
+      expend += x.tradeAmount as number;
+    });
+  }
+  return parseFloat(((expend * 100) / budget.budgetAmount).toFixed(2));
 }
 
 onMounted(getBudgetInfo);

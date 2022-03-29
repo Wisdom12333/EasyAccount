@@ -65,10 +65,14 @@ export class Trade {
 
 export class Budget {
   budgetId?: number;
-  userId?: number;
+  userId: number;
   budgetName?: string;
   budgetAmount?: number;
   createTime?: Date;
+
+  constructor(userId: number) {
+    this.userId = userId;
+  }
 }
 
 export class BudgetInfo {

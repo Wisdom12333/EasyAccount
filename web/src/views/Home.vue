@@ -1,16 +1,18 @@
 <template>
   <div class="data-header">
-    <p style="margin-left: 20px">
+    <div style="margin-left: 20px">
       <span style="font-size: 18px; font-weight: bold">
         本月支出：¥{{ data.userInfo.expend / 100 }}
       </span>
-      <span style="font-size: 14px">
-        收入：¥{{ data.userInfo.income / 100 }}
-      </span>
-      <span style="font-size: 14px">
-        结余：¥{{ (data.userInfo.income - data.userInfo.expend) / 100 }}
-      </span>
-    </p>
+      <div>
+        <span style="font-size: 14px">
+          收入：¥{{ data.userInfo.income / 100 }}
+        </span>
+        <span style="font-size: 14px">
+          结余：¥{{ (data.userInfo.income - data.userInfo.expend) / 100 }}
+        </span>
+      </div>
+    </div>
     <el-button
       type="success"
       :icon="EditPen"
@@ -39,8 +41,6 @@
   <div style="width: 75%">
     <Trades :user-info="data.userInfo" @getUserInfo="getUserInfo"></Trades>
   </div>
-
-  <el-button @click="click()">click</el-button>
   <br /><br /><br />
 
   <el-drawer v-model="isTrade" direction="rtl" :destroy-on-close="true">
@@ -68,6 +68,7 @@
               <el-form-item label="消费类型" prop="tradeTag">
                 <el-cascader
                   :options="expendMenu"
+                  :props="cascaderProp"
                   v-model="tradeNew.tradeTag"
                   :show-all-levels="false"
                   placeholder="请选择消费类型"
@@ -111,6 +112,7 @@
               <el-form-item label="收入类型" prop="tradeTag">
                 <el-cascader
                   :options="incomeMenu"
+                  :props="cascaderProp"
                   v-model="tradeNew.tradeTag"
                   :show-all-levels="false"
                   placeholder="请选择收入类型"
@@ -228,6 +230,9 @@ class UserInfoHome {
   }
 }
 
+const cascaderProp = {
+  checkStrictly: true,
+};
 const store = useStore();
 const isAssets = ref<boolean>(true); //是否显示资产详情
 let isTrade = ref<boolean>(false); //是否显示记账
@@ -300,11 +305,6 @@ async function confirmTrade(tradeForm: FormInstance) {
   );
 }
 onMounted(getUserInfo);
-
-const click = () => {
-  data.userInfo.income = 484;
-  console.log(data.userInfo);
-};
 </script>
 
 <style scoped>

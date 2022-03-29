@@ -1,54 +1,60 @@
 <template>
-  <el-table ref="tradesRef" :data="trades" max-height="450">
-    <el-table-column type="selection" width="55" />
-    <el-table-column label="账单信息" style="padding: 0; width: 75%">
-      <template #header>
-        <el-row :gutter="30">
-          <el-col :span="16">
-            <el-input v-model="search" size="small" placeholder="" />
-          </el-col>
-          <el-col :span="8" style="text-align: right">
-            <el-button type="primary" size="small" style="margin-right: 5px"
-              >编辑</el-button
-            >
-            <el-button type="danger" size="small" @click="deleteBatch()"
-              >批量删除</el-button
-            >
-          </el-col>
-        </el-row>
-      </template>
-      <template #default="scope">
-        <el-card
-          body-style="height: 60px"
-          style="height: 60px; --el-card-padding: 10px"
-        >
-          <el-row>
-            <el-col :span="16" style="">
-              <div style="font-weight: bold">{{ scope.row.tradeName }}</div>
-              <div>
-                <span>{{ getAccountName(scope.row.accountId) }}</span>
-                <span class="trade-remark">{{ scope.row.remark }}</span>
-              </div>
+  <el-card shadow="always">
+    <el-table
+      ref="tradesRef"
+      :data="trades"
+      max-height="450"
+      style="padding-bottom: 20px; padding-top: 10px"
+    >
+      <el-table-column type="selection" width="55" style="padding-left: 5px" />
+      <el-table-column label="账单信息" style="width: 75%; padding: 0 10px 0 0">
+        <template #header>
+          <el-row :gutter="30" style="padding-right: 10px">
+            <el-col :span="16">
+              <el-input v-model="search" size="small" placeholder="" />
             </el-col>
-            <el-col :span="8">
-              <div
-                :style="
-                  'padding-top: 5px;font-weight: bold;color: ' +
-                  getTradeColor(scope.row.tradeType)
-                "
+            <el-col :span="8" style="text-align: right">
+              <el-button type="primary" size="small" style="margin-right: 5px"
+                >编辑</el-button
               >
-                {{ scope.row.tradeAmount / 100 }}
-              </div>
-              <div style="text-align: right; font-size: 12px; color: #c8c9cc">
-                {{ new Date(scope.row.tradeTime).toLocaleDateString() }}
-              </div>
+              <el-button type="danger" size="small" @click="deleteBatch()"
+                >批量删除</el-button
+              >
             </el-col>
           </el-row>
-        </el-card>
-      </template>
-    </el-table-column>
-  </el-table>
-  <el-button @click="test">try it </el-button>
+        </template>
+        <template #default="scope">
+          <el-card
+            body-style="height: 60px"
+            style="height: 60px; --el-card-padding: 10px; margin-right: 10px"
+          >
+            <el-row>
+              <el-col :span="16">
+                <div style="font-weight: bold">{{ scope.row.tradeName }}</div>
+                <div>
+                  <span>{{ getAccountName(scope.row.accountId) }}</span>
+                  <span class="trade-remark">{{ scope.row.remark }}</span>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div
+                  :style="
+                    'padding-top: 5px;font-weight: bold;color: ' +
+                    getTradeColor(scope.row.tradeType)
+                  "
+                >
+                  {{ scope.row.tradeAmount / 100 }}
+                </div>
+                <div style="text-align: right; font-size: 12px; color: #c8c9cc">
+                  {{ new Date(scope.row.tradeTime).toLocaleDateString() }}
+                </div>
+              </el-col>
+            </el-row>
+          </el-card>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-card>
 </template>
 
 <script setup lang="ts">
@@ -115,6 +121,10 @@ function getAccountName(accountId: number): string | null {
 
 function deleteBatch(): void {
   let rows: Trade[] = tradesRef.value?.getSelectionRows();
+  if (rows.length === 0) {
+    errorNotification("请选择要删除的账单!");
+    return;
+  }
   axios.post("/trade/delete", rows).then(
     () => {
       emits("getUserInfo");
@@ -139,9 +149,6 @@ function getTradeColor(tradeType: string): string {
     default:
       return "#000000";
   }
-}
-function test() {
-  console.log(search.value);
 }
 </script>
 

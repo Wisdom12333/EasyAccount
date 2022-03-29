@@ -119,7 +119,7 @@ export const accounts = [
   },
 ];
 
-export const acMap = new Map([
+export const acMap = new Map<string, string>([
   ["00", "储蓄卡"],
   ["01", "微信钱包"],
   ["02", "支付宝"],

@@ -1,6 +1,6 @@
 <template>
-  <el-space :fill="true" style="width: 100%">
-    <div style="height: 50px"></div>
+  <div style="height: 20px"></div>
+  <el-space :fill="true" :size="50" style="width: 75%">
     <el-card>
       <template #header>
         <span style="font-size: 18px; font-weight: bold">设置</span>

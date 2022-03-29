@@ -174,7 +174,6 @@
       </span>
     </template>
   </el-dialog>
-  <el-button @click="cl">assets</el-button>
 </template>
 
 <script setup lang="ts">
@@ -191,7 +190,7 @@ import { Edit, Delete } from "@element-plus/icons-vue";
 
 const store = useStore();
 
-const props = defineProps({ userInfoProps: Object });
+defineProps({ userInfoProps: Object });
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref<boolean>(false);
@@ -205,9 +204,6 @@ const acType = computed(() => {
   else return undefined;
 });
 
-function cl() {
-  console.log(props);
-}
 //新建账户
 async function addAccount(accountForm: FormInstance): Promise<void> {
   if (accountNew.type) accountNew.tag = accountNew.type[1];
