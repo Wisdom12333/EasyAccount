@@ -53,9 +53,45 @@
     <el-card style="margin-top: 30px">
       <template #header> 收支统计 </template>
       <el-tabs v-model="tabName" :stretch="true">
-        <el-tab-pane label="支出" name="expend">User</el-tab-pane>
-        <el-tab-pane label="收入" name="income">Config</el-tab-pane>
-        <el-tab-pane label="其他" name="other">Role</el-tab-pane>
+        <el-tab-pane label="支出" name="expend">
+          <div style="text-align: center">
+            <pie-chart
+              title="本月支出"
+              :amount="data.statInfo.expend / 100"
+              :trades="data.statInfo.monthTrades"
+              trade-type="1"
+              chart-name="expend"
+              :tab-name="tabName"
+              style="width: 600px; height: 400px; margin: auto auto"
+            />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="收入" name="income">
+          <div style="text-align: center">
+            <pie-chart
+              title="本月收入"
+              :amount="data.statInfo.income / 100"
+              :trades="data.statInfo.monthTrades"
+              trade-type="2"
+              chart-name="income"
+              :tab-name="tabName"
+              style="width: 600px; height: 400px; margin: auto auto"
+            />
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="其他" name="other">
+          <div style="text-align: center">
+            <pie-chart
+              title="其他"
+              :amount="data.statInfo.expend / 100"
+              :trades="data.statInfo.monthTrades"
+              trade-type="3"
+              chart-name="other"
+              :tab-name="tabName"
+              style="width: 600px; height: 400px; margin: auto auto"
+            />
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
@@ -80,6 +116,7 @@ import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import axios from "axios";
 import { StatInfo } from "@/static/entity";
 import errorNotification from "@/hooks/errorNotification";
+import PieChart from "@/components/PieChart.vue";
 
 class Stat {
   statInfo: StatInfo;

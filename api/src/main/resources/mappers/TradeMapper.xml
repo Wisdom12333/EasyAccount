@@ -34,7 +34,8 @@
         WHERE T.USER_ID = #{id}
           AND T.ACCEPT_MONTH = ${month}
           AND YEAR(T.TRADE_TIME) = ${year}
-          AND T.TRADE_TYPE = '1';
+          AND T.TRADE_TYPE = '1'
+        ORDER BY T.TRADE_TIME DESC;
     </select>
 
     <select id="getFullMonthTrades" resultType="Trade">
@@ -42,6 +43,7 @@
         FROM T_TRADE T
         WHERE T.USER_ID = #{id}
           AND T.ACCEPT_MONTH = ${month}
-          AND YEAR(T.TRADE_TIME) = ${year};
+          AND YEAR(T.TRADE_TIME) = ${year}
+        ORDER BY T.TRADE_TIME DESC;
     </select>
 </mapper>

@@ -272,10 +272,13 @@ const getUserInfo = async () => {
 };
 //记账
 async function confirmTrade(tradeForm: FormInstance) {
+  isTrade.value = false;
   tradeNew.tradeType = tabName.value;
   tradeNew.userId = store.state.userId;
   if (tradeNew.tradeType != "3") {
     tradeNew.tradeName = (tradeNew.tradeTag as []).slice(-1).pop();
+  } else {
+    tradeNew.tradeName = "转账";
   }
   tradeNew.tradeAmount = (tradeNew.tradeAmount as number) * 100;
   if (tradeNew.rsrvStr2 != undefined) {
@@ -290,7 +293,6 @@ async function confirmTrade(tradeForm: FormInstance) {
       tradeForm.resetFields();
       tradeNew.tradeTag = [];
       getUserInfo();
-      isTrade.value = false;
       ElNotification({
         title: "成功",
         message: "提交成功！",
