@@ -24,4 +24,6 @@ public interface ITradeService extends IBaseService<Trade> {
 
     @Override
     boolean removeById(Trade trade);
+
+    ResultDTO getStat(Long userId, Integer year, Integer month);
 }

@@ -4,6 +4,7 @@ import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.AccountDAO;
 import com.shirj.api.dao.TradeDAO;
 import com.shirj.api.dto.ResultDTO;
+import com.shirj.api.dto.StatDTO;
 import com.shirj.api.entity.Account;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
@@ -17,6 +18,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author shirj, wisdom12333@iCloud.com
@@ -123,5 +125,30 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         }
         this.save(trade);
         return super.removeById(trade);
+    }
+
+    @Override
+    public ResultDTO getStat(Long userId, Integer year, Integer month) {
+        List<Trade> monthTrades = baseMapper.getFullMonthTrades(userId, year, month);//该月账单
+        List<Map<String, Object>> stat = baseMapper.getStat(userId, year, month);//总支出与收入
+
+        StatDTO dto = new StatDTO();
+        for (Map<String, Object> stringObjectMap : stat) {
+            String tradeType = String.valueOf(stringObjectMap.get("TRADE_TYPE"));
+            //实际数据库中以分为单位存储
+            int amount = Integer.parseInt(String.valueOf(stringObjectMap.get("AMOUNT")));
+            if (CommConst.TRADE_TYPE.EXPEND.equals(tradeType)) {
+                dto.setExpend(amount);
+            } else if (CommConst.TRADE_TYPE.INCOME.equals(tradeType)) {
+                dto.setIncome(amount);
+            } else if (CommConst.TRADE_TYPE.TRANSFER.equals(tradeType)) {
+                dto.setTransfer(amount);
+            }
+        }
+        dto.setMonthTrades(monthTrades);
+
+        ResultDTO result = new ResultDTO(ResultCode.SUCCESS, "");
+        result.getResult().put("stat", dto);
+        return result;
     }
 }

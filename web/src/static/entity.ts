@@ -4,7 +4,6 @@ export class User {
   password?: string;
   eMail?: string;
   createTime?: Date;
-  updateTime?: Date;
   removeTag: string;
 
   constructor() {
@@ -81,4 +80,16 @@ export class BudgetInfo {
   expend?: number;
   trades?: Trade[];
   budgets?: Budget[];
+}
+
+export class StatInfo {
+  expend: number;
+  income: number;
+  transfer: number;
+  monthTrades: Trade[];
+
+  constructor() {
+    this.expend = this.income = this.transfer = 0;
+    this.monthTrades = [];
+  }
 }

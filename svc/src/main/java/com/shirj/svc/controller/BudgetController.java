@@ -4,7 +4,6 @@ import com.shirj.api.core.controller.BaseController;
 import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Budget;
 import com.shirj.api.service.IBudgetService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ public class BudgetController extends BaseController {
     }
 
     @GetMapping("/getInfo")
-    public ResponseEntity<ResultDTO> getBudgetInfo(@Param("userId") final Long userId) {
+    public ResponseEntity<ResultDTO> getBudgetInfo(@RequestParam final Long userId) {
         try {
             ResultDTO budgetInfo = iBudgetService.getBudgetInfo(userId);
             return returnOk(budgetInfo);

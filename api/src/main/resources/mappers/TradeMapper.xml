@@ -14,8 +14,8 @@
         SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE
         FROM T_TRADE T
         WHERE T.USER_ID = #{id}
-          AND T.ACCEPT_MONTH = MONTH(SYSDATE())
-          AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
+          AND T.ACCEPT_MONTH = ${month}
+          AND YEAR(T.TRADE_TIME) = ${year}
         GROUP BY TRADE_TYPE;
     </select>
 
@@ -32,8 +32,16 @@
         SELECT T.*
         FROM T_TRADE T
         WHERE T.USER_ID = #{id}
-          AND T.ACCEPT_MONTH = MONTH(SYSDATE())
-          AND YEAR(T.TRADE_TIME) = YEAR(SYSDATE())
+          AND T.ACCEPT_MONTH = ${month}
+          AND YEAR(T.TRADE_TIME) = ${year}
           AND T.TRADE_TYPE = '1';
+    </select>
+
+    <select id="getFullMonthTrades" resultType="Trade">
+        SELECT T.*
+        FROM T_TRADE T
+        WHERE T.USER_ID = #{id}
+          AND T.ACCEPT_MONTH = ${month}
+          AND YEAR(T.TRADE_TIME) = ${year};
     </select>
 </mapper>

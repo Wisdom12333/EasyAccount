@@ -90,7 +90,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserDAO, User> implements I
                         .orderByDesc(Trade::getTradeTime)
                         .last("LIMIT 20"));
         //获取统计数据，当月支出与收入
-        List<Map<String, Object>> stat = tradeDAO.getStat(userId);
+        List<Map<String, Object>> stat = tradeDAO.getStat(userId, now().getYear(), now().getMonthValue());
         for (Map<String, Object> stringObjectMap : stat) {
             String tradeType = String.valueOf(stringObjectMap.get("TRADE_TYPE"));
             //实际数据库中以分为单位存储

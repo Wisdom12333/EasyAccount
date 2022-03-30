@@ -21,9 +21,11 @@ public interface TradeDAO extends BaseDAO<Trade> {
      * @param userId the userId
      * @return the statistic include expend and income
      */
-    List<Map<String, Object>> getStat(@NonNull @Param("id") Long userId);
+    List<Map<String, Object>> getStat(@NonNull @Param("id") Long userId , @Param("year") Integer year, @Param("month") Integer month);
 
     Integer getExpend(@NonNull @Param("id") Long userId);
 
-    List<Trade> getMonthTrades(@NonNull @Param("id") Long userId);
+    List<Trade> getMonthTrades(@NonNull @Param("id") Long userId, @Param("year") Integer year, @Param("month") Integer month);
+
+    List<Trade> getFullMonthTrades(@NonNull @Param("id") Long userId, @Param("year") Integer year, @Param("month") Integer month);
 }

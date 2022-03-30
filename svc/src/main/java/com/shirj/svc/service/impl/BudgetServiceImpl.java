@@ -27,7 +27,7 @@ public class BudgetServiceImpl extends BaseServiceImpl<BudgetDAO, Budget> implem
     public ResultDTO getBudgetInfo(final Long userId) {
         BudgetInfoDTO dto = new BudgetInfoDTO(userId);
         dto.setExpend(tradeDAO.getExpend(userId));
-        dto.setTrades(tradeDAO.getMonthTrades(userId));
+        dto.setTrades(tradeDAO.getMonthTrades(userId, now().getYear(), now().getMonthValue()));
         List<Budget> budgets = this.getBaseMapper().selectList(new QueryWrapper<Budget>().lambda().eq(Budget::getUserId, userId));
         List<Budget> collect = budgets.stream().filter(x -> {
             if (StringUtils.isBlank(x.getBudgetName())) {
