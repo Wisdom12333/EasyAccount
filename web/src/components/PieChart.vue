@@ -1,11 +1,34 @@
 <template>
-  <div
-    name="pieChartDiv"
-    ref="chart"
-    style="width: 600px; height: 400px"
-    v-if="showChart"
-  ></div>
-  <el-empty v-else description="暂无数据" />
+  <div>
+    <div
+      name="pieChartDiv"
+      ref="chart"
+      style="width: 600px; height: 400px"
+    ></div>
+    <div style="height: 20px" />
+    <el-space :size="20" direction="vertical" style="width: 600px">
+      <div v-for="item in data" :key="item.name">
+        <div
+          style="float: left; text-align: left; width: 300px; font-weight: bold"
+        >
+          <div style="margin-bottom: 5px">
+            {{ item.name }} &nbsp;
+            {{ ((item.value * 100) / amount).toFixed(0) }} %
+          </div>
+          <el-progress
+            :percentage="parseInt(((item.value * 100) / amount).toFixed(0))"
+            :show-text="false"
+          />
+        </div>
+        <div
+          :class="chartName"
+          style="float: right; text-align: right; width: 100px"
+        >
+          ￥ {{ item.value }}
+        </div>
+      </div>
+    </el-space>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +56,7 @@ const props = defineProps({
 });
 const chart = ref<HTMLElement>();
 const charts = ref();
-const showChart = ref<boolean>(true);
+const hasInit = ref<boolean>(false);
 const data = computed(() => {
   if (props.trades) {
     let arr: Data[] = [];
@@ -59,16 +82,27 @@ const data = computed(() => {
     return arr;
   } else return [];
 });
-watch(data, (data) => {
-  showChart.value = data.length > 0;
+const tabName = computed(() => {
+  return props.tabName;
+});
+watch(tabName, (value) => {
+  if (value === props.chartName) {
+    setTimeout(() => {
+      getChart();
+      setOp();
+    }, 300);
+  }
 });
 
 function getChart() {
-  // 绘制图表
-  if (charts.value === undefined && showChart.value) {
+  //初始化
+  if (!hasInit.value) {
     charts.value = echarts.init(chart.value as HTMLElement);
+    hasInit.value = true;
   }
-  if (showChart.value) {
+}
+function setOp() {
+  if (hasInit.value) {
     charts.value.setOption({
       tooltip: {
         trigger: "item",
@@ -94,7 +128,7 @@ function getChart() {
               props.title +
               "}" +
               "\n\r" +
-              "{active|" +
+              "{active| ￥" +
               props.amount +
               "}",
             rich: {
@@ -126,13 +160,29 @@ function getChart() {
 }
 
 onMounted(() => {
-  if (props.trades && props.chartName === props.tabName) getChart();
+  if (props.trades && props.chartName === props.tabName) {
+    getChart();
+    setOp();
+  }
 });
 onUpdated(() => {
-  if (props.trades && props.chartName === props.tabName) {
-    setTimeout(() => getChart(), 300);
+  if (props.tabName === props.chartName) {
+    setTimeout(() => {
+      getChart();
+      setOp();
+    }, 300);
   }
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.income {
+  color: #67c23a;
+}
+.expend {
+  color: #f56c6c;
+}
+.transfer {
+  color: black;
+}
+</style>

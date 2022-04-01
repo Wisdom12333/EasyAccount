@@ -62,7 +62,7 @@
               trade-type="1"
               chart-name="expend"
               :tab-name="tabName"
-              style="width: 600px; height: 400px; margin: auto auto"
+              style="width: 600px; margin: auto auto"
             />
           </div>
         </el-tab-pane>
@@ -75,7 +75,7 @@
               trade-type="2"
               chart-name="income"
               :tab-name="tabName"
-              style="width: 600px; height: 400px; margin: auto auto"
+              style="width: 600px; margin: auto auto"
             />
           </div>
         </el-tab-pane>
@@ -88,11 +88,16 @@
               trade-type="3"
               chart-name="other"
               :tab-name="tabName"
-              style="width: 600px; height: 400px; margin: auto auto"
+              style="width: 600px; margin: auto auto"
             />
           </div>
         </el-tab-pane>
       </el-tabs>
+    </el-card>
+
+    <el-card style="margin-top: 30px">
+      <template #header> 月度收支对比 </template>
+      <div></div>
     </el-card>
   </div>
 

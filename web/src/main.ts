@@ -36,7 +36,6 @@ axios.interceptors.response.use(
   (response: AxiosResponse) => {
     if (response.headers.authorization) {
       //后台返回了刷新的token,替换原有token
-      debugger;
       store.state.token = response.headers.authorization;
       sessionStorage.setItem("token", response.headers.authorization);
     }
