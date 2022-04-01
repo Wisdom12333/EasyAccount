@@ -1,6 +1,7 @@
 package com.shirj.svc.controller;
 
 import com.shirj.api.core.controller.BaseController;
+import com.shirj.api.dto.MonthContrastDTO;
 import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Trade;
 import com.shirj.api.service.ITradeService;
@@ -54,6 +55,18 @@ public class TradeController extends BaseController {
     public ResponseEntity<ResultDTO> getStat(@RequestParam final Long userId, @RequestParam final Integer year, @RequestParam final Integer month){
         try {
             ResultDTO dto = iTradeService.getStat(userId, year, month);
+            return returnOk(dto);
+        } catch (Exception e) {
+            return returnException();
+        }
+    }
+
+    @GetMapping("getMonthContrast")
+    public ResponseEntity<ResultDTO> getMonthContrast(@RequestParam final Long userId, @RequestParam final Integer year){
+        try {
+            List<MonthContrastDTO> monthContrast = iTradeService.getMonthContrast(userId, year);
+            ResultDTO dto = new ResultDTO(ResultCode.SUCCESS,"");
+            dto.getResult().put("monthContrast", monthContrast);
             return returnOk(dto);
         } catch (Exception e) {
             return returnException();

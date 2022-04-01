@@ -46,4 +46,13 @@
           AND YEAR(T.TRADE_TIME) = ${year}
         ORDER BY T.TRADE_TIME DESC;
     </select>
+
+    <select id="getMonthContrast" resultType="com.shirj.api.dto.MonthContrastDTO">
+        SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE, T.ACCEPT_MONTH
+        FROM T_TRADE T
+        WHERE T.USER_ID = #{id}
+          AND   YEAR(T.TRADE_TIME) = ${year}
+          AND   T.TRADE_TYPE IN ('1','2')
+        GROUP BY TRADE_TYPE, ACCEPT_MONTH;
+    </select>
 </mapper>

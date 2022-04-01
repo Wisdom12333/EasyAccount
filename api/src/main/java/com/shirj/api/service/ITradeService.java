@@ -1,6 +1,7 @@
 package com.shirj.api.service;
 
 import com.shirj.api.core.service.IBaseService;
+import com.shirj.api.dto.MonthContrastDTO;
 import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.entity.Trade;
 
@@ -26,4 +27,6 @@ public interface ITradeService extends IBaseService<Trade> {
     boolean removeById(Trade trade);
 
     ResultDTO getStat(Long userId, Integer year, Integer month);
+
+    List<MonthContrastDTO> getMonthContrast(Long userId, Integer year);
 }

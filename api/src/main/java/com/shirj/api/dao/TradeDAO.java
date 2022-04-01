@@ -1,6 +1,7 @@
 package com.shirj.api.dao;
 
 import com.shirj.api.core.dao.BaseDAO;
+import com.shirj.api.dto.MonthContrastDTO;
 import com.shirj.api.entity.Trade;
 import lombok.NonNull;
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +29,7 @@ public interface TradeDAO extends BaseDAO<Trade> {
     List<Trade> getMonthTrades(@NonNull @Param("id") Long userId, @Param("year") Integer year, @Param("month") Integer month);
 
     List<Trade> getFullMonthTrades(@NonNull @Param("id") Long userId, @Param("year") Integer year, @Param("month") Integer month);
+
+    List<MonthContrastDTO> getMonthContrast(@NonNull @Param("id") Long userId , @Param("year") Integer year);
+
 }

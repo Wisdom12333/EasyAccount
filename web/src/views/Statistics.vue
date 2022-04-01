@@ -97,8 +97,12 @@
 
     <el-card style="margin-top: 30px">
       <template #header> 月度收支对比 </template>
-      <div></div>
+      <div style="text-align: center">
+        <MonthContrast :year="year" style="margin: auto auto"></MonthContrast>
+      </div>
     </el-card>
+
+    <div style="height: 100px"></div>
   </div>
 
   <el-dialog v-model="chooseMonth" width="30%" center>
@@ -122,6 +126,7 @@ import axios from "axios";
 import { StatInfo } from "@/static/entity";
 import errorNotification from "@/hooks/errorNotification";
 import PieChart from "@/components/PieChart.vue";
+import MonthContrast from "@/components/MonthContrast.vue";
 
 class Stat {
   statInfo: StatInfo;

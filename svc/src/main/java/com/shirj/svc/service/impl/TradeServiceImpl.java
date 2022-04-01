@@ -3,6 +3,7 @@ package com.shirj.svc.service.impl;
 import com.shirj.api.core.service.impl.BaseServiceImpl;
 import com.shirj.api.dao.AccountDAO;
 import com.shirj.api.dao.TradeDAO;
+import com.shirj.api.dto.MonthContrastDTO;
 import com.shirj.api.dto.ResultDTO;
 import com.shirj.api.dto.StatDTO;
 import com.shirj.api.entity.Account;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -150,5 +152,12 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         ResultDTO result = new ResultDTO(ResultCode.SUCCESS, "");
         result.getResult().put("stat", dto);
         return result;
+    }
+
+    @Override
+    public List<MonthContrastDTO> getMonthContrast(Long userId, Integer year) {
+        List<MonthContrastDTO> monthContrast = baseMapper.getMonthContrast(userId, year);
+        monthContrast.sort(Comparator.comparing(MonthContrastDTO::getAcceptMonth));
+        return monthContrast;
     }
 }
