@@ -9,6 +9,8 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 /**
+ * The implement of {@code IAccountService}.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Service

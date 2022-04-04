@@ -9,6 +9,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
+ * Cors config.
  *
  * @author shirj, wisdom12333@iCloud.com
  */
@@ -18,7 +19,7 @@ public class CorsConfig {
     public static final String WEB_URL = "http://localhost:8080";
 
     @Bean
-    public CorsFilter corsFilter(){
+    public CorsFilter corsFilter() {
         //添加CORS配置
         CorsConfiguration config = new CorsConfiguration();
         //允许的域

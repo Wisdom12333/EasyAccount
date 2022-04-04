@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * The implement of {@code ITradeService}.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Service
@@ -45,7 +47,7 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             case 1: {
                 account.setBalance(balance - tradeAmount);
                 //如果是信用账户,还需要修改欠款
-                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                if (AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0, 1))) {
                     long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
                     account.setRsrvStr2(String.valueOf(rsrvStr2 + tradeAmount));
                 }
@@ -55,7 +57,7 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             case 2: {
                 account.setBalance(balance + tradeAmount);
                 //如果是信用账户,还需要修改欠款
-                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                if (AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0, 1))) {
                     long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
                     account.setRsrvStr2(String.valueOf(rsrvStr2 - tradeAmount));
                 }
@@ -71,11 +73,11 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
                 transAccount.setBalance(transAccount.getBalance() + tradeAmount);
                 balance -= (tradeAmount + transFee);
                 //如果是信用账户,还需要修改欠款
-                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0,1))){
+                if (AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(account.getTag().substring(0, 1))) {
                     long rsrvStr2 = Long.parseLong(account.getRsrvStr2());
                     account.setRsrvStr2(String.valueOf(rsrvStr2 + tradeAmount + transFee));
                 }
-                if(AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(transAccount.getTag().substring(0,1))){
+                if (AccountConst.ACCOUNT_TYPE.CREDIT.getValue().equals(transAccount.getTag().substring(0, 1))) {
                     long rsrvStr2 = Long.parseLong(transAccount.getRsrvStr2());
                     account.setRsrvStr2(String.valueOf(rsrvStr2 - tradeAmount));
                 }
@@ -107,10 +109,10 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
     public ResultDTO delete(List<Trade> trades) {
         try {
             trades.forEach(this::removeById);
-            return new ResultDTO(ResultCode.SUCCESS,null);
+            return new ResultDTO(ResultCode.SUCCESS, null);
         } catch (Exception e) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return new ResultDTO(ResultCode.SVC_EXCEPTION,null);
+            return new ResultDTO(ResultCode.SVC_EXCEPTION, null);
         }
     }
 
@@ -121,7 +123,7 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
         //先进行退款,这里新增一条与原账单金额相反的账单
         Integer tradeAmount = trade.getTradeAmount() * -1;
         trade.setTradeAmount(tradeAmount);
-        if("3".equals(trade.getTradeType())){
+        if (CommConst.TRADE_TYPE.TRANSFER.equals(trade.getTradeType())) {
             int transFee = Integer.parseInt(trade.getRsrvStr2());
             trade.setRsrvStr2(String.valueOf(transFee * -1));
         }
@@ -131,8 +133,10 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
 
     @Override
     public ResultDTO getStat(Long userId, Integer year, Integer month) {
-        List<Trade> monthTrades = baseMapper.getFullMonthTrades(userId, year, month);//该月账单
-        List<Map<String, Object>> stat = baseMapper.getStat(userId, year, month);//总支出与收入
+        //该月账单
+        List<Trade> monthTrades = baseMapper.getFullMonthTrades(userId, year, month);
+        //总支出与收入
+        List<Map<String, Object>> stat = baseMapper.getStat(userId, year, month);
 
         StatDTO dto = new StatDTO();
         for (Map<String, Object> stringObjectMap : stat) {

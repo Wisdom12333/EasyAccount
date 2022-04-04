@@ -3,6 +3,8 @@ package com.shirj.pub.consts;
 import lombok.Getter;
 
 /**
+ * Result code const.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Getter

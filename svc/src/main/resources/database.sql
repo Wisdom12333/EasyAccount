@@ -3,7 +3,7 @@ create table if not exists t_user
 (
     USER_ID     bigint auto_increment comment '用户标识'
         primary key,
-    USER_NAME   varchar(40)  collate utf8mb4_bin   not null comment '用户名',
+    USER_NAME   varchar(40) collate utf8mb4_bin    not null comment '用户名',
     PASSWORD    varchar(20)                        not null comment '用户密码',
     E_MAIL      varchar(40)                        not null comment '用户邮箱',
     CREATE_TIME datetime default CURRENT_TIMESTAMP null comment '生成时间',

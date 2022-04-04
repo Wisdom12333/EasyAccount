@@ -51,8 +51,8 @@
         SELECT SUM(T.TRADE_AMOUNT) AS AMOUNT, T.TRADE_TYPE, T.ACCEPT_MONTH
         FROM T_TRADE T
         WHERE T.USER_ID = #{id}
-          AND   YEAR(T.TRADE_TIME) = ${year}
-          AND   T.TRADE_TYPE IN ('1','2')
+          AND YEAR(T.TRADE_TIME) = ${year}
+          AND T.TRADE_TYPE IN ('1', '2')
         GROUP BY TRADE_TYPE, ACCEPT_MONTH;
     </select>
 </mapper>

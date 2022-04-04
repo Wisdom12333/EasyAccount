@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
+ * {@code Account} const.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Getter

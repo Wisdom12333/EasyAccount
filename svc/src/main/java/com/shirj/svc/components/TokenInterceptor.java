@@ -26,9 +26,9 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("utf-8");
         //获取并校验token，判断是否需要生成新的token。
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(StringUtils.isNotBlank(token)){
-            if(TokenUtils.verify(token)){
-                if(TokenUtils.checkRefresh(token)) {
+        if (StringUtils.isNotBlank(token)) {
+            if (TokenUtils.verify(token)) {
+                if (TokenUtils.checkRefresh(token)) {
                     //添加允许访问的自定义头信息,使前端能接收到
                     response.setHeader(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, HttpHeaders.AUTHORIZATION);
                     response.setHeader(HttpHeaders.AUTHORIZATION, TokenUtils.refreshToken(token));
@@ -39,9 +39,9 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json; charset=utf-8");
-        try{
+        try {
             response.sendError(SC_UNAUTHORIZED, "非法的token");
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return false;
         }

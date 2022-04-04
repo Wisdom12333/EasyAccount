@@ -14,6 +14,8 @@ import org.apache.ibatis.type.Alias;
 import java.time.LocalDateTime;
 
 /**
+ * The entity of table T_TRADE.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Setter

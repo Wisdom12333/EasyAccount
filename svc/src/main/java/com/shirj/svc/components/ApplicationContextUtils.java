@@ -16,11 +16,6 @@ public final class ApplicationContextUtils implements ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    @Override
-    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
-    }
-
     /**
      * get Spring context.
      *
@@ -60,6 +55,11 @@ public final class ApplicationContextUtils implements ApplicationContextAware {
      */
     public static Object getBean(String name, Object... args) {
         return getContext().getBean(name, args);
+    }
+
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        context = applicationContext;
     }
 
 }

@@ -36,7 +36,7 @@ public class CommConst {
 
         private String value;
 
-        public boolean equals(String str){
+        public boolean equals(String str) {
             return value.equals(str);
         }
     }

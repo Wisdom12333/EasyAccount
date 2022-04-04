@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller of {@code Budget}.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @RestController
 @RequestMapping("/budget")
 public class BudgetController extends BaseController {

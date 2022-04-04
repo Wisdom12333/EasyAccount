@@ -5,6 +5,8 @@ import com.shirj.api.entity.Account;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
+ * DAO of the {@code Account}.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Mapper

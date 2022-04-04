@@ -41,6 +41,13 @@ public final class TimeUtils {
 
     public static final Integer TIME_LENGTH = 10;
 
+    /**
+     * Transfer a {@code String} to {@code LocalDateTime} with specified format.
+     *
+     * @param timeStr the time string
+     * @param format  format
+     * @return a {@code LocalDateTime}
+     */
     public static LocalDateTime string2Time(String timeStr, String format) {
         if (timeStr.length() == TIME_LENGTH && StringUtils.equals(format, TimeUtils.TIME_STANDARD)) {
             timeStr += " " + TimeUtils.FIRST_SECOND;
@@ -50,7 +57,7 @@ public final class TimeUtils {
     }
 
     /**
-     * Now local date time.
+     * Now {@code LocalDateTime}.
      *
      * @return the local date time now
      */

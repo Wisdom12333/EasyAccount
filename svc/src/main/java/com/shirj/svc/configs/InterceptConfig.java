@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 拦截器配置
+ * Intercept config.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @Configuration
@@ -19,7 +20,7 @@ public class InterceptConfig implements WebMvcConfigurer {
     private final TokenInterceptor tokenInterceptor;
 
     @Autowired
-    public InterceptConfig(TokenInterceptor tokenInterceptor){
+    public InterceptConfig(TokenInterceptor tokenInterceptor) {
         this.tokenInterceptor = tokenInterceptor;
     }
 

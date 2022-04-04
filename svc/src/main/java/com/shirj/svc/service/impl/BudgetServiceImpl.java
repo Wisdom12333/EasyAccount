@@ -17,6 +17,11 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The implement of {@code IBudgetService}.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Service
 public class BudgetServiceImpl extends BaseServiceImpl<BudgetDAO, Budget> implements IBudgetService {
 

@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
+ * Controller of {@code Account}.
+ *
  * @author shirj, wisdom12333@iCloud.com
  */
 @RestController

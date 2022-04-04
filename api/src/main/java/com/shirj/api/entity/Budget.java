@@ -13,6 +13,11 @@ import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDateTime;
 
+/**
+ * The entity of table T_BUDGET.
+ *
+ * @author shirj, wisdom12333@iCloud.com
+ */
 @Setter
 @Getter
 @ToString
