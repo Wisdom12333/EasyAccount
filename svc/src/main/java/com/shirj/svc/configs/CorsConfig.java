@@ -2,6 +2,7 @@ package com.shirj.svc.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,9 +32,9 @@ public class CorsConfig {
         config.addAllowedMethod(HttpMethod.PUT);
         config.addAllowedMethod(HttpMethod.DELETE);
         //允许的头信息
-        config.addAllowedHeader("*");
+        config.addAllowedHeader(CorsConfiguration.ALL);
         //添加自定义的响应头
-        config.addExposedHeader("newToken");
+        config.addExposedHeader(HttpHeaders.AUTHORIZATION);
 
         //添加映射路径
         UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();

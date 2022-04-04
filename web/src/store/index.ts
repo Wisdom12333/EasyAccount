@@ -31,12 +31,6 @@ export default createStore({
       sessionStorage.clear();
       router.push({ name: "Login" }).then();
     },
-    add(context, value) {
-      context.commit("ADD", value);
-    },
-    reduce(context, value) {
-      context.commit("REDUCE", value);
-    },
   },
   modules: {},
 });
