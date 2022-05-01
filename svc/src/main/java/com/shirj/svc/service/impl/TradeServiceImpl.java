@@ -12,12 +12,14 @@ import com.shirj.api.service.ITradeService;
 import com.shirj.pub.consts.AccountConst;
 import com.shirj.pub.consts.CommConst;
 import com.shirj.pub.consts.ResultCode;
+import com.shirj.pub.utils.ArrayUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -90,8 +92,10 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             }
         }
         account.setUpdateTime(now());
-        entity.setTradeTime(now());
-        entity.setAcceptMonth(now().getMonthValue());
+        if (entity.getTradeTime() == null) {
+            entity.setTradeTime(now());
+            entity.setAcceptMonth(now().getMonthValue());
+        }
         try {
             if (CommConst.TRADE_TYPE.TRANSFER.getValue().equals(tradeType)) {
                 accountDAO.updateById(transAccount);
@@ -100,8 +104,9 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             super.save(entity);
             return true;
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return false;
+            throw e;
         }
     }
 
@@ -111,8 +116,26 @@ public class TradeServiceImpl extends BaseServiceImpl<TradeDAO, Trade> implement
             trades.forEach(this::removeById);
             return new ResultDTO(ResultCode.SUCCESS, null);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return new ResultDTO(ResultCode.SVC_EXCEPTION, null);
+            throw e;
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ResultDTO modify(List<Trade> trades) {
+        if (ArrayUtils.isEmpty(trades)) {
+            return new ResultDTO(ResultCode.ERROR_DATA, "空的账单");
+        }
+        try {
+            final Trade byId = this.getById(trades.get(0).getTradeId());
+            this.delete(Collections.singletonList(byId));
+            trades.forEach(this::save);
+            return new ResultDTO(ResultCode.SUCCESS, null);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
         }
     }
 

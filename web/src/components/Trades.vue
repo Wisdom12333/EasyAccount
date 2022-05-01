@@ -14,7 +14,11 @@
               <el-input v-model="search" size="small" placeholder="" />
             </el-col>
             <el-col :span="8" style="text-align: right">
-              <el-button type="primary" size="small" style="margin-right: 5px"
+              <el-button
+                type="primary"
+                size="small"
+                style="margin-right: 5px"
+                @click="modify"
                 >编辑</el-button
               >
               <el-button type="danger" size="small" @click="deleteBatch()"
@@ -55,11 +59,41 @@
       </el-table-column>
     </el-table>
   </el-card>
+
+  <el-dialog v-model="modifyTrade" width="400px">
+    <el-form :model="newTrade">
+      <el-form-item label="类型">
+        <el-select disabled v-model="newTrade.trade.tradeName">
+          <el-option
+            :label="newTrade.trade.tradeName"
+            :value="newTrade.trade.tradeName"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="金额">
+        <el-input-number
+          v-model="newTrade.trade.tradeAmount"
+          :precision="2"
+          :min="0"
+          :controls="false"
+        />
+      </el-form-item>
+      <el-form-item label="备注">
+        <el-input v-model="newTrade.trade.remark" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="modifyTrade = false">Cancel</el-button>
+        <el-button type="primary" @click="confirmModify">Confirm</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
 import axios from "axios";
-import { computed, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import errorNotification from "@/hooks/errorNotification";
 import type { ElTable } from "element-plus";
 import { ElNotification } from "element-plus";
@@ -73,6 +107,11 @@ const emits = defineEmits(["getUserInfo"]);
 const accountMap = ref<Map<number, string>>(new Map());
 const search = ref<string>("");
 const tradesRef = ref<InstanceType<typeof ElTable>>();
+const modifyTrade = ref<boolean>(false);
+
+let newTrade = reactive({
+  trade: new Trade(),
+});
 
 const trades = computed(() => {
   if (!props.userInfo) return;
@@ -117,6 +156,43 @@ function getAccountName(accountId: number): string | null {
     );
     return null;
   }
+}
+
+function modify(): void {
+  let rows: Trade[] = tradesRef.value?.getSelectionRows();
+  if (rows.length === 0) {
+    errorNotification("请选择要编辑的账单!");
+    return;
+  } else if (rows.length > 1) {
+    errorNotification("编辑暂不支持批量操作!");
+    return;
+  }
+  if (rows[0].tradeType === "3") {
+    errorNotification("转账暂不支持修改!");
+    return;
+  }
+  newTrade.trade = Object.assign({}, rows[0]);
+  if (newTrade.trade.tradeAmount) newTrade.trade.tradeAmount /= 100;
+  modifyTrade.value = true;
+}
+
+function confirmModify(): void {
+  modifyTrade.value = false;
+  if (newTrade.trade.tradeAmount) newTrade.trade.tradeAmount *= 100;
+  let x = [];
+  x.push(newTrade.trade);
+  axios.post(`/trade/modify`, x).then(
+    () => {
+      ElNotification({
+        type: "success",
+        message: "修改成功!",
+      });
+      emits("getUserInfo");
+    },
+    (error) => {
+      errorNotification(error.response.data.message);
+    }
+  );
 }
 
 function deleteBatch(): void {

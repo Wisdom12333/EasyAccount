@@ -53,4 +53,14 @@ public class AccountController extends BaseController {
                 account.getTagName() : account.getAccountName();
         return returnOk(result);
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<ResultDTO> update(@RequestBody Account account) {
+        final boolean update = iAccountService.updateById(account);
+        if (update) {
+            return returnOk();
+        } else {
+            return returnException();
+        }
+    }
 }

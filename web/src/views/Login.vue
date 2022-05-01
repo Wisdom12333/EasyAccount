@@ -1,12 +1,12 @@
 <template>
-  <el-card style="width: 33%; margin: 10% auto auto">
+  <el-card style="width: 25vw; margin: 10% auto auto">
     <template #header>
       <div>Login</div>
     </template>
     <el-form
       :model="userLogin"
       label-width="100px"
-      style="width: 60%; margin: auto auto"
+      style="width: 80%; margin: auto auto"
     >
       <el-form-item label="用户名">
         <el-input v-model="userLogin.username" placeholder="请输入用户名" />
@@ -54,7 +54,7 @@ function login() {
       if (response.data.code === "0") {
         store.commit("setUserId", response.data.result.userId);
         if (rememberPwd.value) {
-          localStorage.setItem("pwd", userLogin.password as string);
+          localStorage.setItem("pwd", JSON.stringify(userLogin));
         } else {
           localStorage.removeItem("pwd");
         }
@@ -68,11 +68,12 @@ function login() {
 }
 
 onMounted(() => {
-  userLogin.username = "shirj";
   //之前存储了密码
   if (localStorage.getItem("pwd")) {
     rememberPwd.value = true;
-    userLogin.password = localStorage.getItem("pwd") as string;
+    let user = JSON.parse(localStorage.getItem("pwd") as string);
+    userLogin.password = user.password;
+    userLogin.username = user.username;
   } else rememberPwd.value = false;
 });
 </script>

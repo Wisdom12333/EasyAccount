@@ -55,6 +55,16 @@ public class TradeController extends BaseController {
         }
     }
 
+    @PostMapping("modify")
+    public ResponseEntity<ResultDTO> modify(@RequestBody List<Trade> trades) {
+        ResultDTO dto = iTradeService.modify(trades);
+        if (ResultCode.SUCCESS.equals(dto.getResultCode())) {
+            return returnOk();
+        } else {
+            return returnException();
+        }
+    }
+
     @GetMapping("getStat")
     public ResponseEntity<ResultDTO> getStat(@RequestParam final Long userId, @RequestParam final Integer year, @RequestParam final Integer month) {
         try {

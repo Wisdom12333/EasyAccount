@@ -319,6 +319,7 @@ onMounted(getUserInfo);
   margin-top: 30px;
   border-radius: 25px;
   background-color: #a0cfff;
+  box-shadow: 4px 4px 2px black;
 }
 .el-select,
 .el-input__inner,

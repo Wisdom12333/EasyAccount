@@ -43,7 +43,7 @@
               <el-button
                 size="small"
                 :icon="Edit"
-                @click="console.log('dd')"
+                @click="showDialog(scope.row)"
               ></el-button>
               <el-popover placement="bottom" :width="200">
                 <p>确定要删除这个账户吗？</p>
@@ -86,7 +86,7 @@
           :show-all-levels="false"
         />
       </el-form-item>
-      <div v-show="accountNew.type[1]">
+      <div v-show="accountNew.type && accountNew.type[1]">
         <el-form-item
           :label="acType === 4 ? '借款方名称' : '账户名称'"
           prop="accountName"
@@ -174,6 +174,42 @@
       </span>
     </template>
   </el-dialog>
+
+  <el-dialog v-model="showModifyAccount" width="500px">
+    <template #title>
+      <h1>编辑账户</h1>
+    </template>
+    <el-form label-width="100px" :data="modifyAccount.account">
+      <el-form-item label="账户名称" prop="accountName">
+        <el-input v-model="modifyAccount.account.accountName" />
+      </el-form-item>
+      <el-form-item label="账户余额" prop="balance">
+        <el-input-number
+          v-model="modifyAccount.account.balance"
+          :precision="2"
+          :min="0"
+          :controls="false"
+          placeholder="0.00"
+        />
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="modifyAccount.account.remark" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span>
+        <el-button @click="showModifyAccount = false" style="font-weight: bold"
+          >取消</el-button
+        >
+        <el-button
+          type="primary"
+          @click="submitModify"
+          style="font-weight: bold"
+          >提交</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
@@ -194,8 +230,12 @@ defineProps({ userInfoProps: Object });
 const emit = defineEmits(["getUserInfo"]);
 
 const showAddAccount = ref<boolean>(false);
+const showModifyAccount = ref<boolean>(false);
 const accountForm = ref<FormInstance>();
 const accountNew = reactive<Account>(new Account()); //新建账户对象
+const modifyAccount = reactive({
+  account: new Account(),
+});
 
 //账户类型
 const acType = computed(() => {
@@ -231,6 +271,30 @@ async function addAccount(accountForm: FormInstance): Promise<void> {
       accountForm.resetFields();
       showAddAccount.value = false;
       emit("getUserInfo");
+    },
+    (error) => {
+      errorNotification(error.response.data.message);
+    }
+  );
+}
+function showDialog(account: Account): void {
+  modifyAccount.account = Object.assign({}, account);
+  if (modifyAccount.account.balance) modifyAccount.account.balance /= 100;
+  showModifyAccount.value = true;
+}
+function submitModify() {
+  showModifyAccount.value = false;
+  console.log(modifyAccount.account);
+  if (modifyAccount.account.balance) modifyAccount.account.balance *= 100;
+  axios.post("/account/update", modifyAccount.account).then(
+    () => {
+      ElNotification({
+        title: "成功",
+        message: "账户修改成功！",
+        type: "success",
+      });
+      emit("getUserInfo");
+      showModifyAccount.value = false;
     },
     (error) => {
       errorNotification(error.response.data.message);

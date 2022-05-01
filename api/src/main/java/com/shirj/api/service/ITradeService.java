@@ -58,4 +58,12 @@ public interface ITradeService extends IBaseService<Trade> {
      * @return month contrast info in {@code MonthContrastDTO}
      */
     List<MonthContrastDTO> getMonthContrast(Long userId, Integer year);
+
+    /**
+     * Modify trades.
+     *
+     * @param trades trades
+     * @return result
+     */
+    ResultDTO modify(List<Trade> trades);
 }

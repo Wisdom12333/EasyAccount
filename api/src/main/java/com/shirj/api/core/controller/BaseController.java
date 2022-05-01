@@ -20,7 +20,7 @@ public class BaseController {
 
     protected final static ResultDTO EXCEPTION_DTO = new ResultDTO(ResultCode.SVC_EXCEPTION, EX_MESSAGE);
     protected final static ResponseEntity<ResultDTO> EXCEPTION = ResponseEntity.status(BAD_REQ).body(EXCEPTION_DTO);
-    protected final static ResultDTO OK_DTO = new ResultDTO(ResultCode.SVC_EXCEPTION, OK_MESSAGE);
+    protected final static ResultDTO OK_DTO = new ResultDTO(ResultCode.SUCCESS, OK_MESSAGE);
     protected final static ResponseEntity<ResultDTO> OK_RESPONSE = ResponseEntity.ok(OK_DTO);
 
     /**

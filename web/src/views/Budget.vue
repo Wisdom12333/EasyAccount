@@ -1,6 +1,6 @@
 <template>
   <el-container>
-    <el-aside style="width: 40%"
+    <el-aside style="width: 50%"
       ><el-card style="text-align: center; margin-top: 20px">
         <div class="budget-head">
           <span> 本月预算 </span>
@@ -89,9 +89,12 @@
               </el-progress>
             </template>
           </el-table-column>
-          <el-table-column min-width="50" align="right">
+          <el-table-column min-width="70" align="right">
             <template #default="scope">
-              <el-button round @click="setBudget(1, scope.row.budgetName)"
+              <el-button
+                round
+                @click="setBudget(1, scope.row.budgetName)"
+                size="small"
                 >编辑</el-button
               >
             </template>

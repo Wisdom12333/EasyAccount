@@ -9,7 +9,7 @@
         @change="checkUsername"
       >
         <template #suffix
-          ><el-tag type="danger" v-show="usernameCheck === false"
+          ><el-tag type="danger" v-show="usernameCheck === false" size="mini"
             >用户名已被使用!</el-tag
           ></template
         >
