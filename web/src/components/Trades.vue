@@ -145,16 +145,15 @@ function getAccountName(accountId: number): string | null {
   if (accountMap.value.has(accountId)) {
     return accountMap.value.get(accountId) as string;
   } else {
-    axios.get(`/account/queryAccount?accountId=${accountId}`).then(
-      (response) => {
+    let name = "";
+    axios
+      .get(`/account/queryAccount?accountId=${accountId}`)
+      .then((response) => {
         accountMap.value.set(accountId, response.data.message);
-        return accountMap.value.get(accountId);
-      },
-      (error) => {
-        console.log(error.response);
-      }
-    );
-    return null;
+        name = accountMap.value.get(accountId) as string;
+        return name;
+      });
+    return name;
   }
 }
 

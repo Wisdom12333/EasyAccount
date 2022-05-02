@@ -27,8 +27,6 @@
           />
         </div>
       </template>
-      <!--      <span style="color: gray; font-size: 14px">月度收支概览</span>-->
-      <!--      <el-divider style="margin-top: 10px; margin-bottom: 15px" />-->
       <el-row style="text-align: center">
         <el-col :span="8">
           <p class="text-info">本月结余</p>
@@ -83,7 +81,7 @@
           <div style="text-align: center">
             <pie-chart
               title="其他"
-              :amount="data.statInfo.expend / 100"
+              :amount="data.statInfo.transfer / 100"
               :trades="data.statInfo.monthTrades"
               trade-type="3"
               chart-name="other"

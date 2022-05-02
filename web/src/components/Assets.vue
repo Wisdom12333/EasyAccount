@@ -259,7 +259,6 @@ async function addAccount(accountForm: FormInstance): Promise<void> {
       : (accountNew.balance as number) * 100;
   accountNew.isTotal = accountNew.isTotal ? "0" : "1";
   accountNew.tagName = acMap.get(accountNew.tag as string)?.toString();
-  console.log(accountNew);
   await axios.post("/account/addAccount", accountNew).then(
     () => {
       ElNotification({
@@ -284,7 +283,6 @@ function showDialog(account: Account): void {
 }
 function submitModify() {
   showModifyAccount.value = false;
-  console.log(modifyAccount.account);
   if (modifyAccount.account.balance) modifyAccount.account.balance *= 100;
   axios.post("/account/update", modifyAccount.account).then(
     () => {

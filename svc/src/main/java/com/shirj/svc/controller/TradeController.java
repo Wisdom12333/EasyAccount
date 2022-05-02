@@ -32,15 +32,10 @@ public class TradeController extends BaseController {
 
     @PostMapping("book")
     public ResponseEntity<ResultDTO> bookTrade(@RequestBody Trade trade) {
-        try {
-            boolean flag = iTradeService.save(trade);
-            if (flag) {
-                return returnOk();
-            } else {
-                return returnException();
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage());
+        boolean flag = iTradeService.save(trade);
+        if (flag) {
+            return returnOk();
+        } else {
             return returnException();
         }
     }

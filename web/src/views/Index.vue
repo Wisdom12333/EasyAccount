@@ -60,7 +60,6 @@ const store = useStore();
 const router = useRouter();
 
 function logout() {
-  console.log("logout");
   router.push({ name: "Login" }).then();
 }
 

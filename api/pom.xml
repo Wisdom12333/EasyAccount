@@ -6,12 +6,12 @@
         <groupId>com.shirj</groupId>
         <artifactId>EasyAccount</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api</name>
     <description>api</description>
+    <packaging>jar</packaging>
 
     <dependencies>
 
@@ -44,6 +44,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.9</version>
         </dependency>
 
     </dependencies>

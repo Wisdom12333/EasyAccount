@@ -6,12 +6,12 @@
         <groupId>com.shirj</groupId>
         <artifactId>EasyAccount</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>svc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>svc</name>
     <description>svc</description>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>

@@ -135,7 +135,6 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <!--          todo 可以优化为组件-->
           <el-tab-pane label="转账" name="3">
             <el-form :model="tradeNew" label-width="100px" ref="tradeForm">
               <el-form-item label="转出账户" prop="accountId">
@@ -250,7 +249,6 @@ const transAccounts = computed(() => {
 
 //获取用户信息
 const getUserInfo = async () => {
-  console.log("getUserInfo");
   axios.get(`/user/userInfo?userId=${store.state.userId}`).then(
     (response) => {
       data.userInfo = response.data.result.userInfo;
@@ -272,6 +270,7 @@ const getUserInfo = async () => {
 };
 //记账
 async function confirmTrade(tradeForm: FormInstance) {
+  debugger;
   isTrade.value = false;
   tradeNew.tradeType = tabName.value;
   tradeNew.userId = store.state.userId;
@@ -281,12 +280,11 @@ async function confirmTrade(tradeForm: FormInstance) {
     tradeNew.tradeName = "转账";
   }
   tradeNew.tradeAmount = (tradeNew.tradeAmount as number) * 100;
-  if (tradeNew.rsrvStr2 != undefined) {
+  if (tradeNew.rsrvStr2) {
     tradeNew.rsrvStr2 = (
       parseFloat(tradeNew.rsrvStr2 as string) * 100
     ).toString();
-  }
-  console.log(tradeNew);
+  } else tradeNew.rsrvStr2 = "0";
   await axios.post("/trade/book", tradeNew).then(
     () => {
       //重置表单

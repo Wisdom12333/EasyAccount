@@ -37,6 +37,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import axios from "axios";
 import { useStore } from "vuex";
 import { User } from "@/static/entity";
+import errorNotification from "@/hooks/errorNotification";
 
 const store = useStore();
 //新的用户信息
@@ -79,7 +80,7 @@ const Update = (type: number): void => {
         });
       },
       (error) => {
-        console.log(error.response);
+        errorNotification(error.response.data.message);
       }
     );
   });
