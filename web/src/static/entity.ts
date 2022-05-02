@@ -1,13 +1,14 @@
 export class User {
   userId?: number;
   username?: string;
-  password?: string;
+  password: string;
   eMail?: string;
   createTime?: Date;
   removeTag: string;
 
   constructor() {
     this.removeTag = "0";
+    this.password = "";
   }
 }
 

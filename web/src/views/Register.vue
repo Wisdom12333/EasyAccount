@@ -31,7 +31,7 @@
         <el-input v-model="userReg.password" type="password" show-password />
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPwd">
-        <el-input v-model="checkPwd" type="password" show-password />
+        <el-input v-model="userReg.checkPwd" type="password" show-password />
       </el-form-item>
       <el-form-item label="邮箱" prop="eMail">
         <el-input v-model="userReg.eMail" />
@@ -64,18 +64,33 @@ import { User } from "@/static/entity";
 import errorNotification from "@/hooks/errorNotification";
 import { isBlank } from "@/hooks/StringUtils";
 
+class reg extends User {
+  checkPwd: string;
+
+  constructor() {
+    super();
+    this.checkPwd = "";
+  }
+}
+
 const router = useRouter();
 
 let usernameCheck = ref<boolean>(true);
-const checkPwd = ref<string>();
 const ruleFormRef = ref<FormInstance>();
-const userReg = reactive<User>(new User());
+const userReg = reactive<reg>(new reg());
 const rules = reactive<FormRules>({
   username: [
     { required: true, message: "请输入用户名", trigger: "change" },
     { min: 4, max: 16, message: "用户名长度必须为4-16", trigger: "change" },
   ],
   password: [
+    {
+      required: true,
+      message: "请输入密码",
+      trigger: "change",
+    },
+  ],
+  checkPwd: [
     {
       required: true,
       message: "请输入密码",
@@ -104,10 +119,10 @@ function submit(formEl: FormInstance | undefined) {
       } else if (!usernameCheck.value) {
         check = false;
         message = "用户名已被使用!";
-      } else if (!userReg.password || isBlank(userReg.password)) {
+      } else if (isBlank(userReg.password)) {
         check = false;
         message = "密码不能为空!";
-      } else if (userReg.password != checkPwd.value) {
+      } else if (userReg.password != userReg.checkPwd) {
         check = false;
         message = "请确认密码!";
       }
