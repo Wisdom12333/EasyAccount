@@ -82,13 +82,6 @@ const rules = reactive<FormRules>({
       trigger: "change",
     },
   ],
-  checkPwd: [
-    {
-      required: true,
-      message: "请输入密码",
-      trigger: "change",
-    },
-  ],
   eMail: [
     {
       required: true,
